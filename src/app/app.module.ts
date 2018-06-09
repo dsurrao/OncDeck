@@ -5,26 +5,47 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { PatientsPage } from '../pages/patients/patients';
+import { Api } from '../providers/api/api';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http'
+import { AwsConfig } from './app.config';
+import { LoginModal } from '../modal/login/login';
+import { LogoutModal } from '../modal/logout/logout';
+import { PatientPage } from '../pages/patient/patient';
+import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
+
+import Amplify from 'aws-amplify';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    PatientsPage,
+    PatientPage,
+    LoginModal,
+    LogoutModal
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+//    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, new AwsConfig().load()),
+    HttpClientModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    PatientsPage,
+    PatientPage,
+    LoginModal,
+    LogoutModal
   ],
   providers: [
+    Api,
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DynamodbProvider
   ]
 })
 export class AppModule {}
