@@ -1,3 +1,3 @@
 # OncDeck
 
-place your custom aws-config.js file under assets
+place your custom aws-config.js file under src/assets
