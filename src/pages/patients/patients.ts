@@ -3,33 +3,17 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Patient } from '../../models/patient';
 
-import { LoginModal } from '../../modal/login/login'
-import { LogoutModal } from '../../modal/logout/logout'
+import { LoginModal } from '../../modal/login/login';
+import { LogoutModal } from '../../modal/logout/logout';
 import { PatientPage } from '../patient/patient';
 
-import { Auth } from 'aws-amplify';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
-import Amplify from 'aws-amplify';
-
+import { Auth } from 'aws-amplify';
+import aws_exports from '../../assets/aws-exports'; // specify the location of aws-exports.js file on your project
 import AWS from 'aws-sdk';
 
-AWS.config.region = 'us-east-1';
-
-Amplify.configure({
-  Auth: {
-  // REQUIRED - Amazon Cognito Identity Pool ID
-      identityPoolId: 'us-east-1:9383dd44-c7b3-4e83-8c86-35a139c37e5a', 
-  // REQUIRED - Amazon Cognito Region
-      region: 'us-east-1', 
-  // OPTIONAL - Amazon Cognito User Pool ID
-      userPoolId: 'us-east-1_wFoHGe664',
-  // OPTIONAL - Amazon Cognito Web Client ID
-      userPoolWebClientId: '2jv6fu7cbbcdh0d38ttjfi5s60', 
-
-
-  }
-});
+AWS.config.region = aws_exports.aws_project_region;
 
 /**
  * Generated class for the PatientsPage page.
@@ -52,13 +36,20 @@ export class PatientsPage {
     public modalCtrl: ModalController,
     public db: DynamodbProvider) {
     this.patients = [];
+    
   }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PatientsPage');
+  }
 
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter PatientsPage');
+  }
+
+  ionViewDidEnter() {
     this.getPatients();
+    console.log('ionViewDidEnter PatientsPage');
   }
 
   getPatients() {
@@ -76,11 +67,6 @@ export class PatientsPage {
             this.patients = data.Items; 
           })
           .catch(err => console.log('error in refresh tasks', err));
-
-        // this.db.getDocumentClient(credentials)
-        //   .then(client => (client as DocumentClient).scan(params).promise())
-        //   .then(data => { this.patients = data.Items; })
-        //   .catch(err => console.log('error in refresh tasks', err));
       })
       .catch(err => console.log('get current credentials err', err));
   }
@@ -90,6 +76,13 @@ export class PatientsPage {
   }
 
   viewPatient(data) {
+    Auth.currentAuthenticatedUser().then((user) => {
+      console.log(user);
+    }).catch((error) => {
+      this.openModal();
+      console.log(error);
+    });
+
     // if (this.auth.isUserSignedIn()) {
     //   this.navCtrl.push(PatientPage);
     // }
@@ -100,8 +93,17 @@ export class PatientsPage {
 
   openModal () {
     //let modal = this.modalCtrl.create(this.auth.isUserSignedIn() ? LogoutModal : LoginModal)
-    let modal = this.modalCtrl.create(LoginModal)
-    modal.present();
+    // let modal = this.modalCtrl.create(LoginModal)
+    // modal.present();
+
+    let modal;
+    Auth.currentAuthenticatedUser().then((user) => {
+      modal = this.modalCtrl.create(LogoutModal);
+      modal.present();
+    }).catch((error) => {
+      modal = this.modalCtrl.create(LoginModal);
+      modal.present();
+    });
   }
 
 }

@@ -6,16 +6,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { PatientsPage } from '../pages/patients/patients';
-import { Api } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http'
-import { AwsConfig } from './app.config';
 import { LoginModal } from '../modal/login/login';
 import { LogoutModal } from '../modal/logout/logout';
 import { PatientPage } from '../pages/patient/patient';
 import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
-
-import Amplify from 'aws-amplify';
 
 @NgModule({
   declarations: [
@@ -27,8 +23,7 @@ import Amplify from 'aws-amplify';
   ],
   imports: [
     BrowserModule,
-//    IonicModule.forRoot(MyApp),
-    IonicModule.forRoot(MyApp, new AwsConfig().load()),
+    IonicModule.forRoot(MyApp),
     HttpClientModule,
     HttpModule
   ],
@@ -41,7 +36,6 @@ import Amplify from 'aws-amplify';
     LogoutModal
   ],
   providers: [
-    Api,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
