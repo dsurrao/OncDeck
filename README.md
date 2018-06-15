@@ -1,6 +1,6 @@
 # OncDeck
 
-place your custom aws-config.js file under src/assets
+place your custom aws-exports.js file under src/assets
 
 # CLI tools
 install CLI tools listed in this tutorial: https://github.com/ionic-team/starters/tree/master/ionic-angular/official/aws
