@@ -1,0 +1,6 @@
+/* increases height for input to improve click experience */
+.text-input-md {
+  margin: 0px;
+  padding: 0px;
+  height: 40px;
+}
