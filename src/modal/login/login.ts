@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Auth } from 'aws-amplify';
 
 @Component({
@@ -17,7 +17,8 @@ export class LoginModal {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
-    public viewCtrl: ViewController) {}
+    public viewCtrl: ViewController,
+    public events: Events) {}
 
   ionViewDidLoad() { }
 
@@ -66,7 +67,10 @@ export class LoginModal {
      this.message = null
   }
 
-  dismiss () { this.viewCtrl.dismiss() }
+  dismiss () { 
+    this.events.publish('userLoggedIn');
+    this.viewCtrl.dismiss();
+  }
 
   reset () { this.error = null; this.message = null; }
 

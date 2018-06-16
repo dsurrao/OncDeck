@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Auth } from 'aws-amplify';
 
 @Component({
@@ -7,7 +7,10 @@ import { Auth } from 'aws-amplify';
   templateUrl: 'logout.html'
 })
 export class LogoutModal {
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {}
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public viewCtrl: ViewController,
+    public events: Events) {}
   ionViewDidLoad() {
   }
 
@@ -18,6 +21,7 @@ export class LogoutModal {
   }
 
   dismiss() { 
+    this.events.publish('userLoggedOut');
     this.viewCtrl.dismiss();
   }
 }

@@ -1,7 +1,7 @@
 import { PatientFormPage } from './../patient-form/patient-form';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Events, IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { Patient } from '../../models/patient';
 
 import { LoginModal } from '../../modal/login/login';
@@ -35,26 +35,25 @@ export class PatientsPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public modalCtrl: ModalController,
-    public db: DynamodbProvider) {
+    public db: DynamodbProvider,
+    public events: Events) {
     this.patients = [];
-    
+
+    this.events.subscribe('userLoggedIn', () => {
+      this.getPatients();
+    });
+
+    this.events.subscribe('userLoggedOut', () => {
+      this.getPatients();
+    });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PatientsPage');
-  }
-
-  ionViewWillEnter(){
-    console.log('ionViewWillEnter PatientsPage');
-  }
-
-  ionViewDidEnter() {
     this.getPatients();
-    console.log('ionViewDidEnter PatientsPage');
   }
 
   getPatients() {
-    Auth.currentCredentials()
+    Auth.currentUserCredentials()
       .then(credentials => {
         this.userId = credentials.identityId;
 
@@ -69,7 +68,10 @@ export class PatientsPage {
           })
           .catch(err => console.log('error in refresh tasks', err));
       })
-      .catch(err => console.log('get current credentials err', err));
+      .catch(err => {
+        console.log('get current credentials err', err);
+        this.patients = [];
+      });
   }
 
   login() {
