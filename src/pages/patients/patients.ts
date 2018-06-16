@@ -1,3 +1,4 @@
+import { PatientFormPage } from './../patient-form/patient-form';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
@@ -71,31 +72,27 @@ export class PatientsPage {
       .catch(err => console.log('get current credentials err', err));
   }
 
+  login() {
+    this.loginModal();
+  }
+
   addPatient() {
-    this.openModal();
+    Auth.currentAuthenticatedUser().then((user) => {
+      this.navCtrl.push(PatientFormPage);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   viewPatient(data) {
     Auth.currentAuthenticatedUser().then((user) => {
-      console.log(user);
+      this.navCtrl.push(PatientPage, {params: data});
     }).catch((error) => {
-      this.openModal();
       console.log(error);
     });
-
-    // if (this.auth.isUserSignedIn()) {
-    //   this.navCtrl.push(PatientPage);
-    // }
-    // else {
-    //   this.openModal();
-    // }
   }
 
-  openModal () {
-    //let modal = this.modalCtrl.create(this.auth.isUserSignedIn() ? LogoutModal : LoginModal)
-    // let modal = this.modalCtrl.create(LoginModal)
-    // modal.present();
-
+  loginModal () {
     let modal;
     Auth.currentAuthenticatedUser().then((user) => {
       modal = this.modalCtrl.create(LogoutModal);

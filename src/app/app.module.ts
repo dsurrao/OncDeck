@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http'
 import { LoginModal } from '../modal/login/login';
 import { LogoutModal } from '../modal/logout/logout';
 import { PatientPage } from '../pages/patient/patient';
+import { PatientFormPage } from '../pages/patient-form/patient-form';
 import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
     MyApp,
     PatientsPage,
     PatientPage,
+    PatientFormPage,
     LoginModal,
     LogoutModal
   ],
@@ -32,6 +34,7 @@ import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
     MyApp,
     PatientsPage,
     PatientPage,
+    PatientFormPage,
     LoginModal,
     LogoutModal
   ],

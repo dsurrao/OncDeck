@@ -17,16 +17,13 @@ import { LogoutModal } from '../../modal/logout/logout';
   templateUrl: 'patient.html',
 })
 export class PatientPage {
-  patient: Patient;
+  patient: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public modalCtrl: ModalController) {
     // require login
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PatientPage');
+    this.patient = this.navParams.data.params;
   }
 
   addPatient() {

@@ -9,6 +9,9 @@
   <ion-navbar>
     <ion-title>patients</ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="login()">
+        <ion-icon name="log-in"></ion-icon>
+      </button>
       <button ion-button icon-only (click)="addPatient()">
         <ion-icon name="add"></ion-icon>
       </button>
@@ -18,10 +21,9 @@
 </ion-header>
 
 <ion-content padding>
-    <button class="button button-icon icon ion-person-add" (click)="addPatient()"></button>
     <ion-list>
       <ion-item-sliding *ngFor="let patient of patients">
-        <button ion-item (click)="viewPatient($event)">
+        <button ion-item (click)="viewPatient(patient)">
           <h2>{{patient.LastName}}, {{patient.FirstName}}</h2>
           <p>Biopsy Status: {{patient.BiopsyStatus}}</p>
         </button>
