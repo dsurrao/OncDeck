@@ -14,5 +14,19 @@
 
 
 <ion-content padding>
-
+  <ion-item>
+    <ion-label>First name</ion-label>
+    <ion-input type="text" name="firstName" [(ngModel)]="firstName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Last name</ion-label>
+    <ion-input type="text" name="lastName" [(ngModel)]="lastName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Biopsy Status</ion-label>
+    <ion-input type="text" name="biopsyStatus" [(ngModel)]="biopsyStatus"></ion-input>
+  </ion-item>
+  <div padding>
+    <button ion-button color="primary" block (click)="submit()">Submit</button>
+  </div>
 </ion-content>

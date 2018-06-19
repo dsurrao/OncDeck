@@ -1,14 +1,11 @@
 import { PatientFormPage } from './../patient-form/patient-form';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component } from '@angular/core';
-import { Events, IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
-import { Patient } from '../../models/patient';
+import { Events, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { LoginModal } from '../../modal/login/login';
 import { LogoutModal } from '../../modal/logout/logout';
 import { PatientPage } from '../patient/patient';
-
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; // specify the location of aws-exports.js file on your project
@@ -46,6 +43,10 @@ export class PatientsPage {
     this.events.subscribe('userLoggedOut', () => {
       this.getPatients();
     });
+
+    this.events.subscribe('patientSaved', () => {
+      this.getPatients();
+    });
   }
 
   ionViewDidLoad() {
@@ -60,7 +61,6 @@ export class PatientsPage {
         const params = {
           TableName: 'Patient'
         };
-
 
         this.db.getDocumentClient(credentials).scan(params).promise()
           .then(data => { 
