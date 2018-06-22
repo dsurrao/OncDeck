@@ -1,8 +1,14 @@
 import { PatientFormPage } from './../patient-form/patient-form';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
-import { Component } from '@angular/core';
-import { Events, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, 
+  Events, 
+  IonicPage, 
+  ModalController, 
+  NavController, 
+  NavParams, 
+  List
+} from 'ionic-angular';
 import { LoginModal } from '../../modal/login/login';
 import { LogoutModal } from '../../modal/logout/logout';
 import { PatientPage } from '../patient/patient';
@@ -26,12 +32,14 @@ AWS.config.region = aws_exports.aws_project_region;
   templateUrl: 'patients.html',
 })
 export class PatientsPage {
+  @ViewChild(List) list: List;
+
   patients: any;
-  userId: string;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
     public db: DynamodbProvider,
     public events: Events) {
     this.patients = [];
@@ -56,7 +64,6 @@ export class PatientsPage {
   getPatients() {
     Auth.currentUserCredentials()
       .then(credentials => {
-        this.userId = credentials.identityId;
 
         const params = {
           TableName: 'Patient'
@@ -86,12 +93,54 @@ export class PatientsPage {
     });
   }
 
-  viewPatient(data) {
+  viewPatient(patient) {
     Auth.currentAuthenticatedUser().then((user) => {
-      this.navCtrl.push(PatientPage, {params: data});
+      this.navCtrl.push(PatientPage, {params: patient});
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  removePatient(patient) {
+    Auth.currentUserCredentials().then((credentials) => {
+      const params = {
+        TableName: 'Patient',
+        Key: {
+          Id: patient['Id']
+        }
+      };
+
+      this.db.getDocumentClient(credentials).delete(params).promise()
+        .then(data => { 
+          // refresh patient list
+          this.getPatients();
+        })
+        .catch(err => console.log('error in delete patient', err));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  removePatientConfirm(patient) {
+    const confirm = this.alertCtrl.create({
+      title: 'Remove patient?',
+      message: 'Are you sure you want to remove this patient?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.list.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.removePatient(patient);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   loginModal () {

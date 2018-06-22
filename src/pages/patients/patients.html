@@ -27,6 +27,11 @@
           <h2>{{patient.LastName}}, {{patient.FirstName}}</h2>
           <p>Biopsy Status: {{patient.BiopsyStatus}}</p>
         </button>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="removePatientConfirm(patient)">
+            Remove
+          </button>
+        </ion-item-options>
       </ion-item-sliding>
     </ion-list>
 
