@@ -25,6 +25,7 @@ export class PatientFormPage {
   patientId: string;
   firstName: string;
   lastName: string;
+  dob: Date;
   biopsyStatus: string;
   patient: any;
 
@@ -40,6 +41,7 @@ export class PatientFormPage {
       this.patientId = this.patient['Id'];
       this.firstName = this.patient['FirstName'];
       this.lastName = this.patient['LastName'];
+      this.dob = this.patient['DOB']
       this.biopsyStatus = this.patient['BiopsyStatus'];
     }
     else {
@@ -57,6 +59,7 @@ export class PatientFormPage {
               LastName: this.lastName,
               FirstName: this.firstName,
               BiopsyStatus: this.biopsyStatus,
+              DOB: this.dob,
               Id: this.patientId
             }
           };
@@ -78,14 +81,16 @@ export class PatientFormPage {
             ExpressionAttributeNames: {
               '#l': 'LastName',
               '#f': 'FirstName',
-              '#b': 'BiopsyStatus'
+              '#b': 'BiopsyStatus',
+              '#d': 'DOB',
              }, 
             ExpressionAttributeValues: {
               ':l': this.lastName,
               ':f': this.firstName,
-              ':b': this.biopsyStatus
+              ':b': this.biopsyStatus,
+              ':d': this.dob
             }, 
-            UpdateExpression: 'SET #l = :l, #f = :f, #b = :b'
+            UpdateExpression: 'SET #l = :l, #f = :f, #b = :b, #d= :d'
           };
 
           this.db.getDocumentClient(credentials).update(params).promise()
