@@ -1,3 +1,5 @@
+import { BiopsyReportPage1Page } from './../pages/biopsy-report-page1/biopsy-report-page1';
+import { BiopsyStatusPage } from './../pages/biopsy-status/biopsy-status';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -13,6 +15,7 @@ import { LogoutModal } from '../modal/logout/logout';
 import { PatientPage } from '../pages/patient/patient';
 import { PatientFormPage } from '../pages/patient-form/patient-form';
 import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
+import { BiopsyProvider } from '../providers/biopsy/biopsy';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
     PatientPage,
     PatientFormPage,
     LoginModal,
-    LogoutModal
+    LogoutModal,
+    BiopsyStatusPage,
+    BiopsyReportPage1Page
   ],
   imports: [
     BrowserModule,
@@ -36,13 +41,16 @@ import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
     PatientPage,
     PatientFormPage,
     LoginModal,
-    LogoutModal
+    LogoutModal,
+    BiopsyStatusPage,
+    BiopsyReportPage1Page
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DynamodbProvider
+    DynamodbProvider,
+    BiopsyProvider
   ]
 })
 export class AppModule {}

@@ -24,6 +24,15 @@
     <ion-card-title>
       {{patient.LastName}}, {{patient.FirstName}} , {{patient.DOB}}
     </ion-card-title>
-    {{patient.BiopsyStatus}}
+  </ion-card> 
+  <ion-card>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editBiopsy()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-card-title>
+      {{patient.BiopsyStatus}}
+    </ion-card-title>
   </ion-card>
 </ion-content>

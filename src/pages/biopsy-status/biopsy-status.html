@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Biopsy Status</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list radio-group>
+        <ion-item>
+            <ion-label>Completed</ion-label>
+            <ion-radio value="completed"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Scheduled</ion-label>
+            <ion-radio value="scheduled"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Not Scheduled</ion-label>
+            <ion-radio value="notScheduled"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Not Indicated</ion-label>
+            <ion-radio value="notIndicated"></ion-radio>
+        </ion-item>
+    </ion-list>
+    <button ion-button color="primary" (click)="next()">Next</button>
+</ion-content>

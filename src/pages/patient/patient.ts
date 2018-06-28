@@ -1,3 +1,4 @@
+import { BiopsyStatusPage } from './../biopsy-status/biopsy-status';
 import { BiopsyReport } from './../../models/biopsy-report';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
@@ -42,6 +43,10 @@ export class PatientPage {
 
   edit() {
     this.navCtrl.push(PatientFormPage, {params: this.patient});
+  }
+
+  editBiopsy() {
+    this.navCtrl.push(BiopsyStatusPage, {params: this.patient});
   }
 
   refresh() {

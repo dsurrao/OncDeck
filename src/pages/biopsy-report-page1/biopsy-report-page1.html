@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Biopsy Report Date/Location</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-item>
+    <ion-label>Procedure Date</ion-label>
+    <ion-input type="date" name="procedureDate" [(ngModel)]="procedureDate"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label>Report Date</ion-label>
+    <ion-input type="date" name="reportDate" [(ngModel)]="reportDate"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label>Hospital</ion-label>
+    <ion-select [(ngModel)]="hospital">
+        <ion-option value="parirenyatwa">Parirenyatwa Hospital, Harare</ion-option>
+        <ion-option value="mpilo">Mpilo Hospital, Bulawayo</ion-option>
+    </ion-select>
+</ion-item>
+<ion-item>
+    <ion-label>Pathologist</ion-label>
+    <ion-input type="text" name="pathologist" [(ngModel)]="pathologist"></ion-input>
+</ion-item>
+<button ion-button color="primary" >Save</button>

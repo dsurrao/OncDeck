@@ -1,0 +1,31 @@
+import { BiopsyReportPage1Page } from './../biopsy-report-page1/biopsy-report-page1';
+import { BiopsyProvider } from './../../providers/biopsy/biopsy';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+/**
+ * Generated class for the BiopsyStatusPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-biopsy-status',
+  templateUrl: 'biopsy-status.html',
+})
+export class BiopsyStatusPage {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public biopsy:BiopsyProvider) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad BiopsyStatusPage');
+  }
+
+  next() {
+    this.navCtrl.push(BiopsyReportPage1Page);
+  }
+
+}
