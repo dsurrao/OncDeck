@@ -1,3 +1,4 @@
+import { BiopsyOrderPage } from './../pages/biopsy-order/biopsy-order';
 import { BiopsyReportPage1Page } from './../pages/biopsy-report-page1/biopsy-report-page1';
 import { BiopsyStatusPage } from './../pages/biopsy-status/biopsy-status';
 import { BrowserModule } from '@angular/platform-browser';
@@ -26,7 +27,8 @@ import { BiopsyProvider } from '../providers/biopsy/biopsy';
     LoginModal,
     LogoutModal,
     BiopsyStatusPage,
-    BiopsyReportPage1Page
+    BiopsyReportPage1Page,
+    BiopsyOrderPage
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,8 @@ import { BiopsyProvider } from '../providers/biopsy/biopsy';
     LoginModal,
     LogoutModal,
     BiopsyStatusPage,
-    BiopsyReportPage1Page
+    BiopsyReportPage1Page,
+    BiopsyOrderPage
   ],
   providers: [
     StatusBar,

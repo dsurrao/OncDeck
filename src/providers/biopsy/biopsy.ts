@@ -55,4 +55,32 @@ export class BiopsyProvider {
   updateReportPage1(procedureDate: Date, reportDate: Date, hospital: string, pathologist: string) {
 
   }
+
+  saveScheduledDate(patientId: string, scheduledDate: Date): Promise<any> {
+    let promise = new Promise((resolve, reject) => {
+      Auth.currentUserCredentials()
+      .then(credentials => {
+        const params = {
+          TableName: 'Patient',
+          Key: {
+            Id: patientId
+          },
+          ExpressionAttributeNames: {
+            '#b': 'ScheduledBiopsyDate'
+            }, 
+          ExpressionAttributeValues: {
+            ':b': scheduledDate
+          }, 
+          UpdateExpression: 'SET #b = :b'
+        };
+
+        resolve(this.db.getDocumentClient(credentials).update(params).promise());
+      })
+      .catch(err => {
+        console.log('get current credentials err', err);
+        reject('get current credentials err');
+      });
+    });
+    return promise;
+  }
 }

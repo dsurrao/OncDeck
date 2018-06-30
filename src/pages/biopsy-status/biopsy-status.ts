@@ -1,3 +1,4 @@
+import { BiopsyOrderPage } from './../biopsy-order/biopsy-order';
 import { PatientsPage } from './../patients/patients';
 import { BiopsyReportPage1Page } from './../biopsy-report-page1/biopsy-report-page1';
 import { BiopsyProvider } from './../../providers/biopsy/biopsy';
@@ -32,7 +33,12 @@ export class BiopsyStatusPage {
   next() {
     //this.navCtrl.push(BiopsyReportPage1Page);
     this.biopsy.updateStatus(this.patient['Id'], this.biopsyStatus).then((resp) => {
-        this.navCtrl.push(PatientsPage);
+        if (this.biopsyStatus == "scheduled") {
+          this.navCtrl.push(BiopsyOrderPage, {params: this.patient});
+        }
+        else {
+          this.navCtrl.push(PatientsPage);
+        }
       }
     ).catch((err) => {
       console.log('BiopsyStatusPage error');
