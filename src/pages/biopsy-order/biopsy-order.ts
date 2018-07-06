@@ -17,10 +17,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class BiopsyOrderPage {
   patient: any;
-  scheduledDate: Date;
+  scheduledDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public biopsy: BiopsyProvider) {
     this.patient = this.navParams.data.params;
+
+    // if patient does not have scheduled biopsy, set the scheduled date as current date for now.  if left alone,
+    // error would be thrown
+    if (this.patient.ScheduledBiopsyDate == undefined)
+    {
+      console.log("has not been scheduled yet, set time to current time");
+      this.scheduledDate = new Date().toISOString();
+    }
+    
+    // else set the scheduled date since it has already been created
+    else {
+      console.log("scheduled already");
+      this.scheduledDate = this.patient.ScheduledBiopsyDate;
+    }
   }
 
   ionViewDidLoad() {

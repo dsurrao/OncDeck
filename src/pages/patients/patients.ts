@@ -70,7 +70,7 @@ export class PatientsPage {
         };
 
         this.db.getDocumentClient(credentials).scan(params).promise()
-          .then(data => { 
+          .then(data => {
             this.patients = data.Items; 
           })
           .catch(err => console.log('error in refresh tasks', err));
@@ -152,6 +152,19 @@ export class PatientsPage {
       modal = this.modalCtrl.create(LoginModal);
       modal.present();
     });
+  }
+
+  /**
+   * Check if ScheduledBiopsyDate is greater or lesser than current date
+   */
+  isBiopsyAfterCurrentDate(ScheduledBiopsyDate: string) {
+    if (ScheduledBiopsyDate == undefined)
+      return "";
+    else if (ScheduledBiopsyDate > new Date().toISOString())
+      return "true"
+    else {
+      return "false"
+    }
   }
 
 }

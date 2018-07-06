@@ -26,6 +26,12 @@
         <button ion-item (click)="viewPatient(patient)">
           <h2>{{patient.LastName}}, {{patient.FirstName}}</h2>
           <p>Biopsy Status: {{patient.BiopsyStatus}}</p>
+          <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'true'">
+            <span style='color:blue'>Scheduled Biopsy Date is greater than today's date</span>
+           </div>
+           <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'false'">
+            <span style='color:red'>Scheduled Biopsy Date is lesser than today's date</span>
+           </div>
         </button>
         <ion-item-options side="right">
           <button ion-button color="danger" (click)="removePatientConfirm(patient)">
@@ -34,5 +40,5 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-
+    
 </ion-content>

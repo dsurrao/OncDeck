@@ -56,7 +56,7 @@ export class BiopsyProvider {
 
   }
 
-  saveScheduledDate(patientId: string, scheduledDate: Date): Promise<any> {
+  saveScheduledDate(patientId: string, scheduledDate: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       Auth.currentUserCredentials()
       .then(credentials => {
