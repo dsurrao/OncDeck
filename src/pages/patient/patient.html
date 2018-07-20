@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>patient</ion-title>
+    <ion-title>{{patient.LastName}}, {{patient.FirstName}} , {{patient.DOB}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
         <ion-icon name="create"></ion-icon>
@@ -19,13 +19,26 @@
 
 
 <ion-content padding>
-  Welcome to Patient Page.
+
   <ion-card>
-    <ion-card-title>
-      {{patient.LastName}}, {{patient.FirstName}} , {{patient.DOB}}
-    </ion-card-title>
-  </ion-card> 
-  <ion-card>
+    <ion-title>Surgery</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addScheduledSurgery()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-list>
+      <ion-item-sliding *ngFor="let surgery of patient.Surgeries" (click)="viewSurgery(surgery)">
+        <button ion-item>
+          Scheduled on {{surgery.ScheduledDate}} at {{surgery.Facility}} with {{surgery.ProviderName}}
+        </button>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-card>
+
+  <!-- <ion-card>
+    <ion-title>Biopsy</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="editBiopsy()">
         <ion-icon name="create"></ion-icon>
@@ -34,5 +47,6 @@
     <ion-card-title>
       {{patient.BiopsyStatus}}
     </ion-card-title>
-  </ion-card>
+  </ion-card> -->
+
 </ion-content>

@@ -1,12 +1,9 @@
+import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
 import { BiopsyStatusPage } from './../biopsy-status/biopsy-status';
-import { BiopsyReport } from './../../models/biopsy-report';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
 import { Component } from '@angular/core';
 import { Events, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { Patient } from '../../models/patient';
-import { LoginModal } from '../../modal/login/login';
-import { LogoutModal } from '../../modal/logout/logout';
 
 import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; 
@@ -37,7 +34,7 @@ export class PatientPage {
     public events: Events) {
     this.patient = this.navParams.data.params;
     this.events.subscribe('patientSaved', () => {
-      this.refresh();
+      this.refreshPatient();
     });
   }
 
@@ -49,7 +46,15 @@ export class PatientPage {
     this.navCtrl.push(BiopsyStatusPage, {params: this.patient});
   }
 
-  refresh() {
+  addScheduledSurgery() {
+    this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient}});
+  }
+
+  viewSurgery(surgery) {
+    this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient, surgery: surgery}});
+  }
+
+  refreshPatient() {
     Auth.currentUserCredentials()
       .then(credentials => {
 
