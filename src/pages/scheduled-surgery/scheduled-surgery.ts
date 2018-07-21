@@ -1,6 +1,5 @@
-import { PatientPage } from './../patient/patient';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SurgeryProvider } from '../../providers/surgery/surgery';
 
 /**
@@ -19,12 +18,22 @@ export class ScheduledSurgeryPage {
   patient: any;
   surgery: any; // pass in existing surgery details, if this is for an update
   scheduledDate: Date;
+  completedDate: Date;
   facility: string;
   providerName: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public surgerySvc: SurgeryProvider) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public surgerySvc: SurgeryProvider,
+    public events: Events) {
     this.patient = navParams.data.params.patient;
     this.surgery = navParams.data.params.surgery;
+    if (this.surgery != null) {
+      this.scheduledDate = this.surgery['ScheduledDate'];
+      this.facility = this.surgery['Facility'];
+      this.providerName = this.surgery['ProviderName'];
+      this.completedDate = this.surgery['CompletedDate'];
+    }
   }
 
   ionViewDidLoad() {
@@ -32,8 +41,10 @@ export class ScheduledSurgeryPage {
   }
 
   save() {    
-    this.surgerySvc.schedule(this.patient, this.surgery, this.scheduledDate, this.facility, this.providerName).then((resp) => {
-      this.navCtrl.push(PatientPage, {params: this.patient});
+    this.surgerySvc.schedule(this.patient, this.surgery, this.scheduledDate, this.facility, 
+      this.providerName, this.completedDate).then((resp) => {
+      this.events.publish('patientSaved');
+      this.navCtrl.pop();
     });
   }
 

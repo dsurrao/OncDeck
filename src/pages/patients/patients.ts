@@ -143,6 +143,53 @@ export class PatientsPage {
     confirm.present();
   }
 
+  // TODO: gets only the first surgery, need to handle multiple
+  getSurgerySummary(patient) {
+    let surgeryStatus = "Surgery not scheduled";
+    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    if (surgeries.length > 0) {
+      if (surgeries[0]['CompletedDate'] != null) {
+        surgeryStatus = "Surgery completed on " + surgeries[0]['CompletedDate'] 
+        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+      }
+      else if (surgeries[0]['ScheduledDate'] != null) {
+        surgeryStatus = "Surgery scheduled on " + surgeries[0]['ScheduledDate'] 
+        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+      }
+    }
+    return (surgeryStatus);
+  }
+
+  // returns 
+  // 0: not scheduled
+  // 1: scheduled today
+  // 2: scheduled in the future
+  // 3: completed
+  // 4: missed
+  getSurgeryStatus(patient) {
+    let surgeryStatus = 0;
+    let todayDate = new Date();
+    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    if (surgeries.length > 0) {
+      if (surgeries[0]['CompletedDate'] != null) {
+        surgeryStatus = 3;
+      }
+      else if (surgeries[0]['ScheduledDate'] == null) {
+        surgeryStatus = 0;
+      }
+      else if (surgeries[0]['ScheduledDate'] == todayDate.toISOString()) {
+        surgeryStatus = 1;
+      }
+      else if (surgeries[0]['ScheduledDate'] > todayDate.toISOString()) {
+        surgeryStatus = 2;
+      }
+      else {
+        surgeryStatus = 4;
+      }
+    }
+    return surgeryStatus;
+  }
+
   loginModal () {
     let modal;
     Auth.currentAuthenticatedUser().then((user) => {

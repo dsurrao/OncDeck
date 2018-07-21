@@ -25,7 +25,7 @@ export class SurgeryProvider {
   // });
 
   /* save scheduled surgery info for a patient */
-  schedule(patient: any, surgery: any, date: Date, facility: string, providerName): Promise<any> {
+  schedule(patient: any, surgery: any, scheduledDate: Date, facility: string, providerName, completedDate: Date): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       Auth.currentUserCredentials().then(
         credentials => {
@@ -38,7 +38,7 @@ export class SurgeryProvider {
               '#s': 'Surgeries'
               }, 
             ExpressionAttributeValues: {
-              ':s': [{"Facility": facility, "ScheduledDate": date, "ProviderName": providerName}]
+              ':s': [{"Facility": facility, "ScheduledDate": scheduledDate, "ProviderName": providerName, "CompletedDate": completedDate}]
             }, 
             UpdateExpression: 'SET #s = :s'
           };

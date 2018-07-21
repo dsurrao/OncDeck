@@ -26,6 +26,7 @@ AWS.config.region = aws_exports.aws_project_region;
 })
 export class PatientPage {
   patient: any;
+  surgeries: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -33,6 +34,7 @@ export class PatientPage {
     public db: DynamodbProvider,
     public events: Events) {
     this.patient = this.navParams.data.params;
+    this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
     this.events.subscribe('patientSaved', () => {
       this.refreshPatient();
     });
@@ -68,6 +70,7 @@ export class PatientPage {
         this.db.getDocumentClient(credentials).get(params).promise()
           .then(data => { 
             this.patient = data.Item;
+            this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
           })
           .catch(err => console.log('error in save patient', err));
       })
