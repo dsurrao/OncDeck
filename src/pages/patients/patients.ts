@@ -74,6 +74,47 @@ export class PatientsPage {
         this.db.getDocumentClient(credentials).scan(params).promise()
           .then(data => {
             this.patients = data.Items; 
+            this.patients.sort((a, b)=>{
+              let cmp = 0;
+              if (a['Surgeries'] != null) {
+                if (b['Surgeries'] != null) {
+                  if (a['Surgeries'][0]['ScheduledDate'] > b['Surgeries'][0]['ScheduledDate']) {
+                    cmp = -1;
+                  }
+                  else if  (a['Surgeries'][0]['ScheduledDate'] == b['Surgeries'][0]['ScheduledDate']) {
+                    cmp = 0;
+                  }
+                  else {
+                    if (a['Surgeries'][0]['CompletedDate'] != null && b['Surgeries'][0]['CompletedDate'] != null) {
+                      if (a['Surgeries'][0]['CompletedDate'] > b['Surgeries'][0]['CompletedDate']) {
+                        cmp = -1;
+                      }
+                      else if (a['Surgeries'][0]['CompletedDate'] == b['Surgeries'][0]['CompletedDate']) {
+                        cmp = 0;
+                      }
+                      else {
+                        cmp = 1;
+                      }
+                    }
+                    else {
+                      cmp = 1;
+                    }
+                  }
+                }
+                else {
+                  cmp = 1;
+                }
+              }
+              else {
+                if (b['Surgeries'] != null) {
+                  cmp = -1;
+                }
+                else {
+                  cmp = 0;
+                }
+              }              
+              return (cmp);
+            });
           })
           .catch(err => console.log('error in refresh tasks', err));
       })
@@ -168,7 +209,7 @@ export class PatientsPage {
   // 2: scheduled in the future
   // 3: completed
   // 4: missed
-  getSurgeryStatus(patient) {
+  getSurgeryStatus(patient): number {
     let surgeryStatus = 0;
     let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
     if (surgeries.length > 0) {
@@ -217,7 +258,6 @@ export class PatientsPage {
       return "false"
     }
   }
-
 }
 
 
