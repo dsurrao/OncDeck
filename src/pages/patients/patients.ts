@@ -1,3 +1,4 @@
+import { DateUtils } from './../../common/dateutils';
 import { PatientFormPage } from './../patient-form/patient-form';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component, ViewChild } from '@angular/core';
@@ -41,7 +42,8 @@ export class PatientsPage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public db: DynamodbProvider,
-    public events: Events) {
+    public events: Events,
+    public dateUtils: DateUtils) {
     this.patients = [];
 
     this.events.subscribe('userLoggedIn', () => {
@@ -149,11 +151,11 @@ export class PatientsPage {
     let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
     if (surgeries.length > 0) {
       if (surgeries[0]['CompletedDate'] != null) {
-        surgeryStatus = "Surgery completed on " + surgeries[0]['CompletedDate'] 
+        surgeryStatus = "Surgery completed on " + new Date(surgeries[0]['CompletedDate']).toLocaleDateString()
         + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
       }
       else if (surgeries[0]['ScheduledDate'] != null) {
-        surgeryStatus = "Surgery scheduled on " + surgeries[0]['ScheduledDate'] 
+        surgeryStatus = "Surgery scheduled on " + new Date(surgeries[0]['ScheduledDate']).toLocaleDateString()
         + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
       }
     }
@@ -168,7 +170,6 @@ export class PatientsPage {
   // 4: missed
   getSurgeryStatus(patient) {
     let surgeryStatus = 0;
-    let todayDate = new Date();
     let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
     if (surgeries.length > 0) {
       if (surgeries[0]['CompletedDate'] != null) {
@@ -177,14 +178,17 @@ export class PatientsPage {
       else if (surgeries[0]['ScheduledDate'] == null) {
         surgeryStatus = 0;
       }
-      else if (surgeries[0]['ScheduledDate'] == todayDate.toISOString()) {
-        surgeryStatus = 1;
-      }
-      else if (surgeries[0]['ScheduledDate'] > todayDate.toISOString()) {
-        surgeryStatus = 2;
-      }
       else {
-        surgeryStatus = 4;
+        let daysFromToday = this.dateUtils.daysFromToday(surgeries[0]['ScheduledDate']);
+        if (daysFromToday == 0) {
+          surgeryStatus = 1;
+        }
+        else if (daysFromToday > 0) {
+          surgeryStatus = 2;
+        }
+        else {
+          surgeryStatus = 4;
+        }
       }
     }
     return surgeryStatus;

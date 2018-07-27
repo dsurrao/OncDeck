@@ -31,11 +31,11 @@
     <ion-list>
       <ion-item-sliding *ngFor="let surgery of surgeries" (click)="viewSurgery(surgery)">
         <button ion-item *ngIf="surgery.CompletedDate != null; else elseBlock">
-          Surgery completed on {{surgery.CompletedDate}} at {{surgery.Facility}} with {{surgery.ProviderName}}
+          Surgery completed on {{toLocaleDateString(surgery.CompletedDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
         </button>
         <ng-template #elseBlock>
           <button ion-item>
-            Scheduled on {{surgery.ScheduledDate}} at {{surgery.Facility}} with {{surgery.ProviderName}}
+            Scheduled on {{toLocaleDateString(surgery.ScheduledDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
           </button>
         </ng-template>
       </ion-item-sliding>

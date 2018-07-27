@@ -1,3 +1,4 @@
+import { DateUtils } from './../common/dateutils';
 import { ScheduledSurgeryPage } from './../pages/scheduled-surgery/scheduled-surgery';
 import { BiopsyOrderPage } from './../pages/biopsy-order/biopsy-order';
 import { BiopsyReportPage1Page } from './../pages/biopsy-report-page1/biopsy-report-page1';
@@ -58,7 +59,8 @@ import { SurgeryProvider } from '../providers/surgery/surgery';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DynamodbProvider,
     BiopsyProvider,
-    SurgeryProvider
+    SurgeryProvider,
+    DateUtils
   ]
 })
 export class AppModule {}

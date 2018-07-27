@@ -78,4 +78,8 @@ export class PatientPage {
         console.log('get current credentials err', err);
       });
   }
+
+  toLocaleDateString(isoString: string): string {
+    return new Date(isoString).toLocaleDateString();
+  }
 }
