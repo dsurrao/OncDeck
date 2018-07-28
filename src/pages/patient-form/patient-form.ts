@@ -26,6 +26,10 @@ export class PatientFormPage {
   firstName: string;
   lastName: string;
   dob: Date;
+  gender: string;
+  phoneNumber: string;
+  ctFirstName: string;
+  ctLastName: string;
   biopsyStatus: string;
   patient: any;
 
@@ -42,6 +46,10 @@ export class PatientFormPage {
       this.firstName = this.patient['FirstName'];
       this.lastName = this.patient['LastName'];
       this.dob = this.patient['DOB']
+      this.gender = this.gender['Gender']
+      this.phoneNumber = this.phoneNumber['PhoneNumber']
+      this.ctFirstName = this.ctFirstName['CtFirstName']
+      this.ctLastName = this.ctLastName['CtLastName']
       this.biopsyStatus = this.patient['BiopsyStatus'];
     }
     else {
@@ -60,7 +68,11 @@ export class PatientFormPage {
               FirstName: this.firstName,
               BiopsyStatus: this.biopsyStatus,
               DOB: this.dob,
-              Id: this.patientId
+              Gender: this.gender,
+              PhoneNumber: this.phoneNumber,
+              Id: this.patientId,
+              CtFirstName: this.ctFirstName,
+              CtLastName: this.ctLastName
             }
           };
 
@@ -83,14 +95,22 @@ export class PatientFormPage {
               '#f': 'FirstName',
               '#b': 'BiopsyStatus',
               '#d': 'DOB',
+              '#g': 'Gender',
+              '#p': 'PhoneNumber',
+              '#c': 'CtFirstName',
+              "#t": 'CtLastName'
              }, 
             ExpressionAttributeValues: {
               ':l': this.lastName,
               ':f': this.firstName,
               ':b': this.biopsyStatus,
-              ':d': this.dob
+              ':d': this.dob,
+              ':g': this.gender,
+              ':p': this.phoneNumber,
+              ':c': this.ctFirstName,
+              ':t': this.ctLastName
             }, 
-            UpdateExpression: 'SET #l = :l, #f = :f, #b = :b, #d= :d'
+            UpdateExpression: 'SET #l = :l, #f = :f, #b = :b, #d= :d, #g= :g, #p= :p, #c= :c, #t = :t'
           };
 
           this.db.getDocumentClient(credentials).update(params).promise()
