@@ -90,27 +90,9 @@ export class PatientFormPage {
             Key: {
               Id: this.patientId
             },
-            ExpressionAttributeNames: {
-              '#l': 'LastName',
-              '#f': 'FirstName',
-              '#b': 'BiopsyStatus',
-              '#d': 'DOB',
-              '#g': 'Gender',
-              '#p': 'PhoneNumber',
-              '#c': 'CtFirstName',
-              "#t": 'CtLastName'
-             }, 
-            ExpressionAttributeValues: {
-              ':l': this.lastName,
-              ':f': this.firstName,
-              ':b': this.biopsyStatus,
-              ':d': this.dob,
-              ':g': this.gender,
-              ':p': this.phoneNumber,
-              ':c': this.ctFirstName,
-              ':t': this.ctLastName
-            }, 
-            UpdateExpression: 'SET #l = :l, #f = :f, #b = :b, #d= :d, #g= :g, #p= :p, #c= :c, #t = :t'
+            ExpressionAttributeNames: this.constructExpressionAttributeNames(), 
+            ExpressionAttributeValues: this.constructExpressionAttributeValues(), 
+            UpdateExpression: this.constructUpdateExpression()
           };
 
           this.db.getDocumentClient(credentials).update(params).promise()
@@ -125,5 +107,45 @@ export class PatientFormPage {
       .catch(err => {
         console.log('get current credentials err', err);
       });
+  }
+
+  constructExpressionAttributeNames(): any {
+    let names = {};
+     if (this.lastName != null)     names['#l'] = 'LastName';
+     if (this.firstName != null)    names['#f'] = 'FirstName';
+     if (this.biopsyStatus != null) names['#b'] = 'BiopsyStatus';
+     if (this.dob != null)          names['#d'] = 'DOB';
+     if (this.gender != null)       names['#g'] = 'Gender';
+     if (this.phoneNumber != null)  names['#p'] = 'PhoneNumber';
+     if (this.ctFirstName != null)  names['#c'] = 'CtFirstName';
+     if (this.ctLastName != null)   names['#t'] = 'CtLastName';
+     return names;
+  }
+
+  constructExpressionAttributeValues(): any {
+    let values = {};
+    if (this.lastName != null)     values[':l'] = this.lastName;
+    if (this.firstName != null)    values[':f'] = this.firstName;
+    if (this.biopsyStatus != null) values[':b'] = this.biopsyStatus;
+    if (this.dob != null)          values[':d'] = this.dob;
+    if (this.gender != null)       values[':g'] = this.gender;
+    if (this.phoneNumber != null)  values[':p'] = this.phoneNumber;
+    if (this.ctFirstName != null)  values[':c'] = this.ctFirstName;
+    if (this.ctLastName != null)   values[':t'] = this.ctLastName;
+    return values;
+  }
+
+  constructUpdateExpression(): string {
+    let ex: string = 'SET ';
+    if (this.lastName != null)     ex += '#l = :l,';
+    if (this.firstName != null)    ex += '#f = :f,';
+    if (this.biopsyStatus != null) ex += '#b = :b,';
+    if (this.dob != null)          ex += '#d = :d,';
+    if (this.gender != null)       ex += '#g = :g,';
+    if (this.phoneNumber != null)  ex += '#p = :p,';
+    if (this.ctFirstName != null)  ex += '#c = :c,';
+    if (this.ctLastName != null)   ex += '#t = :t,';
+    ex = ex.replace(new RegExp('[,]$'), ''); // strip out last comma
+    return ex;
   }
 }

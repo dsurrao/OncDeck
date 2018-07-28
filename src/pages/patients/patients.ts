@@ -36,6 +36,7 @@ export class PatientsPage {
   @ViewChild(List) list: List;
 
   patients: any;
+  isAuthenticated: boolean;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -45,12 +46,15 @@ export class PatientsPage {
     public events: Events,
     public dateUtils: DateUtils) {
     this.patients = [];
+    this.isAuthenticated = false;
 
     this.events.subscribe('userLoggedIn', () => {
+      this.isAuthenticated = true;
       this.getPatients();
     });
 
     this.events.subscribe('userLoggedOut', () => {
+      this.isAuthenticated = false;
       this.getPatients();
     });
 
