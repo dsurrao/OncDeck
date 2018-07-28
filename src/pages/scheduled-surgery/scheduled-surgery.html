@@ -12,26 +12,27 @@
 
 </ion-header>
 
-
 <ion-content padding>
-  <ion-item>
-    <ion-label>Scheduled Date</ion-label>
-    <ion-input type="date" [(ngModel)]="scheduledDate"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Facility</ion-label>
-    <ion-input type="text" [(ngModel)]="facility"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Provider Name</ion-label>
-    <ion-input type="text" [(ngModel)]="providerName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Completed Date</ion-label>
-    <ion-input type="date" [(ngModel)]="completedDate"></ion-input>
-  </ion-item>
-  <div padding>
-    <button ion-button color="primary" (click)="save()">Save</button>
-  </div>
+  <form (ngSubmit)="submit()" #surgeryForm="ngForm">
+    <ion-item>
+      <ion-label>Scheduled Date</ion-label>
+      <ion-input type="date" name="scheduledDate" [(ngModel)]="scheduledDate" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Facility</ion-label>
+      <ion-input type="text" name="facility" [(ngModel)]="facility" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Provider Name</ion-label>
+      <ion-input type="text" name="providerName" [(ngModel)]="providerName" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Completed Date</ion-label>
+      <ion-input type="date" name="completedDate" [(ngModel)]="completedDate"></ion-input>
+    </ion-item>
+    <div padding>
+      <button ion-button color="primary" type="submit" [disabled]="!surgeryForm.form.valid">Save</button>
+    </div>
+  </form>
 </ion-content>
   

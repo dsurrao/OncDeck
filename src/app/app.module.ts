@@ -20,6 +20,7 @@ import { PatientFormPage } from '../pages/patient-form/patient-form';
 import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
 import { BiopsyProvider } from '../providers/biopsy/biopsy';
 import { SurgeryProvider } from '../providers/surgery/surgery';
+import { PatientProvider } from '../providers/patient/patient';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SurgeryProvider } from '../providers/surgery/surgery';
     DynamodbProvider,
     BiopsyProvider,
     SurgeryProvider,
-    DateUtils
+    DateUtils,
+    PatientProvider
   ]
 })
 export class AppModule {}

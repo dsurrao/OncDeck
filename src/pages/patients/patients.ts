@@ -75,6 +75,8 @@ export class PatientsPage {
           TableName: 'Patient'
         };
 
+        this.isAuthenticated = true;
+
         this.db.getDocumentClient(credentials).scan(params).promise()
           .then(data => {
             this.patients = data.Items; 

@@ -14,46 +14,48 @@
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label floating>First Name</ion-label>
-    <ion-input type="text" name="firstName" [(ngModel)]="firstName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Last Name</ion-label>
-    <ion-input type="text" name="lastName" [(ngModel)]="lastName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>DOB</ion-label>
-    <ion-input type="date" name="dob" [(ngModel)]="dob"></ion-input>
-  </ion-item>
-  <ion-list radio-group [(ngModel)]="gender">
-    <ion-list-header>Gender</ion-list-header>
+  <form (ngSubmit)="submit()" #patientForm="ngForm">
     <ion-item>
-        <ion-label>Female</ion-label>
-        <ion-radio value="female" checked></ion-radio>
-      </ion-item>
-    <ion-item>
-      <ion-label>Male</ion-label>
-      <ion-radio value="male"></ion-radio>
+      <ion-label floating>First Name</ion-label>
+      <ion-input type="text" name="firstName" required [(ngModel)]="firstName"></ion-input>
     </ion-item>
-  </ion-list>
-  <ion-item>
-    <ion-label floating>Phone Number</ion-label>
-    <ion-input type="text" name="phoneNumber" [(ngModel)]="phoneNumber"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Contact First Name</ion-label>
-    <ion-input type="text" name="ctFirstName" [(ngModel)]="ctFirstName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Contact Last Name</ion-label>
-    <ion-input type="text" name="ctLastName" [(ngModel)]="ctLastName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Biopsy Status</ion-label>
-    <ion-input type="text" name="biopsyStatus" [(ngModel)]="biopsyStatus"></ion-input>
-  </ion-item>
-  <div padding>
-    <button ion-button color="primary" block (click)="submit()">Submit</button>
-  </div>
+    <ion-item>
+      <ion-label floating>Last Name</ion-label>
+      <ion-input type="text" name="lastName" required [(ngModel)]="lastName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>DOB</ion-label>
+      <ion-input type="date" name="dob" [(ngModel)]="dob" required></ion-input>
+    </ion-item>
+    <ion-list radio-group name="gender" [(ngModel)]="gender" required>
+      <ion-list-header>Gender</ion-list-header>
+      <ion-item>
+          <ion-label>Female</ion-label>
+          <ion-radio value="female" checked></ion-radio>
+        </ion-item>
+      <ion-item>
+        <ion-label>Male</ion-label>
+        <ion-radio value="male"></ion-radio>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+      <ion-label floating>Phone Number</ion-label>
+      <ion-input type="text" name="phoneNumber" [(ngModel)]="phoneNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Contact First Name</ion-label>
+      <ion-input type="text" name="ctFirstName" [(ngModel)]="ctFirstName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Contact Last Name</ion-label>
+      <ion-input type="text" name="ctLastName" [(ngModel)]="ctLastName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Biopsy Status</ion-label>
+      <ion-input type="text" name="biopsyStatus" [(ngModel)]="biopsyStatus"></ion-input>
+    </ion-item>
+    <div padding>
+      <button ion-button color="primary" block type="submit" [disabled]="!patientForm.form.valid">Submit</button>
+    </div>
+  </form>
 </ion-content>

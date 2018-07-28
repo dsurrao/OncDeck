@@ -42,7 +42,7 @@ export class ScheduledSurgeryPage {
     console.log('ionViewDidLoad ScheduledSurgeryPage');
   }
 
-  save() {
+  submit() {
     this.surgerySvc.schedule(this.patient, this.surgery, this.scheduledDate, this.facility, 
       this.providerName, this.completedDate).then((resp) => {
       this.events.publish('patientSaved');
