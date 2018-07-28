@@ -46,10 +46,10 @@ export class PatientFormPage {
       this.firstName = this.patient['FirstName'];
       this.lastName = this.patient['LastName'];
       this.dob = this.patient['DOB']
-      this.gender = this.gender['Gender']
-      this.phoneNumber = this.phoneNumber['PhoneNumber']
-      this.ctFirstName = this.ctFirstName['CtFirstName']
-      this.ctLastName = this.ctLastName['CtLastName']
+      this.gender = this.patient['Gender']
+      this.phoneNumber = this.patient['PhoneNumber']
+      this.ctFirstName = this.patient['CtFirstName']
+      this.ctLastName = this.patient['CtLastName']
       this.biopsyStatus = this.patient['BiopsyStatus'];
     }
     else {

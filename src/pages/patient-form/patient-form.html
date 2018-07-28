@@ -15,41 +15,42 @@
 
 <ion-content padding>
   <ion-item>
-    <ion-label>First name</ion-label>
+    <ion-label floating>First Name</ion-label>
     <ion-input type="text" name="firstName" [(ngModel)]="firstName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Last name</ion-label>
+    <ion-label floating>Last Name</ion-label>
     <ion-input type="text" name="lastName" [(ngModel)]="lastName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>DOB</ion-label>
+    <ion-label floating>DOB</ion-label>
     <ion-input type="date" name="dob" [(ngModel)]="dob"></ion-input>
   </ion-item>
   <ion-list radio-group [(ngModel)]="gender">
+    <ion-list-header>Gender</ion-list-header>
+    <ion-item>
+        <ion-label>Female</ion-label>
+        <ion-radio value="female" checked></ion-radio>
+      </ion-item>
     <ion-item>
       <ion-label>Male</ion-label>
-      <ion-radio value="male" checked></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>Female</ion-label>
-      <ion-radio value="female"></ion-radio>
+      <ion-radio value="male"></ion-radio>
     </ion-item>
   </ion-list>
   <ion-item>
-    <ion-label>Phone number</ion-label>
+    <ion-label floating>Phone Number</ion-label>
     <ion-input type="text" name="phoneNumber" [(ngModel)]="phoneNumber"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Contact First name</ion-label>
+    <ion-label floating>Contact First Name</ion-label>
     <ion-input type="text" name="ctFirstName" [(ngModel)]="ctFirstName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Contact Last name</ion-label>
+    <ion-label floating>Contact Last Name</ion-label>
     <ion-input type="text" name="ctLastName" [(ngModel)]="ctLastName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Biopsy Status</ion-label>
+    <ion-label floating>Biopsy Status</ion-label>
     <ion-input type="text" name="biopsyStatus" [(ngModel)]="biopsyStatus"></ion-input>
   </ion-item>
   <div padding>
