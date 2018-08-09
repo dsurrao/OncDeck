@@ -1,4 +1,5 @@
 import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
+import { PathologySurgeryPage } from './../pathology-surgery/pathology-surgery';
 import { BiopsyStatusPage } from './../biopsy-status/biopsy-status';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
@@ -27,6 +28,7 @@ AWS.config.region = aws_exports.aws_project_region;
 export class PatientPage {
   patient: any;
   surgeries: any;
+  pathologies: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -35,6 +37,7 @@ export class PatientPage {
     public events: Events) {
     this.patient = this.navParams.data.params;
     this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
+    this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
     this.events.subscribe('patientSaved', () => {
       this.refreshPatient();
     });
@@ -56,6 +59,14 @@ export class PatientPage {
     this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient, surgery: surgery}});
   }
 
+  addPathologySurgery() {
+    this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient}});
+  }
+
+  viewPathologySurgery(pathology) {
+    this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient, pathology: pathology}});
+  }
+  
   refreshPatient() {
     Auth.currentUserCredentials()
       .then(credentials => {

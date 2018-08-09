@@ -42,6 +42,21 @@
     </ion-list>
   </ion-card>
 
+  <ion-card>
+    <ion-title>Surgical Pathology</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="addPathologySurgery()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-item-sliding *ngFor="let pathology of pathologies" (click)="viewPathologySurgery(pathology)">
+        <button ion-item>
+            View pathology
+        </button>
+      </ion-item-sliding>
+    </ion-card>
+
+
   <!-- <ion-card>
     <ion-title>Biopsy</ion-title>
     <ion-buttons end>

@@ -1,5 +1,6 @@
 import { DateUtils } from './../common/dateutils';
 import { ScheduledSurgeryPage } from './../pages/scheduled-surgery/scheduled-surgery';
+import { PathologySurgeryPage } from './../pages/pathology-surgery/pathology-surgery';
 import { BiopsyOrderPage } from './../pages/biopsy-order/biopsy-order';
 import { BiopsyReportPage1Page } from './../pages/biopsy-report-page1/biopsy-report-page1';
 import { BiopsyStatusPage } from './../pages/biopsy-status/biopsy-status';
@@ -21,6 +22,7 @@ import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
 import { BiopsyProvider } from '../providers/biopsy/biopsy';
 import { SurgeryProvider } from '../providers/surgery/surgery';
 import { PatientProvider } from '../providers/patient/patient';
+import { PathologySurgery } from '../providers/pathology/pathology';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { PatientProvider } from '../providers/patient/patient';
     BiopsyStatusPage,
     BiopsyReportPage1Page,
     BiopsyOrderPage,
-    ScheduledSurgeryPage
+    ScheduledSurgeryPage,
+    PathologySurgeryPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import { PatientProvider } from '../providers/patient/patient';
     BiopsyStatusPage,
     BiopsyReportPage1Page,
     BiopsyOrderPage,
-    ScheduledSurgeryPage
+    ScheduledSurgeryPage,
+    PathologySurgeryPage
   ],
   providers: [
     StatusBar,
@@ -62,7 +66,8 @@ import { PatientProvider } from '../providers/patient/patient';
     BiopsyProvider,
     SurgeryProvider,
     DateUtils,
-    PatientProvider
+    PatientProvider,
+    PathologySurgery
   ]
 })
 export class AppModule {}
