@@ -82,6 +82,7 @@ export class PatientPage {
           .then(data => { 
             this.patient = data.Item;
             this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
+            this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
           })
           .catch(err => console.log('error in save patient', err));
       })

@@ -46,7 +46,7 @@ export class PathologySurgeryPage {
   submit() {
     this.pathologySvc.pathology(this.patient, this.surgeryType, this.surgeryHistology, this.surgicalFeatures, 
       this.surgicalMargins).then((resp) => {
-      this.events.publish('pathologysaved');
+      this.events.publish('patientSaved');
       this.navCtrl.pop();
     });
   }
