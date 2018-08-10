@@ -21,7 +21,7 @@
 <ion-content padding>
 
   <ion-card>
-    <ion-title>Surgery</ion-title>
+    <ion-title>Scheduled Surgery</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="addScheduledSurgery()">
         <ion-icon name="add"></ion-icon>
@@ -50,9 +50,14 @@
         </button>
       </ion-buttons>
       <ion-item-sliding *ngFor="let pathology of pathologies" (click)="viewPathologySurgery(pathology)">
-        <button ion-item>
-            View pathology
+        <button ion-item *ngIf="pathology.SurgeryType != null; else elseBlock">
+          Surgery Type: {{pathology.SurgeryType}}
         </button>
+        <ng-template #elseBlock>
+          <button ion-item>
+         
+          </button>
+        </ng-template>
       </ion-item-sliding>
     </ion-card>
 
