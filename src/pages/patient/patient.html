@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{patient.LastName}}, {{patient.FirstName}} , {{patient.DOB}}</ion-title>
+    <ion-title>{{patient.LastName}}, {{patient.FirstName}} ({{patient.Gender}}, {{patient.DOB}})</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
         <ion-icon name="create"></ion-icon>
@@ -19,6 +19,13 @@
 
 
 <ion-content padding>
+
+  <ion-card>
+    <ion-title>Summary</ion-title>
+    <ion-item>
+      <patient-summary [patient]="patient"></patient-summary>
+    </ion-item>
+  </ion-card>
 
   <ion-card>
     <ion-title>Scheduled Surgery</ion-title>

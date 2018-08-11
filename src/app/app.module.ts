@@ -1,3 +1,4 @@
+import { PatientSummaryComponent } from './../components/patient-summary/patient-summary';
 import { DateUtils } from './../common/dateutils';
 import { ScheduledSurgeryPage } from './../pages/scheduled-surgery/scheduled-surgery';
 import { PathologySurgeryPage } from './../pages/pathology-surgery/pathology-surgery';
@@ -36,7 +37,8 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     BiopsyReportPage1Page,
     BiopsyOrderPage,
     ScheduledSurgeryPage,
-    PathologySurgeryPage
+    PathologySurgeryPage,
+    PatientSummaryComponent
   ],
   imports: [
     BrowserModule,
