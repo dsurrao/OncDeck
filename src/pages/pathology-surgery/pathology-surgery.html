@@ -56,47 +56,14 @@
             </ion-item>
         </ion-list>
 
-        <!--
-        <ion-list>
+        <ion-list name="receptorStatuses"> 
             <ion-list-header>Receptor Status</ion-list-header>
-            <ion-item>
-                <ion-label>ER+</ion-label>
-                <ion-checkbox [(ngModel)]="erPlus" [ngModelOptions] = "{standalone:true}"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-                <ion-label>ER-</ion-label>
-                <ion-checkbox [(ngModel)]="erMinus" [ngModelOptions] = "{standalone:true}"></ion-checkbox>
+            <ion-item *ngFor="let receptor of receptors" >
+              <ion-label>{{receptor.name}}</ion-label>
+              <ion-checkbox name={{receptor.name}} [(ngModel)]="receptor.checked" checked={{receptor.checked}}></ion-checkbox>
             </ion-item>
         </ion-list>
-        -->
-        <!--       
-        <ion-list name="receptorStatus" [(ngModel)]="receptorStatus" required>
-            <ion-list-header>Receptor Status</ion-list-header>
-            <ion-item>
-                <ion-label>ER+</ion-label>
-                <ion-checkbox value="erPlus"></ion-checkbox>
-                </ion-item>
-            <ion-item>
-                <ion-label>ER-</ion-label>
-                <ion-checkbox value="erMinus"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-                <ion-label>PR+</ion-label>
-                <ion-checkbox value="prPlus"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-                <ion-label>PR-</ion-label>
-                <ion-checkbox value="prMinus"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-                <ion-label>HER2+</ion-label>
-                <ion-checkbox value="her2Plus"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-                <ion-label>HER2-</ion-label>
-                <ion-checkbox value="her2Minus"></ion-checkbox>
-            </ion-item>
-        </ion-list>-->
+
         <ion-list radio-group name="surgicalFeatures" [(ngModel)]="surgicalFeatures" required>
             <ion-list-header>Surgical Features</ion-list-header>
             <ion-item>
