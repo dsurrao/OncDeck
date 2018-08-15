@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { PatientsPage } from '../pages/patients/patients';
+import { TabsPage } from './../pages/tabs/tabs';
 
 import Amplify from 'aws-amplify';
 import aws_exports from '../assets/aws-exports'; // specify the location of aws-exports.js file on your project
@@ -12,7 +11,7 @@ import aws_exports from '../assets/aws-exports'; // specify the location of aws-
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = PatientsPage;
+  rootPage:any = TabsPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {

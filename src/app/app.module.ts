@@ -1,3 +1,5 @@
+import { AboutPage } from './../pages/about/about';
+import { TabsPage } from './../pages/tabs/tabs';
 import { PatientSummaryComponent } from './../components/patient-summary/patient-summary';
 import { DateUtils } from './../common/dateutils';
 import { ScheduledSurgeryPage } from './../pages/scheduled-surgery/scheduled-surgery';
@@ -38,7 +40,9 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     BiopsyOrderPage,
     ScheduledSurgeryPage,
     PathologySurgeryPage,
-    PatientSummaryComponent
+    PatientSummaryComponent,
+    TabsPage,
+    AboutPage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +62,9 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     BiopsyReportPage1Page,
     BiopsyOrderPage,
     ScheduledSurgeryPage,
-    PathologySurgeryPage
+    PathologySurgeryPage,
+    TabsPage,
+    AboutPage
   ],
   providers: [
     StatusBar,
