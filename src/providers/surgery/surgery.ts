@@ -37,7 +37,7 @@ export class SurgeryProvider {
           let completedDateISO: string = this.dateUtils.yyyymmddToISOString(completedDate);
           let attrValues = [{'Facility': facility, 'ScheduledDate': scheduledDateISO, 'ProviderName': providerName}];
           if (completedDateISO != '') {
-            attrValues['CompletedDate'] = completedDateISO;
+            attrValues[0]['CompletedDate'] = completedDateISO;
           }
           let params = {
             TableName: 'Patient',
