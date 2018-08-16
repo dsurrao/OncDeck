@@ -36,6 +36,7 @@ export class PatientsPage {
   @ViewChild(List) list: List;
 
   patients: any;
+  originalPatientList: any;
   isAuthenticated: boolean;
 
   constructor(public navCtrl: NavController, 
@@ -46,6 +47,7 @@ export class PatientsPage {
     public events: Events,
     public dateUtils: DateUtils) {
     this.patients = [];
+    this.originalPatientList = [];
     this.isAuthenticated = false;
 
     this.events.subscribe('userLoggedIn', () => {
@@ -121,6 +123,9 @@ export class PatientsPage {
               }              
               return (cmp);
             });
+
+            // make a copy of patients for filtering purposes
+            this.originalPatientList = this.patients;
           })
           .catch(err => console.log('error in refresh tasks', err));
       })
@@ -264,6 +269,22 @@ export class PatientsPage {
       return "false"
     }
   }
+
+  /**
+   * Filter patient list by lastname, firstname
+   * @param ev 
+   */
+  filterPatientList(ev: any) {
+    let val = ev.target.value;
+
+    if (val && val.trim() !== '') {
+      this.patients = this.originalPatientList.filter(function(item) {
+        var fullName = item.LastName.toLowerCase() + ", " + item.FirstName.toLowerCase()
+        return fullName.includes(val.toLowerCase());
+      });
+    }
+    else
+      this.patients = this.originalPatientList;
+  }
+  
 }
-
-
