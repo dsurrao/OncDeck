@@ -64,7 +64,9 @@ export class PatientSummaryComponent {
     if (pathologies.length > 0) {
       pathologySummary += pathologies[0]['SurgeryType'] + '; '
       + pathologies[0]['SurgeryHistology'] + '; '
-      + pathologies[0]['ReceptorStatuses'] + '; '
+      + pathologies[0]['EstrogrenReceptor'] + '; '
+      + pathologies[0]['ProgesteroneReceptor'] + '; '
+      + pathologies[0]['HeReceptor'] + '; '
       + pathologies[0]['SurgicalFeatures'] + '; '
       + pathologies[0]['SurgicalMargins'];
     }
