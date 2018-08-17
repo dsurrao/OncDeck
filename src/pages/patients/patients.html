@@ -9,12 +9,12 @@
   <ion-navbar>
     <ion-title>Patients</ion-title>
 
-    <ion-buttons start>
+    <ion-buttons left>
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="addPatient()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-    
+
     <ion-buttons end>
       <button *ngIf="!isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
