@@ -34,7 +34,7 @@ export class DynamodbProvider {
   }
 
   getDocumentClient(credentials) {
-    return new AWS.DynamoDB.DocumentClient({ credentials: credentials })
+    return new AWS.DynamoDB.DocumentClient({ credentials: credentials, dynamoDbCrc32: false })
     // return Auth.currentCredentials()
     //   .then(credentials => new AWS.DynamoDB.DocumentClient({ credentials: credentials }))
     //   .catch(err => logger.debug('error getting document client', err));
