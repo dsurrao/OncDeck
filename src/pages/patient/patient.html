@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{patient.LastName}}, {{patient.FirstName}} ({{patient.Gender}}, {{patient.DOB}})</ion-title>
+    <ion-title>{{patient.LastName}}, {{patient.FirstName}} ({{patient.GenderInitial}}, {{patient.Age}} yrs)</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
         <ion-icon name="create"></ion-icon>
@@ -18,17 +18,17 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <ion-card>
-    <ion-title>Summary</ion-title>
-    <ion-item>
+    <ion-card-header>Summary</ion-card-header>
+    <ion-item text-wrap>
       <patient-summary [patient]="patient"></patient-summary>
     </ion-item>
   </ion-card>
 
   <ion-card>
-    <ion-title>Scheduled Surgery</ion-title>
+    <ion-card-header>Scheduled Surgery</ion-card-header>
     <ion-buttons end>
       <button ion-button icon-only (click)="addScheduledSurgery()">
         <ion-icon name="add"></ion-icon>
@@ -41,7 +41,7 @@
           Surgery completed on {{toLocaleDateString(surgery.CompletedDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
         </button>
         <ng-template #elseBlock>
-          <button ion-item>
+          <button ion-item text-wrap>
             Scheduled on {{toLocaleDateString(surgery.ScheduledDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
           </button>
         </ng-template>
@@ -50,14 +50,14 @@
   </ion-card>
 
   <ion-card>
-    <ion-title>Surgical Pathology</ion-title>
+    <ion-card-header>Surgical Pathology</ion-card-header>
     <ion-buttons end>
         <button ion-button icon-only (click)="addPathologySurgery()">
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-buttons>
       <ion-item-sliding *ngFor="let pathology of pathologies" (click)="viewPathologySurgery(pathology)">
-        <button ion-item *ngIf="pathology.SurgeryType != null; else elseBlock">
+        <button ion-item text-wrap *ngIf="pathology.SurgeryType != null; else elseBlock">
           Surgery Type: {{pathology.SurgeryType}}
         </button>
         <ng-template #elseBlock>

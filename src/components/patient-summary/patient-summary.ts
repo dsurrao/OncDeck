@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
 
 /**
  * Generated class for the PatientSummaryComponent component.
@@ -10,7 +10,7 @@ import { Component, Input } from '@angular/core';
   selector: 'patient-summary',
   templateUrl: 'patient-summary.html'
 })
-export class PatientSummaryComponent {
+export class PatientSummaryComponent implements OnChanges {
 
   @Input('patient') patient: any;
   patientDemographics: string;
@@ -23,9 +23,24 @@ export class PatientSummaryComponent {
   }
 
   ngAfterViewInit() {
-    this.patientDemographics = this.constructPatientDemographics(this.patient);
-    this.surgicalPathologySummary = this.constructSurgicalPathologySummary(this.patient);
-    this.surgerySummary = this.constructSurgerySummary(this.patient);
+    this.populateComponent(this.patient);
+  }
+
+  populateComponent(pt: any) {
+    this.patientDemographics = this.constructPatientDemographics(pt);
+    this.surgicalPathologySummary = this.constructSurgicalPathologySummary(pt);
+    this.surgerySummary = this.constructSurgerySummary(pt);
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    let log: string[] = [];
+    for (let propName in changes) {
+      if (propName == "patient") {
+        let changedProp = changes[propName];
+        this.populateComponent(changedProp.currentValue);
+        break;
+      }
+    }
   }
 
   constructPatientDemographics(patient: any): string {

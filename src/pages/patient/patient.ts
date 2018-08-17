@@ -1,3 +1,4 @@
+import { DateUtils } from './../../common/dateutils';
 import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
 import { PathologySurgeryPage } from './../pathology-surgery/pathology-surgery';
 import { BiopsyStatusPage } from './../biopsy-status/biopsy-status';
@@ -34,8 +35,11 @@ export class PatientPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public db: DynamodbProvider,
-    public events: Events) {
+    public events: Events,
+    public dateUtils: DateUtils) {
     this.patient = this.navParams.data.params;
+    this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
+    this.patient['GenderInitial'] = this.getGenderInitial(this.patient['Gender']);
     this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
     this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
     this.events.subscribe('patientSaved', () => {
@@ -81,6 +85,8 @@ export class PatientPage {
         this.db.getDocumentClient(credentials).get(params).promise()
           .then(data => { 
             this.patient = data.Item;
+            this.patient['Age'] = this.dateUtils.getAge(this.patient['DOB']);
+            this.patient['GenderInitial'] = this.getGenderInitial(this.patient['Gender']);
             this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
             this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
           })
@@ -93,5 +99,18 @@ export class PatientPage {
 
   toLocaleDateString(isoString: string): string {
     return new Date(isoString).toLocaleDateString();
+  }
+  
+  getGenderInitial(gender: String): string {
+    let genderInitial = 'U';
+    if (gender != null) {
+      if (gender.toLowerCase() == 'female') {
+        genderInitial = 'F';
+      }
+      else if (gender.toLowerCase() == 'male') {
+        genderInitial = 'M';
+      }
+    }
+    return genderInitial;
   }
 }

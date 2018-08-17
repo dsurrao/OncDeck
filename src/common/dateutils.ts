@@ -48,4 +48,21 @@ export class DateUtils {
         days = (inputDate.getTime() - todayDate.getTime())/(1000 * 60 * 60 * 24);
         return days;
     }
+
+    public getAge(isoDob: string): number {
+        let dob: Date = new Date(isoDob);
+        let today: Date = new Date();
+        let yrs: number = today.getFullYear() - dob.getFullYear();
+        let monthDiff: number = today.getMonth() - dob.getMonth();
+        let dayDiff: number = today.getDate() - dob.getDate();
+        if (monthDiff == 0) {
+            if (dayDiff < 0) {
+                yrs--;
+            }
+        }
+        else if (monthDiff < 0) {
+            yrs--;
+        }
+        return yrs;
+    }
 }

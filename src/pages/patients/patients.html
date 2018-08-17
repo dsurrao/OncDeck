@@ -7,13 +7,17 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>patients</ion-title>
+    <ion-title>Patients</ion-title>
+
+    <ion-buttons start>
+      <button *ngIf="isAuthenticated" ion-button icon-only (click)="addPatient()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    
     <ion-buttons end>
       <button *ngIf="!isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
-      </button>
-      <button *ngIf="isAuthenticated" ion-button icon-only (click)="addPatient()">
-        <ion-icon name="add"></ion-icon>
       </button>
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-out"></ion-icon>
@@ -21,13 +25,13 @@
     </ion-buttons>
   </ion-navbar>
 
-  <ion-toolbar >
+  <ion-toolbar *ngIf="isAuthenticated==true">
       <ion-searchbar (ionInput)="filterPatientList($event)" showCancelButton="shouldShowCancel" placeholder="Search patients"></ion-searchbar>
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <ion-list>
       <ion-item-sliding *ngFor="let patient of patients">
         <button ion-item (click)="viewPatient(patient)">
