@@ -22,16 +22,16 @@ export class PathologySurgery {
     public dateUtils: DateUtils) {
     console.log('Hello PathologySurgery');
   }
-
+  
   /* 
     save pathology surgery info for a patient 
   */
-  pathology(patient:any, surgeryType:string, surgeryHistology:string, surgicalFeatures:string, 
-    surgicalMargins:string, receptorStatuses:any): Promise<any> {
+  pathology(patient:any, surgeryType:string, surgeryHistologies:any, surgicalFeatures:string, 
+    surgicalMargins:string, estrogrenReceptor:string, progesteroneReceptor:string, heReceptor:string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       Auth.currentUserCredentials().then(
         credentials => {
-          let attrValues = [{'SurgeryType': surgeryType, 'SurgeryHistology': surgeryHistology, 'ReceptorStatuses': receptorStatuses, 'SurgicalFeatures': surgicalFeatures, 'SurgicalMargins': surgicalMargins}];
+          let attrValues = [{'SurgeryType': surgeryType, 'SurgeryHistology': surgeryHistologies, 'EstrogrenReceptor': estrogrenReceptor, 'ProgesteroneReceptor': progesteroneReceptor, 'HeReceptor': heReceptor, 'SurgicalFeatures': surgicalFeatures, 'SurgicalMargins': surgicalMargins}];
           let params = {
             TableName: 'Patient',
             Key: {

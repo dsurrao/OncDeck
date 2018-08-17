@@ -28,42 +28,62 @@
             </ion-item>
         </ion-list>
 
-        <ion-list radio-group name="surgeryHistology" [(ngModel)]="surgeryHistology" required>
+        <ion-list name="surgeryHistologies"> 
             <ion-list-header>Surgery Histology</ion-list-header>
+            <ion-item *ngFor="let histology of surgeryHistologies" >
+              <ion-label>{{histology.name}}</ion-label>
+              <ion-checkbox item-right name={{histology.name}} [(ngModel)]="histology.checked" checked={{histology.checked}}></ion-checkbox>
+            </ion-item>
+        </ion-list>
+        
+        <ion-list radio-group name="estrogrenReceptor" [(ngModel)]="estrogrenReceptor" required>
+            <ion-list-header>Estrogren Receptor</ion-list-header>
             <ion-item>
-                <ion-label>Import Summary of Biopsy Pathology</ion-label>
-                <ion-radio value="lumpectomy" checked></ion-radio>
+                <ion-label>ER+</ion-label>
+                <ion-radio value="erPlus"></ion-radio>
                 </ion-item>
             <ion-item>
-                <ion-label>Invasive Ductal Carcinoma</ion-label>
-                <ion-radio value="invasiveDuctalCarcinoma"></ion-radio>
+                <ion-label>ER-</ion-label>
+                <ion-radio value="erMinus"></ion-radio>
             </ion-item>
             <ion-item>
-                <ion-label>Invasive Lobular Carcinoma</ion-label>
-                <ion-radio value="invasiveLobularCarcinoma"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>DCIS (Ductal Carcinoma In Situ)</ion-label>
-                <ion-radio value="dcis"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>LCIS (Lobular Carcinoma In Situ)</ion-label>
-                <ion-radio value="lcis"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>Other</ion-label>
-                <ion-radio value="other"></ion-radio>
+                <ion-label>None</ion-label>
+                <ion-radio value="none"></ion-radio>
             </ion-item>
         </ion-list>
 
-        <ion-list name="receptorStatuses"> 
-            <ion-list-header>Receptor Status</ion-list-header>
-            <ion-item *ngFor="let receptor of receptors" >
-              <ion-label>{{receptor.name}}</ion-label>
-              <ion-checkbox name={{receptor.name}} [(ngModel)]="receptor.checked" checked={{receptor.checked}}></ion-checkbox>
+        <ion-list radio-group name="progesteroneReceptor" [(ngModel)]="progesteroneReceptor" required>
+            <ion-list-header>Progesterone Receptor</ion-list-header>
+            <ion-item>
+                <ion-label>PR+</ion-label>
+                <ion-radio value="prPlus"></ion-radio>
+                </ion-item>
+            <ion-item>
+                <ion-label>PR-</ion-label>
+                <ion-radio value="prMinus"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>None</ion-label>
+                <ion-radio value="none"></ion-radio>
             </ion-item>
         </ion-list>
 
+        <ion-list radio-group name="heReceptor" [(ngModel)]="heReceptor" required>
+            <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
+            <ion-item>
+                <ion-label>HER2+</ion-label>
+                <ion-radio value="herPlus"></ion-radio>
+                </ion-item>
+            <ion-item>
+                <ion-label>HER2-</ion-label>
+                <ion-radio value="herMinus"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>None</ion-label>
+                <ion-radio value="none"></ion-radio>
+            </ion-item>
+        </ion-list>
+        
         <ion-list radio-group name="surgicalFeatures" [(ngModel)]="surgicalFeatures" required>
             <ion-list-header>Surgical Features</ion-list-header>
             <ion-item>
