@@ -287,4 +287,33 @@ export class PatientsPage {
       this.patients = this.originalPatientList;
   }
   
+  /**
+   * Sort patient list by lastname depending on sortPreference passed in
+   * @param sortPreference
+   */
+  sortPatientList(sortPreference) {
+
+    var greaterValue, lesserValue;
+    if (sortPreference == "ascend") {
+      greaterValue = -1
+      lesserValue = 1
+    }
+    else {
+      greaterValue = 1;
+      lesserValue = -1
+    }
+
+    this.patients = this.patients.sort((a, b)=>{
+      let cmp = 0;
+      if (a['LastName'] > b['LastName']) {
+        cmp = greaterValue;
+      }
+      else if  (a['LastName'] == b['LastName'])  {
+        cmp = 0;
+      }
+      else
+        cmp = lesserValue;
+      return (cmp);
+    });
+  }
 }
