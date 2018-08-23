@@ -1,5 +1,6 @@
 import { DateUtils } from './../../common/dateutils';
 import { PatientFormPage } from './../patient-form/patient-form';
+import { GraphPage } from './../graph/graph';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, 
@@ -142,6 +143,14 @@ export class PatientsPage {
   addPatient() {
     Auth.currentAuthenticatedUser().then((user) => {
       this.navCtrl.push(PatientFormPage);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  showGraph() {
+    Auth.currentAuthenticatedUser().then((user) => {
+      this.navCtrl.push(GraphPage);
     }).catch((error) => {
       console.log(error);
     });

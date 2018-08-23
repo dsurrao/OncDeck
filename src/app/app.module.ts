@@ -26,6 +26,8 @@ import { BiopsyProvider } from '../providers/biopsy/biopsy';
 import { SurgeryProvider } from '../providers/surgery/surgery';
 import { PatientProvider } from '../providers/patient/patient';
 import { PathologySurgery } from '../providers/pathology/pathology';
+import { GraphPage } from '../pages/graph/graph';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     BiopsyOrderPage,
     ScheduledSurgeryPage,
     PathologySurgeryPage,
+    GraphPage,
     PatientSummaryComponent,
     TabsPage,
     AboutPage
@@ -48,7 +51,8 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
-    HttpModule
+    HttpModule,
+    ChartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -64,7 +68,8 @@ import { PathologySurgery } from '../providers/pathology/pathology';
     ScheduledSurgeryPage,
     PathologySurgeryPage,
     TabsPage,
-    AboutPage
+    AboutPage,
+    GraphPage
   ],
   providers: [
     StatusBar,

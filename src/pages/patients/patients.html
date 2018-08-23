@@ -13,6 +13,9 @@
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="addPatient()">
         <ion-icon name="add"></ion-icon>
       </button>
+      <button *ngIf="isAuthenticated" ion-button icon-only (click)="showGraph()">
+          <ion-icon name="pie"></ion-icon>
+        </button>
     </ion-buttons>
 
     <ion-buttons end>
