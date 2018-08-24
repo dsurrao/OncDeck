@@ -1,7 +1,6 @@
 import { DateUtils } from './../../common/dateutils';
 import { PatientFormPage } from './../patient-form/patient-form';
 import { GraphPage } from './../graph/graph';
-import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, 
   Events, 
@@ -18,6 +17,8 @@ import { PatientPage } from '../patient/patient';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; // specify the location of aws-exports.js file on your project
 import AWS from 'aws-sdk';
+import { PatientProvider } from '../../providers/patient/patient';
+import { userInfo } from 'os';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -39,17 +40,21 @@ export class PatientsPage {
   patients: any;
   originalPatientList: any;
   isAuthenticated: boolean;
+  currentAuthenticatedUsername: string;
+  showOnlyMyPatients: boolean;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public db: DynamodbProvider,
+    public patientSvc: PatientProvider,
     public events: Events,
     public dateUtils: DateUtils) {
     this.patients = [];
     this.originalPatientList = [];
     this.isAuthenticated = false;
+    this.currentAuthenticatedUsername = '';
+    this.showOnlyMyPatients = false;
 
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
@@ -73,62 +78,22 @@ export class PatientsPage {
   getPatients() {
     Auth.currentUserCredentials()
       .then(credentials => {
-
-        const params = {
-          TableName: 'Patient'
-        };
-
-        this.isAuthenticated = true;
-
-        this.db.getDocumentClient(credentials).scan(params).promise()
-          .then(data => {
-            this.patients = data.Items; 
-            this.patients.sort((a, b)=>{
-              let cmp = 0;
-              if (a['Surgeries'] != null) {
-                if (b['Surgeries'] != null) {
-                  if (a['Surgeries'][0]['ScheduledDate'] > b['Surgeries'][0]['ScheduledDate']) {
-                    cmp = -1;
-                  }
-                  else if  (a['Surgeries'][0]['ScheduledDate'] == b['Surgeries'][0]['ScheduledDate']) {
-                    cmp = 0;
-                  }
-                  else {
-                    if (a['Surgeries'][0]['CompletedDate'] != null && b['Surgeries'][0]['CompletedDate'] != null) {
-                      if (a['Surgeries'][0]['CompletedDate'] > b['Surgeries'][0]['CompletedDate']) {
-                        cmp = -1;
-                      }
-                      else if (a['Surgeries'][0]['CompletedDate'] == b['Surgeries'][0]['CompletedDate']) {
-                        cmp = 0;
-                      }
-                      else {
-                        cmp = 1;
-                      }
-                    }
-                    else {
-                      cmp = 1;
-                    }
-                  }
-                }
-                else {
-                  cmp = 1;
-                }
-              }
-              else {
-                if (b['Surgeries'] != null) {
-                  cmp = -1;
-                }
-                else {
-                  cmp = 0;
-                }
-              }              
-              return (cmp);
-            });
-
-            // make a copy of patients for filtering purposes
-            this.originalPatientList = this.patients;
+        Auth.currentUserInfo().then((userInfo) => {
+          this.currentAuthenticatedUsername = userInfo.username;
+          this.isAuthenticated = true;
+          this.patientSvc.getPatients(this.showOnlyMyPatients, 
+            this.currentAuthenticatedUsername, credentials).then((data) => {
+            this.patients = data;
+            this.originalPatientList = data; // make a copy of patients for filtering purposes
           })
-          .catch(err => console.log('error in refresh tasks', err));
+          .catch((error) => {
+            console.log('get patients error', error);
+            this.patients = [];
+          });
+        })
+        .catch((error) => {
+          this.patients = [];
+        });
       })
       .catch(err => {
         console.log('get current credentials err', err);
@@ -166,19 +131,10 @@ export class PatientsPage {
 
   removePatient(patient) {
     Auth.currentUserCredentials().then((credentials) => {
-      const params = {
-        TableName: 'Patient',
-        Key: {
-          Id: patient['Id']
-        }
-      };
-
-      this.db.getDocumentClient(credentials).delete(params).promise()
-        .then(data => { 
-          // refresh patient list
-          this.getPatients();
-        })
-        .catch(err => console.log('error in delete patient', err));
+      this.patientSvc.removePatient(patient, credentials).then((data) => {
+        // refresh patient list
+        this.getPatients();
+      })
     }).catch((error) => {
       console.log(error);
     });
@@ -324,5 +280,9 @@ export class PatientsPage {
         cmp = lesserValue;
       return (cmp);
     });
+  }
+
+  togglePatients() {
+    this.getPatients();
   }
 }

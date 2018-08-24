@@ -33,14 +33,12 @@
       </button>      
     </ion-buttons>
   </ion-navbar>
-
-  <ion-toolbar *ngIf="isAuthenticated==true">
-      <ion-searchbar (ionInput)="filterPatientList($event)" showCancelButton="shouldShowCancel" placeholder="Search patients"></ion-searchbar>
-  </ion-toolbar>
-
 </ion-header>
 
 <ion-content>
+    <ion-toolbar *ngIf="isAuthenticated==true">
+      <ion-searchbar (ionInput)="filterPatientList($event)" showCancelButton="shouldShowCancel" placeholder="Search patients"></ion-searchbar>
+    </ion-toolbar>
     <ion-list>
       <ion-item-sliding *ngFor="let patient of patients">
         <button ion-item (click)="viewPatient(patient)">
@@ -80,3 +78,10 @@
     </ion-list>
     
 </ion-content>
+
+<ion-footer>
+  <ion-item  *ngIf="isAuthenticated">
+    <ion-label>Show only my patients</ion-label>
+    <ion-toggle checked="false" [(ngModel)]="showOnlyMyPatients" (ionChange)="togglePatients()"></ion-toggle>
+  </ion-item>
+</ion-footer>

@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
-import { rejects } from 'assert';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -22,6 +21,79 @@ export class PatientProvider {
     public db: DynamodbProvider,
     ) {
     console.log('Hello PatientProvider Provider');
+  }
+
+  // pass in credentials from caller, maybe this should be the way to do it?
+  /*
+  aws dynamodb scan --table-name Patient --filter-expression "contains(Watchers, :w)" \
+--expression-attribute-values '{":w": {"S": "dom4"}}'
+  */
+  getPatients(showOnlyMyPatients: boolean, myUsername: string, credentials: any) {
+    return new Promise((resolve, reject) => {
+      let patients: any = [];
+      let params: any = {
+        TableName: 'Patient'
+      };
+
+      if (showOnlyMyPatients) {
+        params = {
+          TableName: 'Patient',
+          FilterExpression: 'contains(Watchers, :w)',
+          ExpressionAttributeValues: {
+            ':w': myUsername
+          }
+        }
+      }
+
+      this.db.getDocumentClient(credentials).scan(params).promise()
+        .then(data => {
+          patients = data.Items; 
+          patients.sort((a, b)=>{
+            let cmp = 0;
+            if (a['Surgeries'] != null) {
+              if (b['Surgeries'] != null) {
+                if (a['Surgeries'][0]['ScheduledDate'] > b['Surgeries'][0]['ScheduledDate']) {
+                  cmp = -1;
+                }
+                else if  (a['Surgeries'][0]['ScheduledDate'] == b['Surgeries'][0]['ScheduledDate']) {
+                  cmp = 0;
+                }
+                else {
+                  if (a['Surgeries'][0]['CompletedDate'] != null && b['Surgeries'][0]['CompletedDate'] != null) {
+                    if (a['Surgeries'][0]['CompletedDate'] > b['Surgeries'][0]['CompletedDate']) {
+                      cmp = -1;
+                    }
+                    else if (a['Surgeries'][0]['CompletedDate'] == b['Surgeries'][0]['CompletedDate']) {
+                      cmp = 0;
+                    }
+                    else {
+                      cmp = 1;
+                    }
+                  }
+                  else {
+                    cmp = 1;
+                  }
+                }
+              }
+              else {
+                cmp = 1;
+              }
+            }
+            else {
+              if (b['Surgeries'] != null) {
+                cmp = -1;
+              }
+              else {
+                cmp = 0;
+              }
+            }              
+            return (cmp);
+          });
+
+          resolve(patients);
+        })
+        .catch(err => reject('error in refresh tasks'));
+    });
   }
 
   savePatient(
@@ -55,6 +127,18 @@ export class PatientProvider {
         });
       });
     }
+
+  removePatient(patient, credentials): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const params = {
+        TableName: 'Patient',
+        Key: {
+          Id: patient['Id']
+        }
+      };
+      resolve(this.db.getDocumentClient(credentials).delete(params).promise());
+    });
+  }
 
   constructExpressions(
     firstName: string,
