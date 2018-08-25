@@ -70,6 +70,12 @@
 
         </button>
         <ion-item-options side="right">
+          <button *ngIf="isWatchingPatient(patient)==false" ion-button (click)="watchPatient(patient)">
+            Watch
+          </button>
+          <button *ngIf="isWatchingPatient(patient)==true"  ion-button color="secondary" (click)="unWatchPatient(patient)">
+            Un-watch
+          </button>
           <button ion-button color="danger" (click)="removePatientConfirm(patient)">
             Remove
           </button>

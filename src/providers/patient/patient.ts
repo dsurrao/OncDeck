@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -137,6 +138,40 @@ export class PatientProvider {
         }
       };
       resolve(this.db.getDocumentClient(credentials).delete(params).promise());
+    });
+  }
+
+  watchPatient(patientId, username, credentials): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let docClient: DocumentClient = this.db.getDocumentClient(credentials);
+      const params = {
+        TableName: 'Patient',
+        Key: {
+          Id: patientId
+        },
+        UpdateExpression: 'ADD Watchers :w',
+        ExpressionAttributeValues: {
+          ":w": docClient.createSet([username])
+        }
+      };
+      resolve(docClient.update(params).promise());
+    });
+  }
+
+  unWatchPatient(patientId, username, credentials): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let docClient: DocumentClient = this.db.getDocumentClient(credentials);
+      const params = {
+        TableName: 'Patient',
+        Key: {
+          Id: patientId
+        },
+        UpdateExpression: 'DELETE Watchers :w',
+        ExpressionAttributeValues: {
+          ":w": docClient.createSet([username])
+        }
+      };
+      resolve(docClient.update(params).promise());
     });
   }
 

@@ -140,6 +140,52 @@ export class PatientsPage {
     });
   }
 
+  watchPatient(patient) {
+    Auth.currentUserCredentials().then((credentials) => {
+      this.patientSvc.watchPatient(patient['Id'], 
+        this.currentAuthenticatedUsername, credentials).then((data) => {
+          this.getPatients();
+          console.log("watching patient " + patient['LastName']);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    this.list.closeSlidingItems();
+  }
+
+  unWatchPatient(patient) {
+    Auth.currentUserCredentials().then((credentials) => {
+      this.patientSvc.unWatchPatient(patient['Id'], 
+        this.currentAuthenticatedUsername, credentials).then((data) => {
+          this.getPatients();
+          console.log("unwatching patient " + patient['LastName']);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    this.list.closeSlidingItems();
+  }
+
+  isWatchingPatient(patient): boolean {
+    let ret: boolean = false;
+    let watchers: Array<string> = [];
+    if (patient['Watchers'] != null) {
+      watchers = patient['Watchers'].values;
+      if (watchers.indexOf(this.currentAuthenticatedUsername) > -1) {
+        ret = true;
+      }
+    }
+    return ret;
+  }
+
   removePatientConfirm(patient) {
     const confirm = this.alertCtrl.create({
       title: 'Remove patient?',
