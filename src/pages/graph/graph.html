@@ -12,13 +12,44 @@
       
       <!-- https://www.djamware.com/post/598953f880aca768e4d2b12b/creating-beautiful-charts-easily-using-ionic-3-and-angular-4 -->
       
+
+
+      
 <ion-content padding>
+
+    <ion-card>
+        <ion-card-header>
+            Completed Surgeries
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #lineCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div style="display: block;">
+                <canvas baseChart width="300" height="400"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <!--
     <div class="row">
         <div class="col-md-6">
             <div style="display: block;">
             <canvas baseChart width="300" height="400"
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
+                        [datasets]="lineChartPatientData"
+                        [labels]="lineChartPatientLabels"
                         [options]="lineChartOptions"
                         [colors]="lineChartColors"
                         [legend]="lineChartLegend"
@@ -28,4 +59,5 @@
             </div>
         </div>
     </div>
+    -->
 </ion-content>
