@@ -76,18 +76,62 @@ export class PatientSummaryComponent implements OnChanges {
   constructSurgicalPathologySummary(patient: any): string {
     let pathologySummary = 'Pathology: ';
     let pathologies = patient['Pathologies'] != null ? patient['Pathologies'] : [];
+
     if (pathologies.length > 0) {
       pathologySummary += pathologies[0]['SurgeryType'] + '; '
       + pathologies[0]['SurgeryHistology'] + '; '
-      + pathologies[0]['EstrogrenReceptor'] + '; '
-      + pathologies[0]['ProgesteroneReceptor'] + '; '
-      + pathologies[0]['HeReceptor'] + '; '
-      + pathologies[0]['SurgicalFeatures'] + '; '
-      + pathologies[0]['SurgicalMargins'];
+      + this.assembleSummaryText("estrogen", pathologies[0]['EstrogrenReceptor'])
+      + this.assembleSummaryText("progesterone", pathologies[0]['ProgesteroneReceptor'])
+      + this.assembleSummaryText("he", pathologies[0]['HeReceptor'])
+      + this.assembleSummaryText("surgicalFeatures", pathologies[0]['SurgicalFeatures'])
+      + this.assembleSummaryText("surgicalMargins", pathologies[0]['SurgicalMargins'])
     }
     else {
       pathologySummary += 'No pathology report';
     }
     return pathologySummary;
   }
+
+  /*
+   * Assemble text depending on type/value
+   */
+  assembleSummaryText(type: string, value: string): string {
+    if (type == "estrogen") {
+      if (value == "erMinus")
+        return "ER-;";
+      if (value == "erPlus")
+        return "ER+;";
+    }
+
+    if (type == "progesterone") {
+      if (value == "prMinus")
+        return "PR-;";
+      if (value == "prPlus")
+        return "PR+;";
+    }
+
+    if (type == "he") {
+      if (value == "herMinus")
+        return "HER-;";
+      if (value == "herPlus")
+        return "HER+;";
+    }
+
+    if (type == "surgicalFeatures") {
+      if (value == "lviMinus")
+        return "LVI-;";
+      if (value == "lviPlus")
+        return "LVI+;";
+    }
+
+    if (type == "surgicalMargins") {
+      if (value == "focallyPostive")
+        return "Focally Positive";
+      if (value == "broadlyPositive")
+        return "Broadly Positive";
+    }
+
+    return "";
+  }
+  
 }
