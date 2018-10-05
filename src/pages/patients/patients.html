@@ -44,7 +44,7 @@
       <ion-item-sliding *ngFor="let patient of patients">
         <ion-item>
           <ion-card class="card-container">
-            <button ion-item (click)="viewPatient(patient)">
+            <button ion-item (click)="viewPatient(patient)" text-wrap>
               <h2>
                 <ion-icon name="person"></ion-icon>
                 {{patient.LastName}}, {{patient.FirstName}}
