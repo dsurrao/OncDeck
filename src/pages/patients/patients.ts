@@ -214,15 +214,26 @@ export class PatientsPage {
     let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
     if (surgeries.length > 0) {
       if (surgeries[0]['CompletedDate'] != null) {
-        surgeryStatus = "Surgery completed on " + new Date(surgeries[0]['CompletedDate']).toLocaleDateString()
+        surgeryStatus = "on " + new Date(surgeries[0]['CompletedDate']).toLocaleDateString()
         + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
       }
       else if (surgeries[0]['ScheduledDate'] != null) {
-        surgeryStatus = "Surgery scheduled on " + new Date(surgeries[0]['ScheduledDate']).toLocaleDateString()
+        surgeryStatus = "on " + new Date(surgeries[0]['ScheduledDate']).toLocaleDateString()
         + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
       }
     }
     return (surgeryStatus);
+  }
+
+  getSurgeryStatusText(patient) {
+    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    if (surgeries.length > 0) {
+      if (surgeries[0]['CompletedDate'] != null)
+        return "completed";
+      else if (surgeries[0]['ScheduledDate'] != null) {
+        return "scheduled";
+      }
+    }
   }
 
   // returns 

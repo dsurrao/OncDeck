@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{patient.LastName}}, {{patient.FirstName}} ({{patient.GenderInitial}}, {{patient.Age}} yrs)</ion-title>
+    <ion-title>Patient details</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
         <ion-icon name="create"></ion-icon>
@@ -20,24 +20,32 @@
 
 <ion-content>
 
+  <div id="patient-container">
+    <div id="patient-name">{{patient.LastName}}, {{patient.FirstName}}</div>
+    <div id="patient-information">({{patient.GenderInitial}}, {{patient.Age}} yrs)</div>
+  </div>
+
+  <!-- Summary card -->
   <ion-card>
-    <ion-card-header>Summary</ion-card-header>
+    <ion-card-header class="card-header">
+      <ion-icon name="clipboard"></ion-icon>
+        Summary
+    </ion-card-header>
     <ion-item text-wrap>
       <patient-summary [patient]="patient"></patient-summary>
     </ion-item>
   </ion-card>
 
+
+  <!-- Scheduled Surgery card -->
   <ion-card>
-    <ion-card-header>Scheduled Surgery</ion-card-header>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="addScheduledSurgery()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-card-header class="card-header">
+      <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
+    </ion-card-header>
 
     <ion-list>
       <ion-item-sliding *ngFor="let surgery of surgeries" (click)="viewSurgery(surgery)">
-        <button ion-item *ngIf="surgery.CompletedDate != null; else elseBlock">
+        <button ion-item text-wrap *ngIf="surgery.CompletedDate != null; else elseBlock">
           Surgery completed on {{toLocaleDateString(surgery.CompletedDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
         </button>
         <ng-template #elseBlock>
@@ -47,26 +55,39 @@
         </ng-template>
       </ion-item-sliding>
     </ion-list>
+
+    <ion-buttons end>
+      <button ion-button icon-start round (click)="addScheduledSurgery()" class="add-button">
+        <ion-icon name="add"></ion-icon>
+        Add Surgery
+      </button>
+    </ion-buttons>
   </ion-card>
 
+
+  <!-- Surgical Pathology card -->
   <ion-card>
-    <ion-card-header>Surgical Pathology</ion-card-header>
+    <ion-card-header class="card-header">
+      <ion-icon name="body"></ion-icon>
+      Surgical Pathology
+    </ion-card-header>
+
+    <ion-item-sliding *ngFor="let pathology of pathologies" (click)="viewPathologySurgery(pathology)">
+      <button ion-item text-wrap *ngIf="pathology.SurgeryType != null; else elseBlock">
+        Surgery Type: {{pathology.SurgeryType}}
+      </button>
+      <ng-template #elseBlock>
+        <button ion-item></button>
+      </ng-template>
+    </ion-item-sliding>
+
     <ion-buttons end>
-        <button ion-button icon-only (click)="addPathologySurgery()">
-          <ion-icon name="add"></ion-icon>
-        </button>
-      </ion-buttons>
-      <ion-item-sliding *ngFor="let pathology of pathologies" (click)="viewPathologySurgery(pathology)">
-        <button ion-item text-wrap *ngIf="pathology.SurgeryType != null; else elseBlock">
-          Surgery Type: {{pathology.SurgeryType}}
-        </button>
-        <ng-template #elseBlock>
-          <button ion-item>
-         
-          </button>
-        </ng-template>
-      </ion-item-sliding>
-    </ion-card>
+      <button ion-button icon-start round (click)="addPathologySurgery()" class="add-button">
+        <ion-icon name="add"></ion-icon>
+        Add Pathology
+      </button>
+    </ion-buttons>
+  </ion-card>
 
 
   <!-- <ion-card>

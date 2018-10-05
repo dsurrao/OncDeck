@@ -1,3 +1,22 @@
-page-patient {
+#patient-container {
+    margin-top: 1em !important;
+    text-align: center;
+}
 
+#patient-name {
+    font-size: 2.5em !important;
+    font-weight: bold;
+}
+
+#patient-information {
+    font-size: 2em !important;
+}
+
+.card-header {
+    color: #8F8F8F;
+    font-size: 1.33em !important;
+}
+
+.add-button {
+    width: 38%;
 }

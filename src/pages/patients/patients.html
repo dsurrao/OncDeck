@@ -42,45 +42,68 @@
     </ion-toolbar>
     <ion-list>
       <ion-item-sliding *ngFor="let patient of patients">
-        <button ion-item (click)="viewPatient(patient)">
-          <h2>{{patient.LastName}}, {{patient.FirstName}}</h2>
+        <ion-item>
+          <ion-card class="card-container">
+            <button ion-item (click)="viewPatient(patient)">
+              <h2>
+                <ion-icon name="person"></ion-icon>
+                {{patient.LastName}}, {{patient.FirstName}}
+              </h2>
 
-          <div *ngIf="getSurgeryStatus(patient) == 0">
-            <span style='color:red'>{{getSurgerySummary(patient)}}</span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 1">
-            <span style='color:green'>{{getSurgerySummary(patient)}}</span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 2">
-            <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 3">
-            <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 4">
-            <span style='color:red'>{{getSurgerySummary(patient)}}</span>
-          </div>
+              <div *ngIf="getSurgeryStatus(patient) == 0">
+                <span class='patient-status'>
+                  <ion-icon name="warning" style='color:red'></ion-icon>
+                  {{getSurgerySummary(patient)}}
+                </span>
+              </div>
+              <div *ngIf="getSurgeryStatus(patient) == 1">
+                  <span class='patient-status'>
+                    Surgery <span style='color:green'>{{getSurgeryStatusText(patient)}}</span>
+                    {{getSurgerySummary(patient)}}
+                  </span>
+              </div>
+              <div *ngIf="getSurgeryStatus(patient) == 2">
+                  <span class='patient-status'>
+                    Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
+                    {{getSurgerySummary(patient)}}
+                  </span>
+              </div>
+              <div *ngIf="getSurgeryStatus(patient) == 3">
+                  <span class='patient-status'>
+                    Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
+                    {{getSurgerySummary(patient)}}
+                  </span>
+              </div>
+              <div *ngIf="getSurgeryStatus(patient) == 4">
+                <span class='patient-status'>
+                  <ion-icon name="warning" style='color:red'></ion-icon>
+                  Surgery <span style='color:red'>{{getSurgeryStatusText(patient)}}</span>
+                  {{getSurgerySummary(patient)}}
+                </span>
+              </div>
 
-          <!-- <p>Biopsy Status: {{patient.BiopsyStatus}}</p>
-          <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'true'">
-            <span style='color:blue'>Scheduled Biopsy Date is greater than today's date</span>
-           </div>
-           <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'false'">
-            <span style='color:red'>Scheduled Biopsy Date is lesser than today's date</span>
-           </div> -->
+              <!-- <p>Biopsy Status: {{patient.BiopsyStatus}}</p>
+              <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'true'">
+                <span style='color:blue'>Scheduled Biopsy Date is greater than today's date</span>
+              </div>
+              <div *ngIf="isBiopsyAfterCurrentDate(patient.ScheduledBiopsyDate) == 'false'">
+                <span style='color:red'>Scheduled Biopsy Date is lesser than today's date</span>
+              </div> -->
 
-        </button>
+            </button>
+          </ion-card>
+        </ion-item>
         <ion-item-options side="right">
-          <button *ngIf="isWatchingPatient(patient)==false" ion-button (click)="watchPatient(patient)">
-            Watch
-          </button>
-          <button *ngIf="isWatchingPatient(patient)==true"  ion-button color="secondary" (click)="unWatchPatient(patient)">
-            Un-watch
-          </button>
-          <button ion-button color="danger" (click)="removePatientConfirm(patient)">
-            Remove
-          </button>
-        </ion-item-options>
+            <button *ngIf="isWatchingPatient(patient)==false" ion-button (click)="watchPatient(patient)">
+              Watch
+            </button>
+            <button *ngIf="isWatchingPatient(patient)==true"  ion-button color="secondary" (click)="unWatchPatient(patient)">
+              Un-watch
+            </button>
+            <button ion-button color="danger" (click)="removePatientConfirm(patient)">
+              Remove
+            </button>
+          </ion-item-options>
       </ion-item-sliding>
     </ion-list>
     
