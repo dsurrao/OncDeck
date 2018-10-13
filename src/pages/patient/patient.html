@@ -5,45 +5,44 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Patient details</ion-title>
+    <ion-title>Patient information</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
 
+  <!-- Patient bio -->
   <div id="patient-container">
     <div id="patient-name">{{patient.LastName}}, {{patient.FirstName}}</div>
     <div id="patient-information">({{patient.GenderInitial}}, {{patient.Age}} yrs)</div>
   </div>
 
-  <!-- Summary card -->
-  <ion-card>
+  <!-- Patient information -->
+  <ion-card class="card-container">
+
+    <!-- Summary -->
     <ion-card-header class="card-header">
       <ion-icon name="clipboard"></ion-icon>
-        Summary
-    </ion-card-header>
-    <ion-item text-wrap>
-      <patient-summary [patient]="patient"></patient-summary>
-    </ion-item>
-  </ion-card>
+      Summary
+      </ion-card-header>
+      <ion-card-content>
+        <patient-summary [patient]="patient"></patient-summary>
+      </ion-card-content>
 
 
-  <!-- Scheduled Surgery card -->
-  <ion-card>
-    <ion-card-header class="card-header">
-      <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
-    </ion-card-header>
+    <div class="patient-divider"></div>
 
-    <ion-list>
+    <!-- Scheduled Surgery -->
+      <ion-card-header class="card-header">
+        <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
+      </ion-card-header>
+
       <ion-item-sliding *ngFor="let surgery of surgeries" (click)="viewSurgery(surgery)">
         <button ion-item text-wrap *ngIf="surgery.CompletedDate != null; else elseBlock">
           Surgery completed on {{toLocaleDateString(surgery.CompletedDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
@@ -54,19 +53,17 @@
           </button>
         </ng-template>
       </ion-item-sliding>
-    </ion-list>
+      
+      <ion-buttons end>
+        <button ion-button icon-start round (click)="addScheduledSurgery()" class="add-button">
+          <ion-icon name="add"></ion-icon>
+          Add Surgery
+        </button>
+      </ion-buttons>
 
-    <ion-buttons end>
-      <button ion-button icon-start round (click)="addScheduledSurgery()" class="add-button">
-        <ion-icon name="add"></ion-icon>
-        Add Surgery
-      </button>
-    </ion-buttons>
-  </ion-card>
-
-
-  <!-- Surgical Pathology card -->
-  <ion-card>
+    <div class="patient-divider"></div>
+    
+    <!--  Surgical Pathology -->
     <ion-card-header class="card-header">
       <ion-icon name="body"></ion-icon>
       Surgical Pathology
@@ -87,19 +84,6 @@
         Add Pathology
       </button>
     </ion-buttons>
+
   </ion-card>
-
-
-  <!-- <ion-card>
-    <ion-title>Biopsy</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="editBiopsy()">
-        <ion-icon name="create"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-card-title>
-      {{patient.BiopsyStatus}}
-    </ion-card-title>
-  </ion-card> -->
-
 </ion-content>

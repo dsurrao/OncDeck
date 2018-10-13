@@ -1,3 +1,15 @@
-page-about {
+.about-container {
+    padding:1em;
+}
 
+.about-container h2 {
+    font-size:2em !important;
+}
+
+.about-container li {
+    padding-bottom: 1em !important;
+}
+
+.about-container ol {
+    padding-left: 1.4em;
 }

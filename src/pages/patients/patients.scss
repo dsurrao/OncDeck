@@ -1,12 +1,22 @@
-h2 {
-    font-size: 1.6em !important;
-    font-weight: bold;
+.toolbar-background-md, .tabs-md .tabbar {
+    background-color: rgb(44,130,201);
 }
 
-.card-container {
-    padding: 1.33em .5em;
+.toolbar-title-md, .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default, .tab-button-icon, .tab-button-text {
+    color: rgb(255, 255, 255) !important;
+}
+
+.icon-person {
+    font-size: 2em;
+    color: #000;
 }
 
 .patient-status {
-    padding-left: 2em;
+    color: #777;
+    font-size: 1em;
+}
+
+.icon-right-arrow {
+    font-size: 3em;
+    padding-left: .2em;
 }

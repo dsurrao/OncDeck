@@ -13,10 +13,19 @@
 }
 
 .card-header {
-    color: #8F8F8F;
+    color: #777 !important;
     font-size: 1.33em !important;
 }
 
 .add-button {
     width: 42%;
+    margin-bottom: 1em;
+}
+
+.card-container, .card-container .item-md  {
+    background-color: rgb(248, 248, 248) !important;
+}
+
+.patient-divider {
+    border: 1px dashed #CCC;
 }
