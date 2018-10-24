@@ -19,6 +19,7 @@ import aws_exports from '../../assets/aws-exports'; // specify the location of a
 import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
 import { userInfo } from 'os';
+import { AboutPage } from '../about/about';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -116,6 +117,14 @@ export class PatientsPage {
   showGraph() {
     Auth.currentAuthenticatedUser().then((user) => {
       this.navCtrl.push(GraphPage);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  aboutPage() {
+    Auth.currentAuthenticatedUser().then((user) => {
+      this.navCtrl.push(AboutPage);
     }).catch((error) => {
       console.log(error);
     });
