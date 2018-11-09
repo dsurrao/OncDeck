@@ -351,4 +351,39 @@ export class PatientsPage {
   togglePatients() {
     this.getPatients();
   }
+
+  /**
+   * Filter alert
+   */
+  doFilter() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Filters');
+
+    alert.addInput({
+        type: 'radio',
+        label: 'Sort Ascending',
+        value: 'asc',
+        checked: true
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Sort Descending',
+      value: 'desc'
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'Confirm',
+      handler: (data: any) => {
+        if (data == "asc")
+          this.sortPatientList('ascend');
+        else
+          this.sortPatientList('descend');
+      }
+    });
+
+    alert.present();
+  }
+  
 }

@@ -41,17 +41,9 @@
       <button *ngIf="!isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
       </button>
-      <button *ngIf="isAuthenticated" ion-button icon-only>
+      <button *ngIf="isAuthenticated" ion-button icon-only (click)="doFilter()">
         <ion-icon name="md-options"></ion-icon>
       </button>
-      <!--
-      <button *ngIf="isAuthenticated" ion-button icon-only (click)="sortPatientList('ascend')">
-        <ion-icon name="md-arrow-up"></ion-icon>
-      </button>
-      <button *ngIf="isAuthenticated" ion-button icon-only (click)="sortPatientList('descend')">
-        <ion-icon name="md-arrow-down"></ion-icon>
-      </button>
-      -->
       <button ion-button icon-only (click)="isSearchbarOpened=true">
         <ion-icon name="search"></ion-icon>
       </button>
