@@ -326,12 +326,12 @@ export class PatientsPage {
 
     var greaterValue, lesserValue;
     if (sortPreference == "ascend") {
-      greaterValue = -1
-      lesserValue = 1
+      greaterValue = 1
+      lesserValue = -1
     }
     else {
-      greaterValue = 1;
-      lesserValue = -1
+      greaterValue = -1;
+      lesserValue = 1
     }
 
     this.patients = this.patients.sort((a, b)=>{
@@ -385,5 +385,5 @@ export class PatientsPage {
 
     alert.present();
   }
-  
+
 }
