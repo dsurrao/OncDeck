@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Events, NavController, LoadingController, NavParams, ViewController } from 'ionic-angular';
 import { Auth } from 'aws-amplify';
 
 @Component({
@@ -15,7 +15,8 @@ export class LoginModal {
   userId: string;
 
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
+    public loadingCtrl: LoadingController, 
     public navParams: NavParams, 
     public viewCtrl: ViewController,
     public events: Events) {}
@@ -23,15 +24,22 @@ export class LoginModal {
   ionViewDidLoad() { }
 
   signin () {
-    Auth.signIn(this.credentials.username, this.credentials.password)
-      .then(user => {
-        Auth.currentCredentials().then(credentials => {
-            this.userId = credentials.identityId;
-          }
-        );
-        this.dismiss()
-      })
-      .catch(err => console.log('error signing in', err));
+    let loading = this.loadingCtrl.create({
+      content: 'Logging in...'
+    });
+
+    loading.present().then(() => {
+      Auth.signIn(this.credentials.username, this.credentials.password)
+        .then(user => {
+          Auth.currentCredentials().then(credentials => {
+              this.userId = credentials.identityId;
+            }
+          );
+          this.dismiss()
+          loading.dismiss();
+        })
+        .catch(err => console.log('error signing in', err));
+    });
   }
 
   register () {
