@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from './../pages/tabs/tabs';
 
 import Amplify from 'aws-amplify';
-import aws_exports from '../assets/aws-exports'; // specify the location of aws-exports.js file on your project
+import awsmobile from '../assets/aws-exports'; // specify the location of aws-exports.js file on your project
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +20,7 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      Amplify.configure(aws_exports);
+      Amplify.configure(awsmobile);
     });
   }
 }

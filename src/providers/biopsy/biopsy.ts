@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Auth } from 'aws-amplify';
-import aws_exports from '../../assets/aws-exports'; 
+import awsmobile from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
 
-AWS.config.region = aws_exports.aws_project_region;
+AWS.config.region = awsmobile.aws_project_region;
 
 /*
   Generated class for the BiopsyProvider provider.
@@ -29,7 +29,7 @@ export class BiopsyProvider {
       Auth.currentUserCredentials()
       .then(credentials => {
         const params = {
-          TableName: 'Patient',
+          TableName: awsmobile.aws_resource_name_prefix + '-Patient',
           Key: {
             Id: patientId
           },
@@ -61,7 +61,7 @@ export class BiopsyProvider {
       Auth.currentUserCredentials()
       .then(credentials => {
         const params = {
-          TableName: 'Patient',
+          TableName: awsmobile.aws_resource_name_prefix + '-Patient',
           Key: {
             Id: patientId
           },

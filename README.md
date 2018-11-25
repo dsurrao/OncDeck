@@ -1,11 +1,15 @@
 # OncDeck
 
+# AWS MobileHub configurations
+https://github.com/dsurrao/oncdeckaws
+
+# Settings
 place your custom aws-exports.js file under src/assets
 
 format:
 
 ```
-const aws_exports = {
+const awsmobile = {
     'aws_app_analytics': 'enable',
     'aws_cognito_identity_pool_id': '',
     'aws_cognito_region': 'us-east-1',
@@ -26,7 +30,7 @@ const aws_exports = {
     'aws_user_pools_web_client_id': '',
 }
 
-export default aws_exports;
+export default awsmobile;
 ```
 
 # CLI tools
@@ -34,5 +38,6 @@ install CLI tools listed in this tutorial: https://github.com/ionic-team/starter
 
 # to build and run
 npm install
+(if there are errors, delete package-lock.json and re-run)
 
 ionic serve

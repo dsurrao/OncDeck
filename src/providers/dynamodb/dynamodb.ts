@@ -2,19 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth, Logger } from 'aws-amplify';
 import AWS from 'aws-sdk';
-
 import Amplify from 'aws-amplify';
+import awsmobile from '../../assets/aws-exports'; 
 
 Amplify.configure({
   Auth: {
   // REQUIRED - Amazon Cognito Identity Pool ID
-      identityPoolId: 'us-east-1:9383dd44-c7b3-4e83-8c86-35a139c37e5a', 
+      identityPoolId: awsmobile.aws_cognito_identity_pool_id, 
   // REQUIRED - Amazon Cognito Region
-      region: 'us-east-1', 
+      region: awsmobile.aws_cognito_region, 
   // OPTIONAL - Amazon Cognito User Pool ID
-      userPoolId: 'us-east-1_wFoHGe664',
+      userPoolId: awsmobile.aws_user_pools_id,
   // OPTIONAL - Amazon Cognito Web Client ID
-      userPoolWebClientId: '2jv6fu7cbbcdh0d38ttjfi5s60', 
+      userPoolWebClientId: awsmobile.aws_user_pools_web_client_id, 
   }
 });
 

@@ -3,10 +3,10 @@ import { DateUtils } from './../../common/dateutils';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
-import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
+import awsmobile from '../../assets/aws-exports'; 
 
-AWS.config.region = aws_exports.aws_project_region;
+AWS.config.region = awsmobile.aws_project_region;
 
 /*
   Generated class for the SurgeryProvider provider.
@@ -40,7 +40,7 @@ export class SurgeryProvider {
             attrValues[0]['CompletedDate'] = completedDateISO;
           }
           let params = {
-            TableName: 'Patient',
+            TableName: awsmobile.aws_resource_name_prefix + '-Patient',
             Key: {
               Id: patient['Id']
             },

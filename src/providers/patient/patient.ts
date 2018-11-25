@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Auth } from 'aws-amplify';
-import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import awsmobile from '../../assets/aws-exports';
 
-AWS.config.region = aws_exports.aws_project_region;
+AWS.config.region = awsmobile.aws_project_region;
 
 /*
   Generated class for the PatientProvider provider.
@@ -33,12 +33,12 @@ export class PatientProvider {
     return new Promise((resolve, reject) => {
       let patients: any = [];
       let params: any = {
-        TableName: 'Patient'
+        TableName: awsmobile.aws_resource_name_prefix + '-Patient',
       };
 
       if (showOnlyMyPatients) {
         params = {
-          TableName: 'Patient',
+          TableName: awsmobile.aws_resource_name_prefix + '-Patient',
           FilterExpression: 'contains(Watchers, :w)',
           ExpressionAttributeValues: {
             ':w': myUsername
@@ -112,7 +112,7 @@ export class PatientProvider {
           let expressions = this.constructExpressions(
             firstName, lastName, dob, gender, phoneNumber, ctFirstName, ctLastName,biopsyStatus);
           const params = {
-            TableName: 'Patient',
+            TableName: awsmobile.aws_resource_name_prefix + '-Patient',
             Key: {
               Id: patientId
             },
@@ -132,7 +132,7 @@ export class PatientProvider {
   removePatient(patient, credentials): Promise<any> {
     return new Promise((resolve, reject) => {
       const params = {
-        TableName: 'Patient',
+        TableName: awsmobile.aws_resource_name_prefix + '-Patient',
         Key: {
           Id: patient['Id']
         }
@@ -145,7 +145,7 @@ export class PatientProvider {
     return new Promise((resolve, reject) => {
       let docClient: DocumentClient = this.db.getDocumentClient(credentials);
       const params = {
-        TableName: 'Patient',
+        TableName: awsmobile.aws_resource_name_prefix + '-Patient',
         Key: {
           Id: patientId
         },
@@ -162,7 +162,7 @@ export class PatientProvider {
     return new Promise((resolve, reject) => {
       let docClient: DocumentClient = this.db.getDocumentClient(credentials);
       const params = {
-        TableName: 'Patient',
+        TableName: awsmobile.aws_resource_name_prefix + '-Patient',
         Key: {
           Id: patientId
         },
