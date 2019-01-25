@@ -28,6 +28,7 @@ import { PatientProvider } from '../providers/patient/patient';
 import { PathologySurgery } from '../providers/pathology/pathology';
 import { GraphPage } from '../pages/graph/graph';
 import { ChartsModule } from 'ng2-charts';
+import { PouchdbProvider } from '../providers/pouchdb/pouchdb';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ChartsModule } from 'ng2-charts';
     SurgeryProvider,
     DateUtils,
     PatientProvider,
-    PathologySurgery
+    PathologySurgery,
+    PouchdbProvider
   ]
 })
 export class AppModule {}

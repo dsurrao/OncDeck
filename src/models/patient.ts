@@ -1,8 +1,8 @@
 export class Patient {
-    lastname: string;
-    firstname: string;
+    lastName: string;
+    firstName: string;
     gender: string;
-    dateofbirth: string;
+    dob: string;
     age: number;
-    id: number;
+    _id: string; // unique id for pouchdb
 }

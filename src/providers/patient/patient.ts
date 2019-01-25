@@ -6,6 +6,8 @@ import { Auth } from 'aws-amplify';
 import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import awsmobile from '../../assets/aws-exports';
+import { Patient } from "../../models/patient";
+import { PouchdbProvider } from '../pouchdb/pouchdb';
 
 AWS.config.region = awsmobile.aws_project_region;
 
@@ -18,85 +20,19 @@ AWS.config.region = awsmobile.aws_project_region;
 @Injectable()
 export class PatientProvider {
 
-  constructor(public http: HttpClient,
-    public db: DynamodbProvider,
-    ) {
-    console.log('Hello PatientProvider Provider');
+  constructor(public http: HttpClient, public db: PouchdbProvider) {
   }
 
   // pass in credentials from caller, maybe this should be the way to do it?
-  /*
-  aws dynamodb scan --table-name Patient --filter-expression "contains(Watchers, :w)" \
---expression-attribute-values '{":w": {"S": "dom4"}}'
-  */
-  getPatients(showOnlyMyPatients: boolean, myUsername: string, credentials: any) {
-    return new Promise((resolve, reject) => {
-      let patients: any = [];
-      let params: any = {
-        TableName: awsmobile.aws_resource_name_prefix + '-Patient',
-      };
-
-      if (showOnlyMyPatients) {
-        params = {
-          TableName: awsmobile.aws_resource_name_prefix + '-Patient',
-          FilterExpression: 'contains(Watchers, :w)',
-          ExpressionAttributeValues: {
-            ':w': myUsername
-          }
-        }
-      }
-
-      this.db.getDocumentClient(credentials).scan(params).promise()
-        .then(data => {
-          patients = data.Items; 
-          patients.sort((a, b)=>{
-            let cmp = 0;
-            if (a['Surgeries'] != null) {
-              if (b['Surgeries'] != null) {
-                if (a['Surgeries'][0]['ScheduledDate'] > b['Surgeries'][0]['ScheduledDate']) {
-                  cmp = -1;
-                }
-                else if  (a['Surgeries'][0]['ScheduledDate'] == b['Surgeries'][0]['ScheduledDate']) {
-                  cmp = 0;
-                }
-                else {
-                  if (a['Surgeries'][0]['CompletedDate'] != null && b['Surgeries'][0]['CompletedDate'] != null) {
-                    if (a['Surgeries'][0]['CompletedDate'] > b['Surgeries'][0]['CompletedDate']) {
-                      cmp = -1;
-                    }
-                    else if (a['Surgeries'][0]['CompletedDate'] == b['Surgeries'][0]['CompletedDate']) {
-                      cmp = 0;
-                    }
-                    else {
-                      cmp = 1;
-                    }
-                  }
-                  else {
-                    cmp = 1;
-                  }
-                }
-              }
-              else {
-                cmp = 1;
-              }
-            }
-            else {
-              if (b['Surgeries'] != null) {
-                cmp = -1;
-              }
-              else {
-                cmp = 0;
-              }
-            }              
-            return (cmp);
-          });
-
-          resolve(patients);
-        })
-        .catch(err => reject('error in refresh tasks'));
-    });
+  getPatients(showOnlyMyPatients: boolean, myUsername: string, credentials: any): Promise<Patient[]> {
+    return this.db.getPatients();
   }
 
+  savePatient(patient: Patient): Promise<any> {
+    return this.db.savePatient(patient);
+  }
+
+  /*
   savePatient(
     patientId: string, 
     firstName: string, 
@@ -233,4 +169,5 @@ export class PatientProvider {
 
     return {'names': names, 'values': values, 'update': update}
   };
+  */
 }

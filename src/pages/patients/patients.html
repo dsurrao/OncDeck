@@ -63,7 +63,7 @@
             <ion-icon name="contact" class="icon-contact"></ion-icon>
           </ion-avatar>
           <h2>
-            {{patient.LastName}}, {{patient.FirstName}}
+            {{patient.lastName}}, {{patient.firstName}}
           </h2>
           <div *ngIf="getSurgeryStatus(patient) == 0">
             <span class='patient-status'>
@@ -101,7 +101,7 @@
           </ion-note>
         </button>
 
-        <ion-item-options side="right">
+        <!-- <ion-item-options side="right">
           <button *ngIf="isWatchingPatient(patient)==false" ion-button (click)="watchPatient(patient)">
             Watch
           </button>
@@ -111,7 +111,7 @@
           <button ion-button color="danger" (click)="removePatientConfirm(patient)">
             Remove
           </button>
-        </ion-item-options>
+        </ion-item-options> -->
         
       </ion-item-sliding>
     </ion-list>

@@ -27,6 +27,7 @@
     "@ionic/storage": "2.1.3",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
+    "@types/pouchdb": "^6.3.2",
     "ajv": "^5.0.0",
     "amazon-cognito-auth-js": "^1.2.3",
     "amazon-cognito-identity-js": "^2.0.9",
@@ -51,6 +52,7 @@
     "lodash.orderby": "^4.6.0",
     "lodash.values": "^4.3.0",
     "ng2-charts": "^1.6.0",
+    "pouchdb": "^7.0.0",
     "querystring-browser": "^1.0.4",
     "rxjs": "5.5.8",
     "stream": "0.0.2",
@@ -63,7 +65,7 @@
     "@types/node": "10.1.2",
     "typescript": "~2.6.2"
   },
-  "description": "An Ionic project",
+  "description": "OncDeck app for Oncology Care",
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},

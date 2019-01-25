@@ -60,18 +60,19 @@ export class PatientFormPage {
 
   submit() {
     Auth.currentUserCredentials().then(credentials => {
-        this.patientProvider.savePatient(this.patientId, 
-          this.firstName, 
-          this.lastName, 
-          this.dob, 
-          this.gender,
-          this.phoneNumber, 
-          this.ctFirstName,
-          this.ctLastName,
-          this.biopsyStatus).then((resp) => {
-            this.events.publish('patientSaved');
-            this.navCtrl.pop();
-          });
-        });
+        // this.patientProvider.savePatient(this.patientId, 
+        //   this.firstName, 
+        //   this.lastName, 
+        //   this.dob, 
+        //   this.gender,
+        //   this.phoneNumber, 
+        //   this.ctFirstName,
+        //   this.ctLastName,
+        //   this.biopsyStatus).then((resp) => {
+        //     this.events.publish('patientSaved');
+        //     this.navCtrl.pop();
+        //   });
+        // 
+      });
   }
 }

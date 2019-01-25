@@ -56,21 +56,21 @@ export class GraphPage {
             var september = 0;
             var october = 0;
             for (var index in data) {
-              if (data[index].Surgeries != null) {
-                var surgery = data[index].Surgeries[0];
-                var completedDate = surgery.CompletedDate;
-                if (completedDate != undefined) {
-                  var currentMonth = new Date(completedDate).getMonth();
-                  if (currentMonth == 6)
-                    july++;
-                  if (currentMonth == 7)
-                    august++;
-                  if (currentMonth == 8)
-                    september++;
-                  if (currentMonth == 9)
-                    october++;
-                }
-              }
+              // if (data[index].Surgeries != null) {
+              //   var surgery = data[index].Surgeries[0];
+              //   var completedDate = surgery.CompletedDate;
+              //   if (completedDate != undefined) {
+              //     var currentMonth = new Date(completedDate).getMonth();
+              //     if (currentMonth == 6)
+              //       july++;
+              //     if (currentMonth == 7)
+              //       august++;
+              //     if (currentMonth == 8)
+              //       september++;
+              //     if (currentMonth == 9)
+              //       october++;
+              //   }
+              // }
             }
             this.storePatientsToGraph = [july, august, september, october];
             this.lineChart = new Chart(this.lineCanvas.nativeElement, { 

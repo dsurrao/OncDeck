@@ -20,6 +20,7 @@ import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
 import { userInfo } from 'os';
 import { AboutPage } from '../about/about';
+import { Patient } from '../../models/patient';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -38,7 +39,7 @@ AWS.config.region = aws_exports.aws_project_region;
 export class PatientsPage {
   @ViewChild(List) list: List;
 
-  patients: any;
+  patients: Patient[];
   originalPatientList: any;
   isAuthenticated: boolean;
   currentAuthenticatedUsername: string;
@@ -53,7 +54,7 @@ export class PatientsPage {
     public dateUtils: DateUtils) {
     this.patients = [];
     this.originalPatientList = [];
-    this.isAuthenticated = false;
+    this.isAuthenticated = true;
     this.currentAuthenticatedUsername = '';
     this.showOnlyMyPatients = false;
 
@@ -77,29 +78,15 @@ export class PatientsPage {
   }
 
   getPatients() {
-    Auth.currentUserCredentials()
-      .then(credentials => {
-        Auth.currentUserInfo().then((userInfo) => {
-          this.currentAuthenticatedUsername = userInfo.username;
-          this.isAuthenticated = true;
-          this.patientSvc.getPatients(this.showOnlyMyPatients, 
-            this.currentAuthenticatedUsername, credentials).then((data) => {
-            this.patients = data;
-            this.originalPatientList = data; // make a copy of patients for filtering purposes
-          })
-          .catch((error) => {
-            console.log('get patients error', error);
-            this.patients = [];
-          });
-        })
-        .catch((error) => {
-          this.patients = [];
-        });
-      })
-      .catch(err => {
-        console.log('get current credentials err', err);
-        this.patients = [];
-      });
+    this.patientSvc.getPatients(this.showOnlyMyPatients, 
+      this.currentAuthenticatedUsername, null).then((data) => {
+      this.patients = data;
+      this.originalPatientList = data; // make a copy of patients for filtering purposes
+    })
+    .catch((error) => {
+      console.log('get patients error', error);
+      this.patients = [];
+    });
   }
 
   login() {
@@ -107,11 +94,23 @@ export class PatientsPage {
   }
 
   addPatient() {
-    Auth.currentAuthenticatedUser().then((user) => {
-      this.navCtrl.push(PatientFormPage);
-    }).catch((error) => {
-      console.log(error);
+    let patient: Patient = new Patient();
+    patient.lastName = 'Bunny';
+    patient.firstName = 'Easter';
+    patient.gender = 'F';
+    patient.dob = '1/1/1985';
+    patient.age = 33;
+    this.patientSvc.savePatient(patient).then(result => {
+      console.log("patient saved");
+    })
+    .catch(error => {
+      console.log("patient save error: " + error);
     });
+    // Auth.currentAuthenticatedUser().then((user) => {
+    //   this.navCtrl.push(PatientFormPage);
+    // }).catch((error) => {
+    //   console.log(error);
+    // });
   }
 
   showGraph() {
@@ -137,7 +136,7 @@ export class PatientsPage {
       console.log(error);
     });
   }
-
+/*
   removePatient(patient) {
     Auth.currentUserCredentials().then((credentials) => {
       this.patientSvc.removePatient(patient, credentials).then((data) => {
@@ -216,6 +215,7 @@ export class PatientsPage {
     });
     confirm.present();
   }
+*/
 
   // TODO: gets only the first surgery, need to handle multiple
   getSurgerySummary(patient) {
