@@ -94,23 +94,7 @@ export class PatientsPage {
   }
 
   addPatient() {
-    let patient: Patient = new Patient();
-    patient.lastName = 'Bunny';
-    patient.firstName = 'Easter';
-    patient.gender = 'F';
-    patient.dob = '1/1/1985';
-    patient.age = 33;
-    this.patientSvc.savePatient(patient).then(result => {
-      console.log("patient saved");
-    })
-    .catch(error => {
-      console.log("patient save error: " + error);
-    });
-    // Auth.currentAuthenticatedUser().then((user) => {
-    //   this.navCtrl.push(PatientFormPage);
-    // }).catch((error) => {
-    //   console.log(error);
-    // });
+    this.navCtrl.push(PatientFormPage);
   }
 
   showGraph() {

@@ -12,9 +12,12 @@ import UUID from 'uuid';
 @Injectable()
 export class PouchdbProvider {
   db = null;
+  remoteDb = null; 
 
   constructor(public http: HttpClient) {
     this.db = new PouchDB('oncdeck');
+
+    this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
 
     console.log('Hello PouchdbProvider Provider');
   }
@@ -30,8 +33,10 @@ export class PouchdbProvider {
     }
     return new Promise((resolve, reject) => {
       this.db.put(patient).then(function (response) {
-        resolve(patient);
-      }).catch(function (err) {
+          this.syncDbs();
+          resolve(patient);
+        }.bind(this)
+      ).catch(function (err) {
         reject(err);
       });
     });
@@ -50,6 +55,14 @@ export class PouchdbProvider {
       catch(error => {
         reject(error);
       });
+    });
+  }
+
+  syncDbs() {
+    this.db.sync(this.remoteDb).on('complete', function () {
+      console.log("// yay, we're in sync!");
+    }).on('error', function (err) {
+      console.log("// boo, we hit an error! " + err);
     });
   }
 }

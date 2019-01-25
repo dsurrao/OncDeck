@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
+import { Patient } from '../../models/patient';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -36,7 +37,7 @@ export class PatientFormPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public db: DynamodbProvider,
-    public patientProvider: PatientProvider,
+    public patientSvc: PatientProvider,
     public events: Events) {
     }
   
@@ -59,20 +60,18 @@ export class PatientFormPage {
   }
 
   submit() {
-    Auth.currentUserCredentials().then(credentials => {
-        // this.patientProvider.savePatient(this.patientId, 
-        //   this.firstName, 
-        //   this.lastName, 
-        //   this.dob, 
-        //   this.gender,
-        //   this.phoneNumber, 
-        //   this.ctFirstName,
-        //   this.ctLastName,
-        //   this.biopsyStatus).then((resp) => {
-        //     this.events.publish('patientSaved');
-        //     this.navCtrl.pop();
-        //   });
-        // 
-      });
+    let patient: Patient = new Patient();
+    patient.lastName = this.lastName;
+    patient.firstName = this.firstName;
+    patient.gender = this.gender;
+    patient.dob = this.dob;
+    this.patientSvc.savePatient(patient).then(result => {
+      console.log("patient saved");
+      this.events.publish('patientSaved');
+      this.navCtrl.pop();
+    })
+    .catch(error => {
+      console.log("patient save error: " + error);
+    });
   }
 }
