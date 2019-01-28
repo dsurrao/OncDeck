@@ -17,7 +17,12 @@ export class PouchdbProvider {
   constructor(public http: HttpClient) {
     this.db = new PouchDB('oncdeck');
 
-    this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
+    //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
+
+    // IBM cloud instance
+    this.remoteDb = new PouchDB(
+      'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
+        {auth: {username: 'terrentypticilikedinglel', password: 'b22ff6beeab8954e123783d1a85675b0553f307d'}});
 
     console.log('Hello PouchdbProvider Provider');
   }
@@ -43,6 +48,8 @@ export class PouchdbProvider {
   }
 
   getPatients(): Promise<Patient[]> {
+    this.syncDbs();
+
     return new Promise((resolve, reject) => {
       this.db.allDocs({include_docs: true}).then(result => {
         let patients: Patient[] = [];
