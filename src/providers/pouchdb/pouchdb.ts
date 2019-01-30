@@ -17,12 +17,12 @@ export class PouchdbProvider {
   constructor(public http: HttpClient) {
     this.db = new PouchDB('oncdeck');
 
-    //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
+    this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
 
     // IBM cloud instance
-    this.remoteDb = new PouchDB(
-      'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
-        {auth: {username: 'terrentypticilikedinglel', password: 'b22ff6beeab8954e123783d1a85675b0553f307d'}});
+    // this.remoteDb = new PouchDB(
+    //   'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
+    //     {auth: {username: 'terrentypticilikedinglel', password: 'b22ff6beeab8954e123783d1a85675b0553f307d'}});
 
     console.log('Hello PouchdbProvider Provider');
   }
@@ -31,7 +31,7 @@ export class PouchdbProvider {
     return this.db;
   }
 
-  savePatient(patient: Patient): Promise<any> {
+  savePatient(patient: Patient): Promise<Patient> {
     // create a unique id for patient
     if (patient._id == null) {
       patient._id = UUID.v4();
@@ -39,6 +39,7 @@ export class PouchdbProvider {
     return new Promise((resolve, reject) => {
       this.db.put(patient).then(function (response) {
           this.syncDbs();
+          patient._rev = response.rev;
           resolve(patient);
         }.bind(this)
       ).catch(function (err) {

@@ -19,8 +19,17 @@
 
   <!-- Patient bio -->
   <div id="patient-container">
-    <div id="patient-name">{{patient.LastName}}, {{patient.FirstName}}</div>
-    <div id="patient-information">({{patient.GenderInitial}}, {{patient.Age}} yrs)</div>
+    <div id="patient-name">{{patient.lastName}}, {{patient.firstName}}</div>
+    <div id="patient-information">({{patient.gender}}, {{patient.dob}})</div>
+    <div>
+      <span *ngIf="patient.biopsyStatus != null">
+        Biopsy Status: {{patient.biopsyStatus.status}}
+        <span *ngIf="patient.biopsyStatus.biopsyDate != null"> on {{patient.biopsyStatus.biopsyDate}}</span>
+      </span>
+      <span *ngIf="patient.phoneNumber != null">Phone: {{patient.phoneNumber}} <br/></span>
+      <span *ngIf="patient.contactFirstName != null">Contact: {{patient.contactLastName}}, {{patient.contactFirstName}}, </span>
+      <span *ngIf="patient.contactPhoneNumber != null">Contact Phone: {{patient.contactPhoneNumber}}</span>
+    </div>
   </div>
 
   <!-- Patient information -->

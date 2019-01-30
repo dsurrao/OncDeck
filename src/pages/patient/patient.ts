@@ -72,29 +72,7 @@ export class PatientPage {
   }
   
   refreshPatient() {
-    Auth.currentUserCredentials()
-      .then(credentials => {
-
-        const params: GetItemInput = {
-          TableName: 'Patient',
-          Key: {
-            Id: this.patient['Id']
-          }
-        };
-
-        this.db.getDocumentClient(credentials).get(params).promise()
-          .then(data => { 
-            this.patient = data.Item;
-            this.patient['Age'] = this.dateUtils.getAge(this.patient['DOB']);
-            this.patient['GenderInitial'] = this.getGenderInitial(this.patient['Gender']);
-            this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
-            this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
-          })
-          .catch(err => console.log('error in save patient', err));
-      })
-      .catch(err => {
-        console.log('get current credentials err', err);
-      });
+    
   }
 
   toLocaleDateString(isoString: string): string {

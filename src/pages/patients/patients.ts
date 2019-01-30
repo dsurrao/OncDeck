@@ -114,11 +114,7 @@ export class PatientsPage {
   }
 
   viewPatient(patient) {
-    Auth.currentAuthenticatedUser().then((user) => {
-      this.navCtrl.push(PatientPage, {params: patient});
-    }).catch((error) => {
-      console.log(error);
-    });
+    this.navCtrl.push(PatientPage, {params: patient});
   }
 /*
   removePatient(patient) {

@@ -1,9 +1,10 @@
-import { BiopsyOrderPage } from './../biopsy-order/biopsy-order';
-import { PatientsPage } from './../patients/patients';
-import { BiopsyReportPage1Page } from './../biopsy-report-page1/biopsy-report-page1';
-import { BiopsyProvider } from './../../providers/biopsy/biopsy';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Patient } from '../../models/patient';
+import { PatientProvider } from '../../providers/patient/patient';
+import { Events } from 'ionic-angular';
+import { PatientPage } from '../patient/patient';
+import { BiopsyStatus } from '../../models/biopsy-status';
 
 /**
  * Generated class for the BiopsyStatusPage page.
@@ -18,12 +19,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'biopsy-status.html',
 })
 export class BiopsyStatusPage {
-  patient:any;
-  biopsyStatus:string;
+  patient: Patient;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public biopsy:BiopsyProvider) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public patientSvc: PatientProvider,
+    public events: Events) {
     this.patient = navParams.data.params;
-    this.biopsyStatus = this.patient['BiopsyStatus'];
+    if (this.patient.biopsyStatus == null) {
+      this.patient.biopsyStatus = new BiopsyStatus();
+    }
   }
 
   ionViewDidLoad() {
@@ -31,18 +36,13 @@ export class BiopsyStatusPage {
   }
 
   next() {
-    //this.navCtrl.push(BiopsyReportPage1Page);
-    this.biopsy.updateStatus(this.patient['Id'], this.biopsyStatus).then((resp) => {
-        if (this.biopsyStatus == "scheduled") {
-          this.navCtrl.push(BiopsyOrderPage, {params: this.patient});
-        }
-        else {
-          this.navCtrl.push(PatientsPage);
-        }
-      }
-    ).catch((err) => {
-      console.log('BiopsyStatusPage error');
+    this.patientSvc.savePatient(this.patient).then(updatedPatient => {
+      console.log("patient saved");
+      this.navCtrl.pop();
+      this.navCtrl.push(PatientPage, {params: updatedPatient});
+    })
+    .catch(error => {
+      console.log("patient save error: " + error);
     });
   }
-
-}
+} 

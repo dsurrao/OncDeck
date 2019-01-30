@@ -28,7 +28,7 @@ export class PatientProvider {
     return this.db.getPatients();
   }
 
-  savePatient(patient: Patient): Promise<any> {
+  savePatient(patient: Patient): Promise<Patient> {
     return this.db.savePatient(patient);
   }
 

@@ -17,17 +17,17 @@
   <form (ngSubmit)="submit()" #patientForm="ngForm">
     <ion-item>
       <ion-label floating>First Name</ion-label>
-      <ion-input type="text" name="firstName" required [(ngModel)]="firstName"></ion-input>
+      <ion-input type="text" name="firstName" required [(ngModel)]="patient.firstName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Last Name</ion-label>
-      <ion-input type="text" name="lastName" required [(ngModel)]="lastName"></ion-input>
+      <ion-input type="text" name="lastName" required [(ngModel)]="patient.lastName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>DOB</ion-label>
-      <ion-input type="date" name="dob" [(ngModel)]="dob" required></ion-input>
+      <ion-input type="date" name="dob" [(ngModel)]="patient.dob" required></ion-input>
     </ion-item>
-    <ion-list radio-group name="gender" [(ngModel)]="gender" required>
+    <ion-list radio-group name="gender" [(ngModel)]="patient.gender" required>
       <ion-list-header>Gender</ion-list-header>
       <ion-item>
           <ion-label>Female</ion-label>
@@ -40,22 +40,22 @@
     </ion-list>
     <ion-item>
       <ion-label floating>Phone Number</ion-label>
-      <ion-input type="text" name="phoneNumber" [(ngModel)]="phoneNumber"></ion-input>
+      <ion-input type="text" name="phoneNumber" [(ngModel)]="patient.phoneNumber"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Contact First Name</ion-label>
-      <ion-input type="text" name="ctFirstName" [(ngModel)]="ctFirstName"></ion-input>
+      <ion-input type="text" name="contactFirstName" [(ngModel)]="patient.contactFirstName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Contact Last Name</ion-label>
-      <ion-input type="text" name="ctLastName" [(ngModel)]="ctLastName"></ion-input>
+      <ion-input type="text" name="contactLastName" [(ngModel)]="patient.contactLastName"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Biopsy Status</ion-label>
-      <ion-input type="text" name="biopsyStatus" [(ngModel)]="biopsyStatus"></ion-input>
+      <ion-label floating>Contact Phone Number</ion-label>
+      <ion-input type="text" name="contactPhoneNumber" [(ngModel)]="patient.contactPhoneNumber"></ion-input>
     </ion-item>
     <div padding>
-      <button ion-button color="primary" block type="submit" [disabled]="!patientForm.form.valid">Submit</button>
+      <button ion-button color="primary" block type="submit" [disabled]="!patientForm.form.valid">Next</button>
     </div>
   </form>
 </ion-content>
