@@ -1,12 +1,9 @@
-import { DynamodbProvider } from '../dynamodb/dynamodb';
-import { DateUtils } from './../../common/dateutils';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth } from 'aws-amplify';
-import AWS from 'aws-sdk';
-import awsmobile from '../../assets/aws-exports'; 
-
-AWS.config.region = awsmobile.aws_project_region;
+import { Patient } from '../../models/patient';
+import { Surgery } from '../../models/surgery';
+import { PouchdbProvider } from '../pouchdb/pouchdb';
+import UUID from 'uuid';
 
 /*
   Generated class for the SurgeryProvider provider.
@@ -18,48 +15,33 @@ AWS.config.region = awsmobile.aws_project_region;
 export class SurgeryProvider {
 
   constructor(public http: HttpClient, 
-    public db: DynamodbProvider,
-    public dateUtils: DateUtils) {
+    public db: PouchdbProvider) {
     console.log('Hello SurgeryProvider Provider');
   }
 
   /* 
     save scheduled surgery info for a patient 
-    scheduledDate: yyyy-mm-dd
-    completedDate: yyyy-mm-dd
   */
-  schedule(patient: any, surgery: any, scheduledDate: string, facility: string, providerName, 
-    completedDate: string): Promise<any> {
-    let promise = new Promise((resolve, reject) => {
-      Auth.currentUserCredentials().then(
-        credentials => {
-          let scheduledDateISO: string = this.dateUtils.yyyymmddToISOString(scheduledDate);
-          let completedDateISO: string = this.dateUtils.yyyymmddToISOString(completedDate);
-          let attrValues = [{'Facility': facility, 'ScheduledDate': scheduledDateISO, 'ProviderName': providerName}];
-          if (completedDateISO != '') {
-            attrValues[0]['CompletedDate'] = completedDateISO;
-          }
-          let params = {
-            TableName: awsmobile.aws_resource_name_prefix + '-Patient',
-            Key: {
-              Id: patient['Id']
-            },
-            ExpressionAttributeNames: {
-              '#s': 'Surgeries'
-              }, 
-            ExpressionAttributeValues: {
-              ':s': attrValues
-            }, 
-            UpdateExpression: 'SET #s = :s'
-          };
-          resolve(this.db.getDocumentClient(credentials).update(params).promise());
+  save(patient: Patient, surgery: Surgery): Promise<Patient> {
+    if (surgery.id == null) {
+      // new surgery
+      if (patient.surgeries == null) {
+        patient.surgeries = [];
+      } 
+      surgery.id = UUID.v4();
+      patient.surgeries.push(surgery);
+    }
+    else {
+      // update existing surgery
+      for (var i: number = 0; i < patient.surgeries.length; i++) {
+        if (patient.surgeries[i].id === surgery.id) {
+          patient.surgeries[i] = surgery;
+          break;
         }
-      )
-      .catch(err => {
-        console.log('get current credentials err', err);
-        reject('get current credentials err');
-      });
-    });
-    return promise;
+      }
+    }
+    
+    // finally, update db
+    return this.db.savePatient(patient);
   }
 }

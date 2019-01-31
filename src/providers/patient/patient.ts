@@ -1,15 +1,7 @@
-import { DynamodbProvider } from './../dynamodb/dynamodb';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { Auth } from 'aws-amplify';
-import AWS from 'aws-sdk';
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import awsmobile from '../../assets/aws-exports';
 import { Patient } from "../../models/patient";
 import { PouchdbProvider } from '../pouchdb/pouchdb';
-
-AWS.config.region = awsmobile.aws_project_region;
 
 /*
   Generated class for the PatientProvider provider.

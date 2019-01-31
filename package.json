@@ -28,6 +28,7 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/pouchdb": "^6.3.2",
+    "@types/uuid": "^3.4.4",
     "ajv": "^5.0.0",
     "amazon-cognito-auth-js": "^1.2.3",
     "amazon-cognito-identity-js": "^2.0.9",

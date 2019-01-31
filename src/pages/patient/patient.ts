@@ -28,7 +28,6 @@ AWS.config.region = aws_exports.aws_project_region;
 })
 export class PatientPage {
   patient: any;
-  surgeries: any;
   pathologies: any;
 
   constructor(public navCtrl: NavController, 
@@ -40,7 +39,6 @@ export class PatientPage {
     this.patient = this.navParams.data.params;
     this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
     this.patient['GenderInitial'] = this.getGenderInitial(this.patient['Gender']);
-    this.surgeries = this.patient['Surgeries'] != null ? this.patient['Surgeries'] : [];
     this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
     this.events.subscribe('patientSaved', () => {
       this.refreshPatient();

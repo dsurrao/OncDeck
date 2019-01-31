@@ -52,13 +52,13 @@
         <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
       </ion-card-header>
 
-      <ion-item-sliding *ngFor="let surgery of surgeries" (click)="viewSurgery(surgery)">
-        <button ion-item text-wrap *ngIf="surgery.CompletedDate != null; else elseBlock">
-          Surgery completed on {{toLocaleDateString(surgery.CompletedDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
+      <ion-item-sliding *ngFor="let surgery of patient.surgeries" (click)="viewSurgery(surgery)">
+        <button ion-item text-wrap *ngIf="surgery.completedDate != null; else elseBlock">
+          Surgery completed on {{toLocaleDateString(surgery.completedDate)}} at {{surgery.facility}} with {{surgery.providerName}}
         </button>
         <ng-template #elseBlock>
           <button ion-item text-wrap>
-            Scheduled on {{toLocaleDateString(surgery.ScheduledDate)}} at {{surgery.Facility}} with {{surgery.ProviderName}}
+            Scheduled on {{toLocaleDateString(surgery.scheduledDate)}} at {{surgery.facility}} with {{surgery.providerName}}
           </button>
         </ng-template>
       </ion-item-sliding>
