@@ -24,6 +24,10 @@ export class PatientProvider {
     return this.db.savePatient(patient);
   }
 
+  removePatient(patient): Promise<boolean> {
+    return this.db.removePatient(patient);
+  }
+
   /*
   savePatient(
     patientId: string, 

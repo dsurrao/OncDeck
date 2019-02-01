@@ -116,18 +116,37 @@ export class PatientsPage {
   viewPatient(patient) {
     this.navCtrl.push(PatientPage, {params: patient});
   }
-/*
-  removePatient(patient) {
-    Auth.currentUserCredentials().then((credentials) => {
-      this.patientSvc.removePatient(patient, credentials).then((data) => {
-        // refresh patient list
-        this.getPatients();
-      })
-    }).catch((error) => {
-      console.log(error);
+
+  removePatientConfirm(patient) {
+    const confirm = this.alertCtrl.create({
+      title: 'Remove patient?',
+      message: 'Are you sure you want to remove this patient?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.list.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.removePatient(patient);
+          }
+        }
+      ]
     });
+    confirm.present();
   }
 
+  removePatient(patient) {
+    this.patientSvc.removePatient(patient).then((data) => {
+      // refresh patient list
+      this.getPatients();
+    })
+  }
+
+/*
   watchPatient(patient) {
     Auth.currentUserCredentials().then((credentials) => {
       this.patientSvc.watchPatient(patient['Id'], 

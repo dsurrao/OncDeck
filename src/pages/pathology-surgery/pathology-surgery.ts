@@ -1,7 +1,16 @@
-import { DateUtils } from './../../common/dateutils';
 import { Component } from '@angular/core';
 import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
-import { PathologySurgery } from '../../providers/pathology/pathology';
+import UUID from 'uuid';
+import { Patient } from '../../models/patient';
+import { PouchdbProvider } from '../../providers/pouchdb/pouchdb';
+import { SurgicalPathology } from '../../models/surgical-pathology';
+import { SurgeryType } from '../../models/surgery-type';
+import { SurgeryHistology } from '../../models/surgery-histology';
+import { EstrogenReceptor } from '../../models/er-receptor';
+import { ProgesteroneReceptor } from '../../models/pr-receptor';
+import { Her2Receptor } from '../../models/her2-receptor';
+import { SurgicalFeature } from '../../models/surgical-feature';
+import { SurgicalMargin } from '../../models/surgical-margin';
 
 /**
  * Generated class for the PathologySurgeryPage page.
@@ -16,72 +25,55 @@ import { PathologySurgery } from '../../providers/pathology/pathology';
   templateUrl: 'pathology-surgery.html',
 })
 export class PathologySurgeryPage {
-  patient: any;
-  pathology: any;
-  surgeryType: string;
-  surgeryHistologies: any
-  surgeryHistologiesToSubmit: any;
-  estrogrenReceptor: string;
-  progesteroneReceptor: string;
-  heReceptor: string;
-  surgicalFeatures: string;
-  surgicalMargins: string;
+  patient: Patient;
+  surgicalPathology: SurgicalPathology;
+
+  // make these enums available in template
+  surgeryType = SurgeryType; 
+  surgeryHistology = SurgeryHistology;
+  estrogenReceptor = EstrogenReceptor;
+  progesteroneReceptor = ProgesteroneReceptor;
+  her2Receptor = Her2Receptor;
+  surgicalFeature = SurgicalFeature;
+  surgicalMargin = SurgicalMargin;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
-    public pathologySvc: PathologySurgery,
-    public events: Events,
-    public dateUtils: DateUtils)
-    {
-      this.surgeryHistologies = [{"name":"Import Summary of Biopsy Pathology", "checked": false},{"name":"Invasive Ductal Carcinoma", "checked": false},{"name":"Invasive Lobular Carcinoma", "checked": false},{"name":"DCIS (Ductal Carcinoma In Situ)", "checked": false},{"name":"LCIS (Lobular Carcinoma In Situ)", "checked": false},{"name":"Other", "checked": false}];
+    public db: PouchdbProvider,
+    public events: Events) {
       this.patient = navParams.data.params.patient;
-      this.pathology = navParams.data.params.pathology;
-      if (this.pathology != null) {
-        this.surgeryType = this.pathology["SurgeryType"];
-        this.fillSurgeryHistologies(this.pathology["SurgeryHistology"]);
-        this.estrogrenReceptor = this.pathology["EstrogrenReceptor"];
-        this.progesteroneReceptor = this.pathology["ProgesteroneReceptor"];
-        this.heReceptor = this.pathology["HeReceptor"];
-        this.surgicalFeatures =this.pathology["SurgicalFeatures"];
-        this.surgicalMargins = this.pathology["SurgicalMargins"];
+      this.surgicalPathology = navParams.data.params.surgicalPathology;
+      if (this.surgicalPathology == null) {
+        this.surgicalPathology = new SurgicalPathology();
       }
     }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PathologySurgeryPage');
   }
+  
+  submit() {
+    if (this.patient.surgicalPathologies == null) {
+      this.patient.surgicalPathologies = [];
+    }
 
-  // on page load, check which histologies have been saved, and check it
-  fillSurgeryHistologies(surgeryHistologies) {
-    if (surgeryHistologies != null) {
-      for (var item in this.surgeryHistologies) {
-        var histology = this.surgeryHistologies[item];
-        if (surgeryHistologies.indexOf(histology.name) != -1) {
-          this.surgeryHistologies[item].checked = true;
+    if (this.surgicalPathology.id == null) {
+      // this is a new entry
+      this.surgicalPathology.id = UUID.v4();
+      this.patient.surgicalPathologies.push(this.surgicalPathology);
+    }
+    else {
+      for (var i = 0; i < this.patient.surgicalPathologies.length; i++) {
+        if (this.patient.surgicalPathologies[i].id === this.surgicalPathology.id) {
+          this.patient.surgicalPathologies[i] = this.surgicalPathology;
+          break;
         }
       }
     }
-  }
 
-  // on submit, loop through checked histologies and add it to array for submission
-  assembleHistologiesToSubmit() {
-    this.surgeryHistologiesToSubmit = [];
-    for (var item in this.surgeryHistologies) {
-      var histology = this.surgeryHistologies[item];
-      if (histology.checked) {
-          this.surgeryHistologiesToSubmit.push(histology.name);
-      }
-    }
-  }
-  
-  submit() {
-    this.assembleHistologiesToSubmit();
-    
-    this.pathologySvc.pathology(this.patient, this.surgeryType, this.surgeryHistologiesToSubmit, this.surgicalFeatures, 
-      this.surgicalMargins, this.estrogrenReceptor, this.progesteroneReceptor, this.heReceptor).then((resp) => {
+    this.db.savePatient(this.patient).then((resp) => {
       this.events.publish('patientSaved');
       this.navCtrl.pop();
     });
   }
-  
 }

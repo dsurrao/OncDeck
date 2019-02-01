@@ -6,13 +6,7 @@ import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
 import { Component } from '@angular/core';
 import { Events, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-
-import { Auth } from 'aws-amplify';
-import aws_exports from '../../assets/aws-exports'; 
-import AWS from 'aws-sdk';
-import { GetItemInput } from 'aws-sdk/clients/dynamodb';
-
-AWS.config.region = aws_exports.aws_project_region;
+import { SurgicalPathology } from '../../models/surgical-pathology';
 
 /**
  * Generated class for the PatientPage page.
@@ -37,8 +31,8 @@ export class PatientPage {
     public events: Events,
     public dateUtils: DateUtils) {
     this.patient = this.navParams.data.params;
-    this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
-    this.patient['GenderInitial'] = this.getGenderInitial(this.patient['Gender']);
+    // this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
+    this.patient['genderInitial'] = this.getGenderInitial(this.patient['Gender']);
     this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
     this.events.subscribe('patientSaved', () => {
       this.refreshPatient();
@@ -49,24 +43,20 @@ export class PatientPage {
     this.navCtrl.push(PatientFormPage, {params: this.patient});
   }
 
-  editBiopsy() {
-    this.navCtrl.push(BiopsyStatusPage, {params: this.patient});
-  }
-
   addScheduledSurgery() {
     this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient}});
   }
 
-  viewSurgery(surgery) {
+  viewScheduledSurgery(surgery) {
     this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient, surgery: surgery}});
   }
 
-  addPathologySurgery() {
+  addSurgicalPathology() {
     this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient}});
   }
 
-  viewPathologySurgery(pathology) {
-    this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient, pathology: pathology}});
+  viewSurgicalPathology(pathology: SurgicalPathology) {
+    this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient, surgicalPathology: pathology}});
   }
   
   refreshPatient() {

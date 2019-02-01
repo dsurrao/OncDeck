@@ -48,6 +48,18 @@ export class PouchdbProvider {
     });
   }
 
+  removePatient(patient: Patient): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.db.remove(patient._id, patient._rev).then(function (response) {
+          this.syncDbs();
+          resolve(true);
+        }.bind(this)
+      ).catch(function (err) {
+        reject(false);
+      });
+    });
+  }
+
   getPatients(): Promise<Patient[]> {
     this.syncDbs();
 

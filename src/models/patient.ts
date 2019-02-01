@@ -1,5 +1,6 @@
 import { BiopsyStatus } from "./biopsy-status";
 import { Surgery } from "./surgery";
+import { SurgicalPathology } from "./surgical-pathology";
 
 export class Patient {
     lastName: string;
@@ -12,6 +13,7 @@ export class Patient {
     contactPhoneNumber: string;
     biopsyStatus: BiopsyStatus;
     surgeries: Surgery[];
+    surgicalPathologies: SurgicalPathology[];
     _id: string; // unique id for pouchdb
-    _rev: string; // document version in pouchdb
+    _rev: string; // document revision in pouchdb
 }
