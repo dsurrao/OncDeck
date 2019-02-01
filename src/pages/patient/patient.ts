@@ -1,12 +1,13 @@
 import { DateUtils } from './../../common/dateutils';
 import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
 import { PathologySurgeryPage } from './../pathology-surgery/pathology-surgery';
-import { BiopsyStatusPage } from './../biopsy-status/biopsy-status';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
-import { Component } from '@angular/core';
-import { Events, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Events, IonicPage, NavController, NavParams, ModalController, AlertController, List } from 'ionic-angular';
 import { SurgicalPathology } from '../../models/surgical-pathology';
+import { Surgery } from '../../models/surgery';
+import { SurgeryProvider } from '../../providers/surgery/surgery';
 
 /**
  * Generated class for the PatientPage page.
@@ -21,15 +22,19 @@ import { SurgicalPathology } from '../../models/surgical-pathology';
   templateUrl: 'patient.html',
 })
 export class PatientPage {
+  @ViewChild('surgeryList', {read: List}) surgeryList: List;
+  @ViewChild('surgicalPathologyList', {read: List}) surgicalPathologyList: List;
+
   patient: any;
   pathologies: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public db: DynamodbProvider,
     public events: Events,
-    public dateUtils: DateUtils) {
+    public dateUtils: DateUtils,
+    public surgerySvc: SurgeryProvider) {
     this.patient = this.navParams.data.params;
     // this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
     this.patient['genderInitial'] = this.getGenderInitial(this.patient['Gender']);
@@ -61,6 +66,60 @@ export class PatientPage {
   
   refreshPatient() {
     
+  }
+
+  removeSurgeryConfirm(surgery: Surgery) {
+    const confirm = this.alertCtrl.create({
+      title: 'Remove surgery entry?',
+      message: 'Are you sure you want to remove this surgery entry?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.surgeryList.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.surgeryList.closeSlidingItems();
+            this.removeSurgery(surgery);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  removeSurgery(surgery: Surgery) {
+    this.surgerySvc.removeSurgery(surgery, this.patient);
+  }
+
+  removeSurgicalPathologyConfirm(pathology: SurgicalPathology) {
+    const confirm = this.alertCtrl.create({
+      title: 'Remove surgical pathology report?',
+      message: 'Are you sure you want to remove this surgical pathology report?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.surgicalPathologyList.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.surgicalPathologyList.closeSlidingItems();
+            this.removeSurgicalPathology(pathology);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  removeSurgicalPathology(pathology: SurgicalPathology) {
+    this.surgerySvc.removeSurgicalPathology(pathology, this.patient);
   }
 
   toLocaleDateString(isoString: string): string {

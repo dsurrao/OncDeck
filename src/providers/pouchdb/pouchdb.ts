@@ -19,6 +19,8 @@ export class PouchdbProvider {
 
     this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
 
+    this.syncDbs();
+
     // IBM cloud instance
     // this.remoteDb = new PouchDB(
     //   'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
@@ -61,19 +63,23 @@ export class PouchdbProvider {
   }
 
   getPatients(): Promise<Patient[]> {
-    this.syncDbs();
-
     return new Promise((resolve, reject) => {
-      this.db.allDocs({include_docs: true}).then(result => {
-        let patients: Patient[] = [];
-        for (var i = 0; i < result.total_rows; i++) {
-          let patient: Patient = result.rows[i].doc;
-          patients.push(patient);
-        }
-        resolve(patients);
-      }).
-      catch(error => {
-        reject(error);
+      this.db.sync(this.remoteDb)
+      .on('complete', function () {
+        this.db.allDocs({include_docs: true}).then(result => {
+          let patients: Patient[] = [];
+          for (var i = 0; i < result.total_rows; i++) {
+            let patient: Patient = result.rows[i].doc;
+            patients.push(patient);
+          }
+          resolve(patients);
+        }).
+        catch(error => {
+          reject(error);
+        });
+      }.bind(this))
+      .on('error', function (err) {
+        reject(err);
       });
     });
   }

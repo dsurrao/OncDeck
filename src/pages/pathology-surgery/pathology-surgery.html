@@ -105,10 +105,14 @@
             <ion-item>
                 <ion-label>LVI+</ion-label>
                 <ion-radio value="{{surgicalFeature.LVIPositive}}"></ion-radio>
-                </ion-item>
+            </ion-item>
             <ion-item>
                 <ion-label>LVI-</ion-label>
                 <ion-radio value="{{surgicalFeature.LVIPositive}}"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>None</ion-label>
+                <ion-radio value="{{surgicalFeature.None}}"></ion-radio>
             </ion-item>
         </ion-list>
         <ion-list radio-group name="surgicalMargins" [(ngModel)]="surgicalPathology.surgicalMargin" required>
@@ -121,9 +125,14 @@
                 <ion-label>Broadly Positive</ion-label>
                 <ion-radio value="{{surgicalMargin.BroadlyPositive}}"></ion-radio>
             </ion-item>
+            <ion-item>
+                <ion-label>None</ion-label>
+                <ion-radio value="{{surgicalMargin.None}}"></ion-radio>
+            </ion-item>
         </ion-list>
         <div padding>
-            <button ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid">Save</button>
+            <!-- <button ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid">Save</button> -->
+            <button ion-button color="primary" type="submit">Save</button>
         </div>
     </form>
 </ion-content>
