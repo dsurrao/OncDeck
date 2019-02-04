@@ -58,7 +58,7 @@
             Surgery completed on {{toLocaleDateString(surgery.completedDate)}} at {{surgery.facility}} with {{surgery.providerName}}
           </button>
           <ng-template #elseBlock>
-            <button ion-item text-wrap>
+            <button ion-item text-wrap (click)="viewScheduledSurgery(surgery)">
               Scheduled on {{toLocaleDateString(surgery.scheduledDate)}} at {{surgery.facility}} with {{surgery.providerName}}
             </button>
           </ng-template>
