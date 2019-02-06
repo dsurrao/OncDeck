@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Patient } from '../../models/patient';
+import { SurgicalPathology } from '../../models/surgical-pathology';
 
 /**
  * Generated class for the PatientSummaryComponent component.
@@ -26,7 +28,7 @@ export class PatientSummaryComponent implements OnChanges {
     this.populateComponent(this.patient);
   }
 
-  populateComponent(pt: any) {
+  populateComponent(pt: Patient) {
     this.patientDemographics = this.constructPatientDemographics(pt);
     this.surgicalPathologySummary = this.constructSurgicalPathologySummary(pt);
     this.surgerySummary = this.constructSurgerySummary(pt);
@@ -43,22 +45,22 @@ export class PatientSummaryComponent implements OnChanges {
     }
   }
 
-  constructPatientDemographics(patient: any): string {
-    return patient['FirstName'] + ' ' + patient['LastName']
-    + ' (' + patient['Gender'] + ', ' + patient['DOB'] + ')';
+  constructPatientDemographics(patient: Patient): string {
+    return patient.firstName + ' ' + patient.lastName
+    + ' (' + patient.gender + ', ' + patient.dob + ')';
   }
 
-  constructSurgerySummary(patient: any): string {
+  constructSurgerySummary(patient: Patient): string {
     let surgerySummary = "Surgery: ";
-    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    let surgeries = patient.surgeries != null ? patient.surgeries : [];
     if (surgeries.length > 0) {
-      if (surgeries[0]['CompletedDate'] != null) {
-        surgerySummary = "Surgery completed on " + new Date(surgeries[0]['CompletedDate']).toLocaleDateString()
-        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+      if (surgeries[0].completedDate != null) {
+        surgerySummary = "Surgery completed on " + new Date(surgeries[0].completedDate).toLocaleDateString()
+        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
       }
       else if (surgeries[0]['ScheduledDate'] != null) {
-        surgerySummary = "Surgery scheduled on " + new Date(surgeries[0]['ScheduledDate']).toLocaleDateString()
-        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+        surgerySummary = "Surgery scheduled on " + new Date(surgeries[0].scheduledDate).toLocaleDateString()
+        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
       }
     }
     else {
@@ -67,71 +69,24 @@ export class PatientSummaryComponent implements OnChanges {
     return (surgerySummary);
   }
 
-  /* let attrValues = [{'SurgeryType': surgeryType, 
-  'SurgeryHistology': surgeryHistology, 
-  'ReceptorStatuses': receptorStatuses, 
-  'SurgicalFeatures': surgicalFeatures, 
-  'SurgicalMargins': surgicalMargins}];
-  */
-  constructSurgicalPathologySummary(patient: any): string {
-    let pathologySummary = 'Pathology: ';
-    let pathologies = patient['Pathologies'] != null ? patient['Pathologies'] : [];
+  constructSurgicalPathologySummary(patient: Patient): string {
+    let pathologySummary = 'Surgical Pathology: ';
+    let pathologies = patient.surgicalPathologies != null ? patient.surgicalPathologies : [];
 
     if (pathologies.length > 0) {
-      pathologySummary += pathologies[0]['SurgeryType'] + '; '
-      + pathologies[0]['SurgeryHistology'] + '; '
-      + this.assembleSummaryText("estrogen", pathologies[0]['EstrogrenReceptor'])
-      + this.assembleSummaryText("progesterone", pathologies[0]['ProgesteroneReceptor'])
-      + this.assembleSummaryText("he", pathologies[0]['HeReceptor'])
-      + this.assembleSummaryText("surgicalFeatures", pathologies[0]['SurgicalFeatures'])
-      + this.assembleSummaryText("surgicalMargins", pathologies[0]['SurgicalMargins'])
+      let pathology: SurgicalPathology = pathologies[0];
+      pathologySummary += 'Date: ' + new Date(pathology.surgeryDate).toLocaleDateString() + ', '
+        + 'Type: ' + pathology.surgeryType + ', ' 
+        + 'Histology: ' + pathology.surgeryHistology + ', ' 
+        + 'PR: ' + pathology.prReceptor + ', ' 
+        + 'ER: ' + pathology.erReceptor + ', ' 
+        + 'HER2: ' + pathology.her2Receptor + ', ' 
+        + 'LVI: ' + pathology.surgicalFeature + ', ' 
+        + 'Surgical Margins: ' + pathology.surgicalMargin
     }
     else {
       pathologySummary += 'No pathology report';
     }
     return pathologySummary;
   }
-
-  /*
-   * Assemble text depending on type/value
-   */
-  assembleSummaryText(type: string, value: string): string {
-    if (type == "estrogen") {
-      if (value == "erMinus")
-        return "ER-;";
-      if (value == "erPlus")
-        return "ER+;";
-    }
-
-    if (type == "progesterone") {
-      if (value == "prMinus")
-        return "PR-;";
-      if (value == "prPlus")
-        return "PR+;";
-    }
-
-    if (type == "he") {
-      if (value == "herMinus")
-        return "HER-;";
-      if (value == "herPlus")
-        return "HER+;";
-    }
-
-    if (type == "surgicalFeatures") {
-      if (value == "lviMinus")
-        return "LVI-;";
-      if (value == "lviPlus")
-        return "LVI+;";
-    }
-
-    if (type == "surgicalMargins") {
-      if (value == "focallyPostive")
-        return "Focally Positive";
-      if (value == "broadlyPositive")
-        return "Broadly Positive";
-    }
-
-    return "";
-  }
-  
 }

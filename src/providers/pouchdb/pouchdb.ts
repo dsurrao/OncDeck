@@ -17,13 +17,14 @@ export class PouchdbProvider {
   constructor(public http: HttpClient) {
     this.db = new PouchDB('oncdeck');
 
-    this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
+    //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
 
     // IBM cloud instance
-    // this.remoteDb = new PouchDB(
-    //   'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
-    //     {auth: {username: 'terrentypticilikedinglel', password: 'b22ff6beeab8954e123783d1a85675b0553f307d'}});
+    this.remoteDb = new PouchDB(
+      'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
+        {auth: {username: 'terrentypticilikedinglel', password: 'b22ff6beeab8954e123783d1a85675b0553f307d'}});
 
+    // live sync dbs
     this.syncDbs();
 
     console.log('Hello PouchdbProvider Provider');
@@ -40,7 +41,6 @@ export class PouchdbProvider {
     }
     return new Promise((resolve, reject) => {
       this.db.put(patient).then(function (response) {
-          this.syncDbs();
           patient._rev = response.rev;
           resolve(patient);
         }.bind(this)
@@ -53,7 +53,6 @@ export class PouchdbProvider {
   removePatient(patient: Patient): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.db.remove(patient._id, patient._rev).then(function (response) {
-          this.syncDbs();
           resolve(true);
         }.bind(this)
       ).catch(function (err) {
@@ -62,33 +61,53 @@ export class PouchdbProvider {
     });
   }
 
+  // try to sync with remote db to get the latest, otherwise use local db
   getPatients(): Promise<Patient[]> {
     return new Promise((resolve, reject) => {
       this.db.sync(this.remoteDb)
       .on('complete', function () {
-        this.db.allDocs({include_docs: true}).then(result => {
-          let patients: Patient[] = [];
-          for (var i = 0; i < result.total_rows; i++) {
-            let patient: Patient = result.rows[i].doc;
-            patients.push(patient);
-          }
-          resolve(patients);
-        }).
-        catch(error => {
-          reject(error);
-        });
+        resolve(this.getPatientsLocal());
       }.bind(this))
       .on('error', function (err) {
-        reject(err);
+        resolve(this.getPatientsLocal());
+      }.bind(this));
+    });
+  }
+
+  getPatientsLocal(): Promise<Patient[]> {
+    return new Promise((resolve, reject) => {
+      this.db.allDocs({include_docs: true}).then(result => {
+        let patients: Patient[] = [];
+        for (var i = 0; i < result.total_rows; i++) {
+          let patient: Patient = result.rows[i].doc;
+          patients.push(patient);
+        }
+        resolve(patients);
+      }).
+      catch(error => {
+        reject(error);
       });
     });
   }
 
   syncDbs() {
-    this.db.sync(this.remoteDb).on('complete', function () {
-      console.log("// yay, we're in sync!");
+    this.db.sync(this.remoteDb, {
+      live: true,
+      retry: true
+    }).on('change', function (change) {
+      // yo, something changed!
+    }).on('paused', function (info) {
+      // replication was paused, usually because of a lost connection
+    }).on('active', function (info) {
+      // replication was resumed
     }).on('error', function (err) {
-      console.log("// boo, we hit an error! " + err);
+      // totally unhandled error (shouldn't happen)
     });
+    
+    // this.db.sync(this.remoteDb).on('complete', function () {
+    //   console.log("// yay, we're in sync!");
+    // }).on('error', function (err) {
+    //   console.log("// boo, we hit an error! " + err);
+    // });
   }
 }
