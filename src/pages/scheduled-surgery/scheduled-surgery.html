@@ -16,7 +16,7 @@
   <form (ngSubmit)="submit()" #surgeryForm="ngForm">
     <ion-item>
       <ion-label>Scheduled Date</ion-label>
-      <ion-input type="date" name="scheduledDate" [(ngModel)]="surgery.scheduledDate" required></ion-input>
+      <ion-input type="date" name="scheduledDate" [(ngModel)]="scheduledDate" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Facility</ion-label>
@@ -28,7 +28,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Completed Date</ion-label>
-      <ion-input type="date" name="completedDate" [(ngModel)]="surgery.completedDate"></ion-input>
+      <ion-input type="date" name="completedDate" [(ngModel)]="completedDate"></ion-input>
     </ion-item>
     <div padding>
       <button ion-button color="primary" type="submit" [disabled]="!surgeryForm.form.valid">Save</button>

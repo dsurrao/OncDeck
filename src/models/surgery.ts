@@ -1,7 +1,7 @@
 export class Surgery {
     facility: string;
     providerName: string;
-    scheduledDate: Date;
-    completedDate: Date;
+    scheduledDate: string;
+    completedDate: string;
     id: string;
 }

@@ -11,6 +11,7 @@ import { ProgesteroneReceptor } from '../../enums/pr-receptor';
 import { Her2Receptor } from '../../enums/her2-receptor';
 import { SurgicalFeature } from '../../enums/surgical-feature';
 import { SurgicalMargin } from '../../enums/surgical-margin';
+import { DateUtils } from '../../common/dateutils';
 
 /**
  * Generated class for the PathologySurgeryPage page.
@@ -27,6 +28,7 @@ import { SurgicalMargin } from '../../enums/surgical-margin';
 export class PathologySurgeryPage {
   patient: Patient;
   surgicalPathology: SurgicalPathology;
+  surgeryDate: string;
 
   // make these enums available in template
   surgeryType = SurgeryType; 
@@ -40,11 +42,15 @@ export class PathologySurgeryPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public db: PouchdbProvider,
-    public events: Events) {
+    public events: Events,
+    public dateUtils: DateUtils) {
       this.patient = navParams.data.params.patient;
       this.surgicalPathology = navParams.data.params.surgicalPathology;
       if (this.surgicalPathology == null) {
         this.surgicalPathology = new SurgicalPathology();
+      }
+      else {
+        this.surgeryDate = this.dateUtils.isoStringToYyyymmdd(this.surgicalPathology.surgeryDate);
       }
     }
 
@@ -53,6 +59,10 @@ export class PathologySurgeryPage {
   }
   
   submit() {
+    if (this.surgeryDate != null) {
+      this.surgicalPathology.surgeryDate = this.dateUtils.yyyymmddToISOString(this.surgeryDate);
+    }
+
     if (this.patient.surgicalPathologies == null) {
       this.patient.surgicalPathologies = [];
     }

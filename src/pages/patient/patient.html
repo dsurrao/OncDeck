@@ -89,7 +89,7 @@
     <ion-list #surgicalPathologyList>
       <ion-item-sliding *ngFor="let pathology of patient.surgicalPathologies">
         <button ion-item text-wrap (click)="viewSurgicalPathology(pathology)">
-          Surgery Type: {{pathology.surgeryType}}
+          {{pathology.surgeryType}} on {{toLocaleDateString(pathology.surgeryDate)}}
         </button>
         <!-- delete option -->
         <ion-item-options side="right">

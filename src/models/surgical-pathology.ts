@@ -14,5 +14,6 @@ export class SurgicalPathology {
     her2Receptor: Her2Receptor;
     surgicalFeature: SurgicalFeature;
     surgicalMargin: SurgicalMargin;
+    surgeryDate: string;
     id: string;
 }

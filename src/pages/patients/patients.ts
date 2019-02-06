@@ -219,26 +219,26 @@ export class PatientsPage {
   // TODO: gets only the first surgery, need to handle multiple
   getSurgerySummary(patient) {
     let surgeryStatus = "Surgery not scheduled";
-    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    let surgeries = patient.surgeries != null ? patient.surgeries : [];
     if (surgeries.length > 0) {
-      if (surgeries[0]['CompletedDate'] != null) {
-        surgeryStatus = "on " + new Date(surgeries[0]['CompletedDate']).toLocaleDateString()
-        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+      if (surgeries[0].completedDate != null) {
+        surgeryStatus = "on " + new Date(surgeries[0].completedDate).toLocaleDateString()
+        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
       }
-      else if (surgeries[0]['ScheduledDate'] != null) {
-        surgeryStatus = "on " + new Date(surgeries[0]['ScheduledDate']).toLocaleDateString()
-        + " at " + surgeries[0]['Facility'] + " with " + surgeries[0]['ProviderName'];
+      else if (surgeries[0].scheduledDate != null) {
+        surgeryStatus = "on " + new Date(surgeries[0].scheduledDate).toLocaleDateString()
+        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
       }
     }
     return (surgeryStatus);
   }
 
   getSurgeryStatusText(patient) {
-    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    let surgeries = patient.surgeries != null ? patient.surgeries : [];
     if (surgeries.length > 0) {
-      if (surgeries[0]['CompletedDate'] != null)
+      if (surgeries[0].completedDate != null)
         return "completed";
-      else if (surgeries[0]['ScheduledDate'] != null) {
+      else if (surgeries[0].scheduledDate != null) {
         return "scheduled";
       }
     }
@@ -251,17 +251,17 @@ export class PatientsPage {
   // 3: completed
   // 4: missed
   getSurgeryStatus(patient): number {
-    let surgeryStatus = 0;
-    let surgeries = patient['Surgeries'] != null ? patient['Surgeries'] : [];
+    let surgeryStatus: number = 0;
+    let surgeries = patient.surgeries != null ? patient.surgeries : [];
     if (surgeries.length > 0) {
-      if (surgeries[0]['CompletedDate'] != null) {
+      if (surgeries[0].completedDate != null) {
         surgeryStatus = 3;
       }
-      else if (surgeries[0]['ScheduledDate'] == null) {
+      else if (surgeries[0].scheduledDate == null) {
         surgeryStatus = 0;
       }
       else {
-        let daysFromToday = this.dateUtils.daysFromToday(surgeries[0]['ScheduledDate']);
+        let daysFromToday = this.dateUtils.daysFromToday(surgeries[0].scheduledDate);
         if (daysFromToday == 0) {
           surgeryStatus = 1;
         }
