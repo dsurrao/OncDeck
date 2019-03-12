@@ -44,6 +44,8 @@ export class PatientsPage {
   isAuthenticated: boolean;
   currentAuthenticatedUsername: string;
   showOnlyMyPatients: boolean;
+  showOnlyPatientsWithoutCompletedSurgeries: boolean;
+  sortOrder: string;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -57,6 +59,8 @@ export class PatientsPage {
     this.isAuthenticated = true;
     this.currentAuthenticatedUsername = '';
     this.showOnlyMyPatients = false;
+    this.showOnlyPatientsWithoutCompletedSurgeries = false;
+    this.sortOrder = 'descSurgDate';
 
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
@@ -82,6 +86,7 @@ export class PatientsPage {
       this.currentAuthenticatedUsername, null).then((data) => {
       this.patients = data;
       this.originalPatientList = data; // make a copy of patients for filtering purposes
+      this.displayPatientsBySortOrder(this.sortOrder);
     })
     .catch((error) => {
       console.log('get patients error', error);
@@ -316,36 +321,6 @@ export class PatientsPage {
     else
       this.patients = this.originalPatientList;
   }
-  
-  /**
-   * Sort patient list by lastname depending on sortPreference passed in
-   * @param sortPreference
-   */
-  sortPatientList(sortPreference) {
-
-    var greaterValue, lesserValue;
-    if (sortPreference == "ascend") {
-      greaterValue = 1
-      lesserValue = -1
-    }
-    else {
-      greaterValue = -1;
-      lesserValue = 1
-    }
-
-    this.patients = this.patients.sort((a, b)=>{
-      let cmp = 0;
-      if (a['LastName'] > b['LastName']) {
-        cmp = greaterValue;
-      }
-      else if  (a['LastName'] == b['LastName'])  {
-        cmp = 0;
-      }
-      else
-        cmp = lesserValue;
-      return (cmp);
-    });
-  }
 
   togglePatients() {
     this.getPatients();
@@ -360,29 +335,136 @@ export class PatientsPage {
 
     alert.addInput({
         type: 'radio',
-        label: 'Sort Ascending',
-        value: 'asc',
-        checked: true
+        label: 'Sort Ascending By Name',
+        value: 'ascName',
+        checked: this.sortOrder == 'ascName'
     });
 
     alert.addInput({
       type: 'radio',
-      label: 'Sort Descending',
-      value: 'desc'
+      label: 'Sort Descending By Name',
+      value: 'descName',
+      checked: this.sortOrder == 'descName'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Sort Ascending By Surgery Date',
+      value: 'ascSurgDate',
+      checked: this.sortOrder == 'ascSurgDate'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Sort Descending By Surgery Date',
+      value: 'descSurgDate',
+      checked: this.sortOrder == 'descSurgDate'
     });
 
     alert.addButton('Cancel');
     alert.addButton({
       text: 'Confirm',
-      handler: (data: any) => {
-        if (data == "asc")
-          this.sortPatientList('ascend');
-        else
-          this.sortPatientList('descend');
+      handler: (sortOrder: string) => {
+        this.displayPatientsBySortOrder(sortOrder);
       }
     });
 
     alert.present();
   }
 
+  displayPatientsBySortOrder(sortOrder) {
+    switch(sortOrder) {
+      case "ascName":
+        this.sortPatientListByName('ascend');
+        this.sortOrder = "ascName";
+        break;
+      case "descName":
+        this.sortPatientListByName('descend');
+        this.sortOrder = "descName";
+        break;
+      case "ascSurgDate":
+        this.sortPatientListBySurgDate('ascend');
+        this.sortOrder = "ascSurgDate";
+        break;
+      case "descSurgDate":
+        this.sortPatientListBySurgDate('descend');
+        this.sortOrder = "descSurgDate";
+    }
+  }
+
+  /**
+   * Sort patient list by lastname depending on sortPreference passed in
+   * @param sortPreference
+   */
+  sortPatientListByName(sortPreference) {
+    var greaterValue, lesserValue;
+    if (sortPreference == "ascend") {
+      greaterValue = 1
+      lesserValue = -1
+    }
+    else {
+      greaterValue = -1;
+      lesserValue = 1
+    }
+
+    this.patients = this.patients.sort((a, b)=>{
+      let cmp = 0;
+      if (a['lastName'] > b['lastName']) {
+        cmp = greaterValue;
+      }
+      else if  (a['lastName'] == b['lastName'])  {
+        cmp = 0;
+      }
+      else {
+        cmp = lesserValue;
+      }
+      return (cmp);
+    });
+  }
+
+  sortPatientListBySurgDate(sortPreference) {
+    var greaterValue, lesserValue;
+    if (sortPreference == "ascend") {
+      greaterValue = 1
+      lesserValue = -1
+    }
+    else {
+      greaterValue = -1;
+      lesserValue = 1
+    }
+
+    this.patients = this.patients.sort((a, b)=>{
+      let cmp = 0;
+      let aSurgSchedDate: string = a['surgeries'] != null ? a['surgeries'][a['surgeries'].length - 1]['scheduledDate'] : '';
+      let bSurgSchedDate: string = b['surgeries'] != null ? b['surgeries'][b['surgeries'].length - 1]['scheduledDate'] : '';
+      
+      if (aSurgSchedDate > bSurgSchedDate) {
+        cmp = greaterValue;
+      }
+      else if  (aSurgSchedDate == bSurgSchedDate)  {
+        cmp = 0;
+      }
+      else {
+        cmp = lesserValue;
+      }
+      return (cmp);
+    });
+  }
+
+  showPatient(patient: Patient) {
+    if (this.showOnlyPatientsWithoutCompletedSurgeries) {
+      if (patient['surgeries'] != null) {
+        if (patient['surgeries'][patient['surgeries'].length - 1]['completedDate'] != null) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
+      else {
+        return true;
+      }
+    }
+    return true;
+  }
 }

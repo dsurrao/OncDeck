@@ -20,6 +20,12 @@
         </ion-label>
         <ion-toggle checked="false" [(ngModel)]="showOnlyMyPatients" (ionChange)="togglePatients()"></ion-toggle>
       </ion-item>
+      <ion-item>
+          <ion-label>
+            <ion-icon name="settings" class="icon-menu"></ion-icon>No surgeries
+          </ion-label>
+          <ion-toggle checked="false" [(ngModel)]="showOnlyPatientsWithoutCompletedSurgeries" (ionChange)="togglePatients()"></ion-toggle>
+        </ion-item>
       <button ion-item menuClose (click)="aboutPage()">
         About
       </button>
@@ -57,8 +63,8 @@
 <ion-content>
     <ion-searchbar class="search-toolbar" (ionInput)="filterPatientList($event)" showCancelButton="true" placeholder="Search patients"*ngIf="isAuthenticated==true&&isSearchbarOpened" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
     <ion-list>
-      <ion-item-sliding *ngFor="let patient of patients">
-        <button ion-item (click)="viewPatient(patient)" text-wrap>
+      <ion-item-sliding *ngFor="let patient of patients">        
+        <button *ngIf="showPatient(patient)" ion-item (click)="viewPatient(patient)" text-wrap>
           <ion-avatar item-start>
             <ion-icon name="contact" class="icon-contact"></ion-icon>
           </ion-avatar>
