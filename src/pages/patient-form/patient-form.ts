@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
-import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import UUID from 'uuid';
 import aws_exports from '../../assets/aws-exports'; 
 import AWS from 'aws-sdk';
@@ -29,7 +29,8 @@ export class PatientFormPage {
     public navParams: NavParams,
     public db: DynamodbProvider,
     public patientSvc: PatientProvider,
-    public events: Events) {
+    public events: Events,
+    public alertController: AlertController) {
     this.patient = this.navParams.data.params;
     if (this.patient == null) {
       this.patient = new Patient();
@@ -44,7 +45,24 @@ export class PatientFormPage {
       this.navCtrl.push(BiopsyStatusPage, {params: updatedPatient});
     })
     .catch(error => {
-      console.log("patient save error: " + error);
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
     });
+  }
+
+  showAlert(titleTxt: string, subTitleTxt: string) {
+    const alert = this.alertController.create({
+      title: titleTxt,
+      subTitle: subTitleTxt,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }

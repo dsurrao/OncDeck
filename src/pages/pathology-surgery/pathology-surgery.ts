@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import UUID from 'uuid';
 import { Patient } from '../../models/patient';
 import { PouchdbProvider } from '../../providers/pouchdb/pouchdb';
@@ -43,7 +43,8 @@ export class PathologySurgeryPage {
     public navParams: NavParams, 
     public db: PouchdbProvider,
     public events: Events,
-    public dateUtils: DateUtils) {
+    public dateUtils: DateUtils,
+    public alertController: AlertController) {
       this.patient = navParams.data.params.patient;
       this.surgicalPathology = navParams.data.params.surgicalPathology;
       if (this.surgicalPathology == null) {
@@ -84,6 +85,25 @@ export class PathologySurgeryPage {
     this.db.savePatient(this.patient).then((resp) => {
       this.events.publish('patientSaved');
       this.navCtrl.pop();
+    }).catch((error) => {
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
     });
+  }
+
+  showAlert(titleTxt: string, subTitleTxt: string) {
+    const alert = this.alertController.create({
+      title: titleTxt,
+      subTitle: subTitleTxt,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }

@@ -14,6 +14,7 @@ export class Patient {
     biopsyStatus: BiopsyStatus;
     surgeries: Surgery[];
     surgicalPathologies: SurgicalPathology[];
+    watchers: string[] = [];
     _id: string; // unique id for pouchdb
     _rev: string; // document revision in pouchdb
 }

@@ -55,7 +55,7 @@ export class SurgeryProvider {
       }
     }
     if (removeIndex != -1) {
-      patient.surgeries = patient.surgeries.splice(removeIndex - 1, 1);
+      patient.surgeries.splice(removeIndex, 1);
     }
 
     // finally, update db
@@ -64,14 +64,14 @@ export class SurgeryProvider {
 
   removeSurgicalPathology(surgicalPathology: SurgicalPathology, patient: Patient): Promise<Patient> {
     let removeIndex: number = -1;
-    for (var i: number = 0; i < patient.surgeries.length; i++) {
+    for (var i: number = 0; i < patient.surgicalPathologies.length; i++) {
       if (patient.surgicalPathologies[i].id === surgicalPathology.id) {
         removeIndex = i;
         break;
       }
     }
     if (removeIndex != -1) {
-      patient.surgicalPathologies = patient.surgicalPathologies.splice(removeIndex - 1, 1);
+      patient.surgicalPathologies.splice(removeIndex, 1);
     }
 
     // finally, update db

@@ -18,9 +18,9 @@ import { Auth } from 'aws-amplify';
 import aws_exports from '../../assets/aws-exports'; // specify the location of aws-exports.js file on your project
 import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
-import { userInfo } from 'os';
 import { AboutPage } from '../about/about';
 import { Patient } from '../../models/patient';
+import { Device } from '@ionic-native/device';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -37,7 +37,7 @@ AWS.config.region = aws_exports.aws_project_region;
   templateUrl: 'patients.html',
 })
 export class PatientsPage {
-  @ViewChild(List) list: List;
+  @ViewChild('patientList', {read: List}) patientList: List;
 
   patients: Patient[];
   originalPatientList: any;
@@ -53,7 +53,8 @@ export class PatientsPage {
     public alertCtrl: AlertController,
     public patientSvc: PatientProvider,
     public events: Events,
-    public dateUtils: DateUtils) {
+    public dateUtils: DateUtils,
+    public device: Device) {
     this.patients = [];
     this.originalPatientList = [];
     this.isAuthenticated = true;
@@ -130,7 +131,7 @@ export class PatientsPage {
         {
           text: 'No',
           handler: () => {
-            this.list.closeSlidingItems();
+            this.patientList.closeSlidingItems();
           }
         },
         {
@@ -144,82 +145,60 @@ export class PatientsPage {
     confirm.present();
   }
 
-  removePatient(patient) {
+  removePatient(patient: Patient) {
     this.patientSvc.removePatient(patient).then((data) => {
       // refresh patient list
       this.getPatients();
-    })
-  }
-
-/*
-  watchPatient(patient) {
-    Auth.currentUserCredentials().then((credentials) => {
-      this.patientSvc.watchPatient(patient['Id'], 
-        this.currentAuthenticatedUsername, credentials).then((data) => {
-          this.getPatients();
-          console.log("watching patient " + patient['LastName']);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
     }).catch((error) => {
-      console.log(error);
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
     });
-
-    this.list.closeSlidingItems();
   }
 
-  unWatchPatient(patient) {
-    Auth.currentUserCredentials().then((credentials) => {
-      this.patientSvc.unWatchPatient(patient['Id'], 
-        this.currentAuthenticatedUsername, credentials).then((data) => {
-          this.getPatients();
-          console.log("unwatching patient " + patient['LastName']);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }).catch((error) => {
-      console.log(error);
-    });
-
-    this.list.closeSlidingItems();
+  watchPatient(patient: Patient) {
+    if (this.device.uuid != null) {
+      this.patientSvc.watchPatient(patient, this.device.uuid).then((data) => {
+        this.getPatients();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+    this.patientList.closeSlidingItems();
   }
 
-  isWatchingPatient(patient): boolean {
-    let ret: boolean = false;
-    let watchers: Array<string> = [];
-    if (patient['Watchers'] != null) {
-      watchers = patient['Watchers'].values;
-      if (watchers.indexOf(this.currentAuthenticatedUsername) > -1) {
-        ret = true;
+  unWatchPatient(patient: Patient) {
+    if (this.device.uuid != null) {
+      this.patientSvc.unWatchPatient(patient, this.device.uuid).then((data) => {
+        this.getPatients();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+    this.patientList.closeSlidingItems();
+  }
+
+  isWatchingPatient(patient: Patient): boolean {
+    if (this.device.uuid != null) {
+      if (patient.watchers.indexOf(this.device.uuid) != -1) {
+        return true;
+      }
+      else {
+        return false;
       }
     }
-    return ret;
+    else {
+      return true; // watch all, if this is running in a browser
+    }
   }
-
-  removePatientConfirm(patient) {
-    const confirm = this.alertCtrl.create({
-      title: 'Remove patient?',
-      message: 'Are you sure you want to remove this patient?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            this.list.closeSlidingItems();
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.removePatient(patient);
-          }
-        }
-      ]
-    });
-    confirm.present();
-  }
-*/
 
   // TODO: gets only the first surgery, need to handle multiple
   getSurgerySummary(patient) {
@@ -435,9 +414,15 @@ export class PatientsPage {
 
     this.patients = this.patients.sort((a, b)=>{
       let cmp = 0;
-      let aSurgSchedDate: string = a['surgeries'] != null ? a['surgeries'][a['surgeries'].length - 1]['scheduledDate'] : '';
-      let bSurgSchedDate: string = b['surgeries'] != null ? b['surgeries'][b['surgeries'].length - 1]['scheduledDate'] : '';
-      
+      let aSurgSchedDate: string = '';
+      if (a['surgeries'] != null) {
+        aSurgSchedDate = a['surgeries'].length > 0 ? a['surgeries'][a['surgeries'].length - 1]['scheduledDate'] : '';
+      }
+      let bSurgSchedDate: string = '';
+      if (b['surgeries'] != null) {
+        aSurgSchedDate = b['surgeries'].length > 0 ? b['surgeries'][b['surgeries'].length - 1]['scheduledDate'] : '';
+      }
+
       if (aSurgSchedDate > bSurgSchedDate) {
         cmp = greaterValue;
       }
@@ -454,8 +439,13 @@ export class PatientsPage {
   showPatient(patient: Patient) {
     if (this.showOnlyPatientsWithoutCompletedSurgeries) {
       if (patient['surgeries'] != null) {
-        if (patient['surgeries'][patient['surgeries'].length - 1]['completedDate'] != null) {
-          return false;
+        if (patient['surgeries'].length > 0) {
+          if (patient['surgeries'][patient['surgeries'].length - 1]['completedDate'] != null) {
+            return false;
+          }
+          else {
+            return true;
+          }
         }
         else {
           return true;
@@ -466,5 +456,14 @@ export class PatientsPage {
       }
     }
     return true;
+  }
+
+  showAlert(titleTxt: string, subTitleTxt: string) {
+    const alert = this.alertCtrl.create({
+      title: titleTxt,
+      subTitle: subTitleTxt,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }

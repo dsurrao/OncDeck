@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Patient } from '../../models/patient';
 import { PatientProvider } from '../../providers/patient/patient';
 import { Events } from 'ionic-angular';
@@ -24,7 +24,8 @@ export class BiopsyStatusPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public patientSvc: PatientProvider,
-    public events: Events) {
+    public events: Events,
+    public alertController: AlertController) {
     this.patient = navParams.data.params;
     if (this.patient.biopsyStatus == null) {
       this.patient.biopsyStatus = new BiopsyStatus();
@@ -42,7 +43,24 @@ export class BiopsyStatusPage {
       this.navCtrl.push(PatientPage, {params: updatedPatient});
     })
     .catch(error => {
-      console.log("patient save error: " + error);
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
     });
+  }
+
+  showAlert(titleTxt: string, subTitleTxt: string) {
+    const alert = this.alertController.create({
+      title: titleTxt,
+      subTitle: subTitleTxt,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 } 

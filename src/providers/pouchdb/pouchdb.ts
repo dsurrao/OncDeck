@@ -53,13 +53,13 @@ export class PouchdbProvider {
     });
   }
 
-  removePatient(patient: Patient): Promise<boolean> {
+  removePatient(patient: Patient): Promise<Patient> {
     return new Promise((resolve, reject) => {
       this.db.remove(patient._id, patient._rev).then(function (response) {
-          resolve(true);
+          resolve(patient);
         }.bind(this)
       ).catch(function (err) {
-        reject(false);
+        reject(err);
       });
     });
   }

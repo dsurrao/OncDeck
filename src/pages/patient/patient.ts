@@ -1,7 +1,6 @@
 import { DateUtils } from './../../common/dateutils';
 import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
 import { PathologySurgeryPage } from './../pathology-surgery/pathology-surgery';
-import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { PatientFormPage } from './../patient-form/patient-form';
 import { Component, ViewChild } from '@angular/core';
 import { Events, IonicPage, NavController, NavParams, ModalController, AlertController, List } from 'ionic-angular';
@@ -92,7 +91,19 @@ export class PatientPage {
   }
 
   removeSurgery(surgery: Surgery) {
-    this.surgerySvc.removeSurgery(surgery, this.patient);
+    this.surgerySvc.removeSurgery(surgery, this.patient).then((patient) => {
+      // do nothing
+    }).catch((error) => {
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
+    });
   }
 
   removeSurgicalPathologyConfirm(pathology: SurgicalPathology) {
@@ -119,7 +130,19 @@ export class PatientPage {
   }
 
   removeSurgicalPathology(pathology: SurgicalPathology) {
-    this.surgerySvc.removeSurgicalPathology(pathology, this.patient);
+    this.surgerySvc.removeSurgicalPathology(pathology, this.patient).then((patient) => {
+      // do nothing
+    }).catch((error) => {
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
+    });
   }
 
   toLocaleDateString(isoString: string): string {
@@ -137,5 +160,14 @@ export class PatientPage {
       }
     }
     return genderInitial;
+  }
+
+  showAlert(titleTxt: string, subTitleTxt: string) {
+    const alert = this.alertCtrl.create({
+      title: titleTxt,
+      subTitle: subTitleTxt,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }

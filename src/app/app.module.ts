@@ -12,6 +12,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Device } from '@ionic-native/device';
 
 import { MyApp } from './app.component';
 import { PatientsPage } from '../pages/patients/patients';
@@ -82,7 +83,8 @@ import { PouchdbProvider } from '../providers/pouchdb/pouchdb';
     DateUtils,
     PatientProvider,
     PathologySurgery,
-    PouchdbProvider
+    PouchdbProvider,
+    Device
   ]
 })
 export class AppModule {}
