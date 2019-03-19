@@ -84,7 +84,12 @@ export class PatientsPage {
 
   getPatients() {
     this.patientSvc.getPatients().then((data) => {
-      this.patients = data;
+      this.patients = [];
+      data.forEach(patient => {
+        if (!patient.isArchived) {
+          this.patients.push(patient);
+        }
+      });
       this.originalPatientList = data; // make a copy of patients for filtering purposes
       this.displayPatientsBySortOrder(this.sortOrder);
     })

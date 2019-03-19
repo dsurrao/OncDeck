@@ -15,6 +15,9 @@ export class Patient {
     surgeries: Surgery[];
     surgicalPathologies: SurgicalPathology[];
     watchers: string[] = [];
+    isArchived: boolean = false;
+    editorDeviceUuid: string;
+    editedDate: Date;
     _id: string; // unique id for pouchdb
     _rev: string; // document revision in pouchdb
 }

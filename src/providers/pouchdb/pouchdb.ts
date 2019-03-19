@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb';
 import { Patient } from '../../models/patient';
 import UUID from 'uuid';
+import { Device } from '@ionic-native/device';
 /*
   Generated class for the PouchdbProvider provider.
 
@@ -14,7 +15,7 @@ export class PouchdbProvider {
   db = null;
   remoteDb = null; 
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public device: Device) {
     this.db = new PouchDB('oncdeck');
 
     //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
@@ -42,6 +43,10 @@ export class PouchdbProvider {
     if (patient._id == null) {
       patient._id = UUID.v4();
     }
+    if (this.device.uuid != null) {
+      patient.editorDeviceUuid = this.device.uuid;
+    }
+    patient.editedDate = new Date();
     return new Promise((resolve, reject) => {
       this.db.put(patient).then(function (response) {
           patient._rev = response.rev;
@@ -54,14 +59,8 @@ export class PouchdbProvider {
   }
 
   removePatient(patient: Patient): Promise<Patient> {
-    return new Promise((resolve, reject) => {
-      this.db.remove(patient._id, patient._rev).then(function (response) {
-          resolve(patient);
-        }.bind(this)
-      ).catch(function (err) {
-        reject(err);
-      });
-    });
+    patient.isArchived = true;
+    return this.savePatient(patient);
   }
 
   // try to sync with remote db to get the latest, otherwise use local db
