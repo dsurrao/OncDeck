@@ -46,8 +46,7 @@ export class GraphPage {
         Auth.currentUserInfo().then((userInfo) => {
           this.currentAuthenticatedUsername = userInfo.username;
           this.isAuthenticated = true;
-          this.patientSvc.getPatients(false, 
-            this.currentAuthenticatedUsername, credentials).then((data) => {
+          this.patientSvc.getPatients().then((data) => {
             this.patients = data;
             this.storePatientsToGraph = data;
 

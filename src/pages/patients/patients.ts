@@ -83,8 +83,7 @@ export class PatientsPage {
   }
 
   getPatients() {
-    this.patientSvc.getPatients(this.showOnlyMyPatients, 
-      this.currentAuthenticatedUsername, null).then((data) => {
+    this.patientSvc.getPatients().then((data) => {
       this.patients = data;
       this.originalPatientList = data; // make a copy of patients for filtering purposes
       this.displayPatientsBySortOrder(this.sortOrder);
@@ -188,7 +187,7 @@ export class PatientsPage {
 
   isWatchingPatient(patient: Patient): boolean {
     if (this.device.uuid != null) {
-      if (patient.watchers.indexOf(this.device.uuid) != -1) {
+      if (patient.watchers != null && patient.watchers.indexOf(this.device.uuid) != -1) {
         return true;
       }
       else {
@@ -436,7 +435,12 @@ export class PatientsPage {
     });
   }
 
-  showPatient(patient: Patient) {
+  showPatient(patient: Patient): boolean {
+    return (this.filterByCompletedSurgeries(patient) 
+      && this.filterByMyPatients(patient));
+  }
+
+  filterByCompletedSurgeries(patient: Patient): boolean {
     if (this.showOnlyPatientsWithoutCompletedSurgeries) {
       if (patient['surgeries'] != null) {
         if (patient['surgeries'].length > 0) {
@@ -453,6 +457,28 @@ export class PatientsPage {
       }
       else {
         return true;
+      }
+    }
+    return true;
+  }
+
+  filterByMyPatients(patient: Patient): boolean {
+    if (this.showOnlyMyPatients) {
+      if (patient['watchers'] != null) {
+        if (patient['watchers'].length > 0) {
+          if (patient['watchers'].indexOf(this.device.uuid) == -1) {
+            return false;
+          }
+          else {
+            return true;
+          }
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        return false;
       }
     }
     return true;

@@ -16,7 +16,7 @@ export class PatientProvider {
   }
 
   // pass in credentials from caller, maybe this should be the way to do it?
-  getPatients(showOnlyMyPatients: boolean, myUsername: string, credentials: any): Promise<Patient[]> {
+  getPatients(): Promise<Patient[]> {
     return this.db.getPatients();
   }
 
