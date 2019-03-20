@@ -82,7 +82,9 @@ export class PouchdbProvider {
         let patients: Patient[] = [];
         for (var i = 0; i < result.total_rows; i++) {
           let patient: Patient = result.rows[i].doc;
-          patients.push(patient);
+          if (patient.lastName != null) {
+            patients.push(patient);
+          }
         }
         resolve(patients);
       }).
