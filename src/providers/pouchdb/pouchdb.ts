@@ -4,6 +4,7 @@ import PouchDB from 'pouchdb';
 import { Patient } from '../../models/patient';
 import UUID from 'uuid';
 import { Device } from '@ionic-native/device';
+import { Events, Platform } from 'ionic-angular';
 /*
   Generated class for the PouchdbProvider provider.
 
@@ -15,7 +16,10 @@ export class PouchdbProvider {
   db = null;
   remoteDb = null; 
 
-  constructor(public http: HttpClient, public device: Device) {
+  constructor(public http: HttpClient, 
+    public device: Device,
+    public platform: Platform,
+    public events: Events) {
     this.db = new PouchDB('oncdeck');
 
     //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
@@ -43,8 +47,11 @@ export class PouchdbProvider {
     if (patient._id == null) {
       patient._id = UUID.v4();
     }
-    if (this.device.uuid != null) {
-      patient.editorDeviceUuid = this.device.uuid;
+    // execute only if this is a mobile device
+    if (!this.platform.is('core')) {
+      if (this.device.uuid != null) {
+        patient.editorDeviceUuid = this.device.uuid;
+      }
     }
     patient.editedDate = new Date();
     return new Promise((resolve, reject) => {
@@ -100,12 +107,24 @@ export class PouchdbProvider {
       retry: true
     }).on('change', function (change) {
       // yo, something changed!
+      console.log('sync change');
     }).on('paused', function (info) {
       // replication was paused, usually because of a lost connection
+      console.log('sync paused');
     }).on('active', function (info) {
       // replication was resumed
+      this.events.publish('syncActive');
+      console.log('sync active');
+    }.bind(this))
+    .on('denied', function (info) {
+      // a document failed to replicate (e.g. due to permissions)
+      console.log('sync denied');
+    }).on('complete', function (info) {
+      // handle complete
+      console.log('sync complete');
     }).on('error', function (err) {
       // totally unhandled error (shouldn't happen)
+      console.log('sync error');
     });
     
     // this.db.sync(this.remoteDb).on('complete', function () {

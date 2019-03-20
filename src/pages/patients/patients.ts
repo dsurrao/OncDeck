@@ -8,6 +8,7 @@ import { AlertController,
   ModalController, 
   NavController, 
   NavParams, 
+  Platform,
   List
 } from 'ionic-angular';
 import { LoginModal } from '../../modal/login/login';
@@ -54,7 +55,8 @@ export class PatientsPage {
     public patientSvc: PatientProvider,
     public events: Events,
     public dateUtils: DateUtils,
-    public device: Device) {
+    public device: Device,
+    public platform: Platform) {
     this.patients = [];
     this.originalPatientList = [];
     this.isAuthenticated = true;
@@ -74,6 +76,10 @@ export class PatientsPage {
     });
 
     this.events.subscribe('patientSaved', () => {
+      this.getPatients();
+    });
+
+    this.events.subscribe('syncActive', () => {
       this.getPatients();
     });
   }
@@ -167,36 +173,48 @@ export class PatientsPage {
   }
 
   watchPatient(patient: Patient) {
-    if (this.device.uuid != null) {
-      this.patientSvc.watchPatient(patient, this.device.uuid).then((data) => {
-        this.getPatients();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // execute only if this is a mobile device
+    if (!this.platform.is('core')) {
+      if (this.device.uuid != null) {
+        this.patientSvc.watchPatient(patient, this.device.uuid).then((data) => {
+          this.getPatients();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     }
     this.patientList.closeSlidingItems();
   }
 
   unWatchPatient(patient: Patient) {
-    if (this.device.uuid != null) {
-      this.patientSvc.unWatchPatient(patient, this.device.uuid).then((data) => {
-        this.getPatients();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // execute only if this is a mobile device
+    if (!this.platform.is('core')) {
+      if (this.device.uuid != null) {
+        this.patientSvc.unWatchPatient(patient, this.device.uuid).then((data) => {
+          this.getPatients();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     }
     this.patientList.closeSlidingItems();
   }
 
   isWatchingPatient(patient: Patient): boolean {
-    if (this.device.uuid != null) {
-      if (patient.watchers != null && patient.watchers.indexOf(this.device.uuid) != -1) {
-        return true;
+    // execute only if this is a mobile device
+    if (!this.platform.is('core')) {
+      if (this.device.uuid != null) {
+        if (patient.watchers != null && patient.watchers.indexOf(this.device.uuid) != -1) {
+          return true;
+        }
+        else {
+          return false;
+        }
       }
       else {
-        return false;
+        return true; // watch all, if this is running in a browser
       }
     }
     else {
