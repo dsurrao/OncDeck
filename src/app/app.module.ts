@@ -30,6 +30,7 @@ import { PathologySurgery } from '../providers/pathology/pathology';
 import { GraphPage } from '../pages/graph/graph';
 import { ChartsModule } from 'ng2-charts';
 import { PouchdbProvider } from '../providers/pouchdb/pouchdb';
+import { Printer } from '@ionic-native/printer';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { PouchdbProvider } from '../providers/pouchdb/pouchdb';
     PatientProvider,
     PathologySurgery,
     PouchdbProvider,
-    Device
+    Device,
+    Printer
   ]
 })
 export class AppModule {}
