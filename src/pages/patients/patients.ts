@@ -22,6 +22,7 @@ import { PatientProvider } from '../../providers/patient/patient';
 import { AboutPage } from '../about/about';
 import { Patient } from '../../models/patient';
 import { Device } from '@ionic-native/device';
+import {Printer, PrintOptions} from '@ionic-native/printer';
 
 AWS.config.region = aws_exports.aws_project_region;
 
@@ -56,6 +57,7 @@ export class PatientsPage {
     public events: Events,
     public dateUtils: DateUtils,
     public device: Device,
+    private printer: Printer,
     public platform: Platform) {
     this.patients = [];
     this.originalPatientList = [];
@@ -515,4 +517,27 @@ export class PatientsPage {
     });
     alert.present();
   }
+
+  print(){
+    let options: PrintOptions = {
+        name: 'MyDocument',
+        duplex: true,
+        landscape: true,
+        grayscale: true
+      };
+    this.printer.print("Data can be placed here", options);
+  }
+
+  onErrorLoad(){
+    alert('Error : printing is unavailable on your device ');
+  }
+
+  onSuccessPrint(){
+    alert("printing done successfully !");
+  }
+
+  onErrorPrint(){
+    alert("Error while printing !");
+  }
+
 }

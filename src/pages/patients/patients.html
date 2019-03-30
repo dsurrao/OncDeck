@@ -56,6 +56,9 @@
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="isSearchbarOpened=true">
         <ion-icon name="search"></ion-icon>
       </button>
+      <button class="button" ion-button icon-only (click)="print()">
+        <ion-icon name="print"></ion-icon>
+      </button>
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-out"></ion-icon>
       </button>      
