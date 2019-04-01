@@ -16,7 +16,6 @@ import { LogoutModal } from '../../modal/logout/logout';
 import { PatientPage } from '../patient/patient';
 
 import { Auth } from 'aws-amplify';
-import aws_exports from '../../assets/aws-exports'; // specify the location of aws-exports.js file on your project
 import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
 import { AboutPage } from '../about/about';
@@ -24,7 +23,6 @@ import { Patient } from '../../models/patient';
 import { Device } from '@ionic-native/device';
 import {Printer, PrintOptions} from '@ionic-native/printer';
 
-AWS.config.region = aws_exports.aws_project_region;
 
 /**
  * Generated class for the PatientsPage page.
@@ -461,8 +459,14 @@ export class PatientsPage {
   }
 
   showPatient(patient: Patient): boolean {
-    return (this.filterByCompletedSurgeries(patient) 
-      && this.filterByMyPatients(patient));
+    let showFlag: boolean = this.filterByCompletedSurgeries(patient);
+
+    // filter by patients only for mobile devices
+    if (!this.platform.is('core')) {
+      showFlag = this.filterByMyPatients(patient) && showFlag;
+    }
+
+    return showFlag;
   }
 
   filterByCompletedSurgeries(patient: Patient): boolean {

@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { DynamodbProvider } from './../../providers/dynamodb/dynamodb';
 import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import UUID from 'uuid';
-import aws_exports from '../../assets/aws-exports'; 
-import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
 import { Patient } from '../../models/patient';
 import { BiopsyStatusPage } from '../biopsy-status/biopsy-status';
-
-AWS.config.region = aws_exports.aws_project_region;
 
 /**
  * Generated class for the PatientFormPage page.
@@ -27,7 +22,6 @@ export class PatientFormPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    public db: DynamodbProvider,
     public patientSvc: PatientProvider,
     public events: Events,
     public alertController: AlertController) {

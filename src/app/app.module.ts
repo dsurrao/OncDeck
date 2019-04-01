@@ -4,8 +4,6 @@ import { PatientSummaryComponent } from './../components/patient-summary/patient
 import { DateUtils } from './../common/dateutils';
 import { ScheduledSurgeryPage } from './../pages/scheduled-surgery/scheduled-surgery';
 import { PathologySurgeryPage } from './../pages/pathology-surgery/pathology-surgery';
-import { BiopsyOrderPage } from './../pages/biopsy-order/biopsy-order';
-import { BiopsyReportPage1Page } from './../pages/biopsy-report-page1/biopsy-report-page1';
 import { BiopsyStatusPage } from './../pages/biopsy-status/biopsy-status';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -22,11 +20,8 @@ import { LoginModal } from '../modal/login/login';
 import { LogoutModal } from '../modal/logout/logout';
 import { PatientPage } from '../pages/patient/patient';
 import { PatientFormPage } from '../pages/patient-form/patient-form';
-import { DynamodbProvider } from '../providers/dynamodb/dynamodb';
-import { BiopsyProvider } from '../providers/biopsy/biopsy';
 import { SurgeryProvider } from '../providers/surgery/surgery';
 import { PatientProvider } from '../providers/patient/patient';
-import { PathologySurgery } from '../providers/pathology/pathology';
 import { GraphPage } from '../pages/graph/graph';
 import { ChartsModule } from 'ng2-charts';
 import { PouchdbProvider } from '../providers/pouchdb/pouchdb';
@@ -41,8 +36,6 @@ import { Printer } from '@ionic-native/printer';
     LoginModal,
     LogoutModal,
     BiopsyStatusPage,
-    BiopsyReportPage1Page,
-    BiopsyOrderPage,
     ScheduledSurgeryPage,
     PathologySurgeryPage,
     GraphPage,
@@ -66,8 +59,6 @@ import { Printer } from '@ionic-native/printer';
     LoginModal,
     LogoutModal,
     BiopsyStatusPage,
-    BiopsyReportPage1Page,
-    BiopsyOrderPage,
     ScheduledSurgeryPage,
     PathologySurgeryPage,
     TabsPage,
@@ -78,12 +69,9 @@ import { Printer } from '@ionic-native/printer';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DynamodbProvider,
-    BiopsyProvider,
     SurgeryProvider,
     DateUtils,
     PatientProvider,
-    PathologySurgery,
     PouchdbProvider,
     Device,
     Printer

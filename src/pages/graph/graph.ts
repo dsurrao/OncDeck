@@ -1,12 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
-import aws_exports from '../../assets/aws-exports'; 
-import AWS from 'aws-sdk';
-import { Auth } from 'aws-amplify';
 import { PatientProvider } from '../../providers/patient/patient';
 import { Chart } from 'chart.js';
-
-AWS.config.region = aws_exports.aws_project_region;
 
 /**
  * Generated class for the GraphPage page.
@@ -41,6 +36,7 @@ export class GraphPage {
   }
 
  getPatients() {
+   /*
     Auth.currentUserCredentials()
       .then(credentials => {
         Auth.currentUserInfo().then((userInfo) => {
@@ -116,7 +112,8 @@ export class GraphPage {
         console.log('get current credentials err', err);
         this.patients = [];
       });
-
+      */
+     
       return this.storePatientsToGraph;
     }
 
