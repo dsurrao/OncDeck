@@ -5,18 +5,19 @@ import { Component, ViewChild } from '@angular/core';
 import { AlertController, 
   Events, 
   IonicPage, 
+  LoadingController,
   ModalController, 
   NavController, 
   NavParams, 
   Platform,
-  List
+  List,
+  Loading
 } from 'ionic-angular';
 import { LoginModal } from '../../modal/login/login';
 import { LogoutModal } from '../../modal/logout/logout';
 import { PatientPage } from '../patient/patient';
 
 import { Auth } from 'aws-amplify';
-import AWS from 'aws-sdk';
 import { PatientProvider } from '../../providers/patient/patient';
 import { AboutPage } from '../about/about';
 import { Patient } from '../../models/patient';
@@ -40,15 +41,18 @@ export class PatientsPage {
   @ViewChild('patientList', {read: List}) patientList: List;
 
   patients: Patient[];
-  originalPatientList: any;
+  originalPatientList: Patient[];
   isAuthenticated: boolean;
   currentAuthenticatedUsername: string;
   showOnlyMyPatients: boolean;
   showOnlyPatientsWithoutCompletedSurgeries: boolean;
   sortOrder: string;
+  isLoading: boolean;
+  lastActiveSync: string;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
+    public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public patientSvc: PatientProvider,
@@ -64,7 +68,10 @@ export class PatientsPage {
     this.showOnlyMyPatients = false;
     this.showOnlyPatientsWithoutCompletedSurgeries = false;
     this.sortOrder = 'descSurgDate';
+    this.isLoading = false;
+    this.lastActiveSync = null;
 
+    /*
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
       this.getPatients();
@@ -74,6 +81,7 @@ export class PatientsPage {
       this.isAuthenticated = false;
       this.getPatients();
     });
+    */
 
     this.events.subscribe('patientSaved', () => {
       this.getPatients();
@@ -81,6 +89,7 @@ export class PatientsPage {
 
     this.events.subscribe('syncActive', () => {
       this.getPatients();
+      this.lastActiveSync = new Date().toLocaleString();
     });
   }
 
@@ -89,20 +98,37 @@ export class PatientsPage {
   }
 
   getPatients() {
-    this.patientSvc.getPatients().then((data) => {
-      this.patients = [];
-      data.forEach(patient => {
-        if (!patient.isArchived) {
-          this.patients.push(patient);
-        }
+    console.log("getPatients");
+
+    if (!this.isLoading) {
+      let loading: Loading = this.loadingCtrl.create({
+        content: 'Loading patients...'
       });
-      this.originalPatientList = data; // make a copy of patients for filtering purposes
-      this.displayPatientsBySortOrder(this.sortOrder);
-    })
-    .catch((error) => {
-      console.log('get patients error', error);
-      this.patients = [];
-    });
+
+      loading.present().then(() => {
+        this.isLoading = true;
+        this.patientSvc.getPatients().then((data) => {
+          this.isLoading = false;
+          loading.dismiss();
+
+          this.patients = [];
+          data.forEach(patient => {
+            if (!patient.isArchived) {
+              this.patients.push(patient);
+            }
+          });
+          this.originalPatientList = data; // make a copy of patients for filtering purposes
+          this.displayPatientsBySortOrder(this.sortOrder);
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          loading.dismiss();
+
+          console.log('get patients error', error);
+          this.patients = [];
+        });
+      });
+    }
   }
 
   login() {
@@ -114,19 +140,11 @@ export class PatientsPage {
   }
 
   showGraph() {
-    Auth.currentAuthenticatedUser().then((user) => {
-      this.navCtrl.push(GraphPage);
-    }).catch((error) => {
-      console.log(error);
-    });
+    this.navCtrl.push(GraphPage);
   }
 
   aboutPage() {
-    Auth.currentAuthenticatedUser().then((user) => {
-      this.navCtrl.push(AboutPage);
-    }).catch((error) => {
-      console.log(error);
-    });
+    this.navCtrl.push(AboutPage);
   }
 
   viewPatient(patient) {
@@ -311,11 +329,11 @@ export class PatientsPage {
    * @param ev 
    */
   filterPatientList(ev: any) {
-    let val = ev.target.value;
+    const val:string = ev.target.value;
 
     if (val && val.trim() !== '') {
-      this.patients = this.originalPatientList.filter(function(item) {
-        var fullName = item.LastName.toLowerCase() + ", " + item.FirstName.toLowerCase()
+      this.patients = this.originalPatientList.filter(function(item: Patient) {
+        var fullName = item.lastName.toLowerCase() + ", " + item.firstName.toLowerCase();
         return fullName.includes(val.toLowerCase());
       });
     }
@@ -328,11 +346,11 @@ export class PatientsPage {
   }
 
   /**
-   * Filter alert
+   * Sort patients
    */
-  doFilter() {
+  doSort() {
     let alert = this.alertCtrl.create();
-    alert.setTitle('Filters');
+    alert.setTitle('Sort');
 
     alert.addInput({
         type: 'radio',
@@ -364,7 +382,7 @@ export class PatientsPage {
 
     alert.addButton('Cancel');
     alert.addButton({
-      text: 'Confirm',
+      text: 'OK',
       handler: (sortOrder: string) => {
         this.displayPatientsBySortOrder(sortOrder);
       }

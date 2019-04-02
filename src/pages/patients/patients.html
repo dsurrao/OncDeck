@@ -44,13 +44,14 @@
     </ion-buttons>
 
     <ion-buttons end>
+      <ng-container *ngIf="lastActiveSync != null">Last data sync at {{lastActiveSync}}</ng-container>
       <button *ngIf="!isAuthenticated" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
       </button>
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="getPatients()">
         <ion-icon name="md-refresh"></ion-icon>
       </button>
-      <button *ngIf="isAuthenticated" ion-button icon-only (click)="doFilter()">
+      <button *ngIf="isAuthenticated" ion-button icon-only (click)="doSort()">
         <ion-icon name="md-options"></ion-icon>
       </button>
       <button *ngIf="isAuthenticated" ion-button icon-only (click)="isSearchbarOpened=true">
@@ -67,7 +68,9 @@
 </ion-header>
 
 <ion-content>
-    <ion-searchbar class="search-toolbar" (ionInput)="filterPatientList($event)" showCancelButton="true" placeholder="Search patients"*ngIf="isAuthenticated==true&&isSearchbarOpened" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+    <ion-searchbar class="search-toolbar" (ionInput)="filterPatientList($event)" showCancelButton="true" 
+      placeholder="Search patients" *ngIf="isAuthenticated==true&&isSearchbarOpened" 
+      (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
     <ion-list #patientList>
       <ion-item-sliding *ngFor="let patient of patients">        
         <button *ngIf="showPatient(patient)" ion-item (click)="viewPatient(patient)" text-wrap>

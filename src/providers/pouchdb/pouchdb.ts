@@ -20,7 +20,7 @@ export class PouchdbProvider {
     public device: Device,
     public platform: Platform,
     public events: Events) {
-    this.db = new PouchDB('oncdeck');
+    this.db = new PouchDB('oncdeck', {auto_compaction: true});
 
     //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
 
