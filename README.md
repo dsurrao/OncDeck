@@ -21,3 +21,8 @@ npm install
 (if there are errors, delete package-lock.json and re-run)
 
 ionic serve
+
+# to build for android
+ionic cordova build android
+
+refer to this PR for workaround: https://github.com/dsurrao/OncDeck/pull/1
