@@ -14,7 +14,7 @@ https://github.com/dsurrao/oncdeckaws
 # Settings
 
 # CLI tools
-install CLI tools listed in this tutorial: https://github.com/ionic-team/starters/tree/master/ionic-angular/official/aws
+install Ionic v3: https://ionicframework.com/docs/v3/
 
 # to build and run
 npm install
