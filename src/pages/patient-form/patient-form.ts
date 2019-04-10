@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import UUID from 'uuid';
 import { PatientProvider } from '../../providers/patient/patient';
 import { Patient } from '../../models/patient';
 import { BiopsyStatusPage } from '../biopsy-status/biopsy-status';
+import { FormGroup, Form } from '@angular/forms';
 
 /**
  * Generated class for the PatientFormPage page.
@@ -18,7 +19,9 @@ import { BiopsyStatusPage } from '../biopsy-status/biopsy-status';
   templateUrl: 'patient-form.html',
 })
 export class PatientFormPage {
+  @ViewChild('patientForm') patientForm: FormGroup;
   patient: Patient;
+  originalFormGroupValue: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -30,6 +33,10 @@ export class PatientFormPage {
       this.patient = new Patient();
       this.patient._id = UUID.v4();
     }
+  }
+
+  ionViewDidEnter() { 
+    this.originalFormGroupValue = this.patientForm.value;
   }
 
   submit() {
@@ -47,6 +54,7 @@ export class PatientFormPage {
       else {
         subTitle = error;
       }
+      this.patientForm.reset(this.originalFormGroupValue);
       this.showAlert(title, subTitle);
     });
   }

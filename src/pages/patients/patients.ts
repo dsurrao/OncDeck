@@ -23,6 +23,7 @@ import { AboutPage } from '../about/about';
 import { Patient } from '../../models/patient';
 import { Device } from '@ionic-native/device';
 import {Printer, PrintOptions} from '@ionic-native/printer';
+import { PouchdbProvider } from '../../providers/pouchdb/pouchdb';
 
 
 /**
@@ -56,6 +57,7 @@ export class PatientsPage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public patientSvc: PatientProvider,
+    public dbProvider: PouchdbProvider,
     public events: Events,
     public dateUtils: DateUtils,
     public device: Device,
@@ -63,7 +65,7 @@ export class PatientsPage {
     public platform: Platform) {
     this.patients = [];
     this.originalPatientList = [];
-    this.isAuthenticated = true;
+    this.isAuthenticated = false;
     this.currentAuthenticatedUsername = '';
     this.showOnlyMyPatients = false;
     this.showOnlyPatientsWithoutCompletedSurgeries = false;
@@ -71,17 +73,22 @@ export class PatientsPage {
     this.isLoading = false;
     this.lastActiveSync = null;
 
-    /*
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
+      this.dbProvider.getSessionUsername().then((username) => {
+        this.currentAuthenticatedUsername = username;
+      })
+      .catch((error) => {
+        console.log('error retrieving session username: ' + error);
+      })
       this.getPatients();
     });
 
     this.events.subscribe('userLoggedOut', () => {
       this.isAuthenticated = false;
-      this.getPatients();
+      this.currentAuthenticatedUsername = '';
+      this.patients = [];
     });
-    */
 
     this.events.subscribe('patientSaved', () => {
       this.getPatients();
@@ -91,6 +98,17 @@ export class PatientsPage {
       this.getPatients();
       this.lastActiveSync = new Date().toLocaleString();
     });
+
+    this.dbProvider.getSession().then((response) => {
+      if (!response.userCtx.name) {
+        this.isAuthenticated = false;
+      }
+      else {
+        this.isAuthenticated = true;
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   ionViewDidLoad() {
@@ -99,8 +117,8 @@ export class PatientsPage {
 
   getPatients() {
     console.log("getPatients");
-
-    if (!this.isLoading) {
+    
+    if (!this.isLoading && this.isAuthenticated) {
       let loading: Loading = this.loadingCtrl.create({
         content: 'Loading patients...'
       });
@@ -302,13 +320,14 @@ export class PatientsPage {
 
   loginModal () {
     let modal;
-    Auth.currentAuthenticatedUser().then((user) => {
+    if (this.isAuthenticated) {
       modal = this.modalCtrl.create(LogoutModal);
       modal.present();
-    }).catch((error) => {
+    }
+    else {
       modal = this.modalCtrl.create(LoginModal);
       modal.present();
-    });
+    }
   }
 
   /**

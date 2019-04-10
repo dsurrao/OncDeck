@@ -1,10 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import PouchDB from 'pouchdb';
 import { Patient } from '../../models/patient';
 import UUID from 'uuid';
 import { Device } from '@ionic-native/device';
 import { Events, Platform } from 'ionic-angular';
+import { resolve } from 'dns';
+import PouchDB from 'pouchdb';
+import PouchDBAuth from 'pouchdb-authentication';
+import { rejects } from 'assert';
+
+PouchDB.plugin(PouchDBAuth);
+
 /*
   Generated class for the PouchdbProvider provider.
 
@@ -22,46 +28,135 @@ export class PouchdbProvider {
     public events: Events) {
     this.db = new PouchDB('oncdeck', {auto_compaction: true});
 
-    //this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck');
+    // Local CouchDB instance
+    // let _username: string = 'dom';
+    // let _password: string = 'letdomin';
+    // this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck',
+    //   {auth: {username: _username, password: _password}});
 
-    // IBM cloud instance
-    let _username: string = 'terrentypticilikedinglel';
-    let _password: string = 'b22ff6beeab8954e123783d1a85675b0553f307d';
+    // Local CouchDB instance
+    // this.remoteDb = new PouchDB('http://127.0.0.1:5984/oncdeck-dev', {
+    //   fetch: function (url, opts) {
+    //     opts.credentials='include';
+    //     return PouchDB.fetch(url, opts);
+    //   }
+    // });
 
-    this.remoteDb = new PouchDB(
-      'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
-        {auth: {username: _username, password: _password}});
+    // IBM cloud instance oncdeck, without accounts
+    // let _username: string = 'terrentypticilikedinglel';
+    // let _password: string = 'b22ff6beeab8954e123783d1a85675b0553f307d';
+    // this.remoteDb = new PouchDB(
+    //   'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
+    //     {auth: {username: _username, password: _password}});
+
+    // IBM cloud instance oncdeck-dev, without accounts
+    // pass in logged in credentials (opts.credentials)
+    this.remoteDb = new PouchDB('https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck-dev', {
+      fetch: function (url, opts) {
+        opts.credentials='include';
+        return PouchDB.fetch(url, opts);
+      }
+    });
 
     // live sync dbs
-    this.syncDbs();
-
-    console.log('Hello PouchdbProvider Provider');
+    //this.syncDbs();
   }
 
   getDb(): any {
     return this.db;
   }
 
-  savePatient(patient: Patient): Promise<Patient> {
-    // create a unique id for patient
-    if (patient._id == null) {
-      patient._id = UUID.v4();
-    }
-    // execute only if this is a mobile device
-    if (!this.platform.is('core')) {
-      if (this.device.uuid != null) {
-        patient.editorDeviceUuid = this.device.uuid;
-      }
-    }
-    patient.editedDate = new Date();
+  login(username: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.remoteDb.logIn(username, password).then((response) => {
+        // live sync dbs on login
+        this.syncDbs();
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  logout(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.remoteDb.logOut().then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  getSession(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.remoteDb.getSession().then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  getSessionUsername(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let username: string = '';
+      this.getSession().then((response) => {
+        if (response.userCtx.name) {
+          username = response.userCtx.name;
+        }
+        resolve(username);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  getSessionRoles(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      let roles: string[] = [];
+      this.getSession().then((response) => {
+        if (response.userCtx.roles) {
+          roles = response.userCtx.roles;
+        }
+        resolve(roles);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  savePatient(patient: Patient): Promise<Patient> {
+    return new Promise((resolve, reject) => {
+      // create a unique id for patient
+      if (patient._id == null) {
+        patient._id = UUID.v4();
+      }
+      // execute only if this is a mobile device
+      if (!this.platform.is('core')) {
+        if (this.device.uuid != null) {
+          patient.editorDeviceUuid = this.device.uuid;
+        }
+      }
+      this.getSessionUsername().then((username) => {
+        patient.editorUsername = username;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      patient.editedDate = new Date();
       this.db.put(patient).then(function (response) {
           patient._rev = response.rev;
           resolve(patient);
         }.bind(this)
       ).catch(function (err) {
         reject(err);
-      });
+      });        
     });
   }
 
@@ -102,6 +197,8 @@ export class PouchdbProvider {
   }
 
   syncDbs() {
+    console.log('syncDbs');
+
     this.db.sync(this.remoteDb, {
       live: true,
       retry: true
@@ -113,7 +210,7 @@ export class PouchdbProvider {
       console.log('sync paused');
     }).on('active', function (info) {
       // replication was resumed
-      this.events.publish('syncActive');
+      //this.events.publish('syncActive');
       console.log('sync active');
     }.bind(this))
     .on('denied', function (info) {
@@ -124,13 +221,7 @@ export class PouchdbProvider {
       console.log('sync complete');
     }).on('error', function (err) {
       // totally unhandled error (shouldn't happen)
-      console.log('sync error');
+      console.log('sync error: ' + err);
     });
-    
-    // this.db.sync(this.remoteDb).on('complete', function () {
-    //   console.log("// yay, we're in sync!");
-    // }).on('error', function (err) {
-    //   console.log("// boo, we hit an error! " + err);
-    // });
   }
 }

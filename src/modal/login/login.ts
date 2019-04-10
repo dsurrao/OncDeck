@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Events, NavController, LoadingController, NavParams, ViewController } from 'ionic-angular';
 import { Auth } from 'aws-amplify';
+import { PouchdbProvider } from '../../providers/pouchdb/pouchdb';
 
 @Component({
   selector: 'modal-login',
@@ -19,7 +20,8 @@ export class LoginModal {
     public loadingCtrl: LoadingController, 
     public navParams: NavParams, 
     public viewCtrl: ViewController,
-    public events: Events) {}
+    public events: Events,
+    public dbProvider: PouchdbProvider) {}
 
   ionViewDidLoad() { }
 
@@ -29,16 +31,15 @@ export class LoginModal {
     });
 
     loading.present().then(() => {
-      Auth.signIn(this.credentials.username, this.credentials.password)
-        .then(user => {
-          Auth.currentCredentials().then(credentials => {
-              this.userId = credentials.identityId;
-            }
-          );
-          this.dismiss()
-          loading.dismiss();
-        })
-        .catch(err => console.log('error signing in', err));
+      this.dbProvider.login(this.credentials.username, this.credentials.password).then((response) => {
+        //console.log(response);
+        this.dismiss()
+        loading.dismiss();
+      })
+      .catch((error) => {
+        console.log(error);
+        loading.dismiss();
+      })
     });
   }
 

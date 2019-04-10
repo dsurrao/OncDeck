@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
-import { Auth } from 'aws-amplify';
+import { PouchdbProvider } from '../../providers/pouchdb/pouchdb';
 
 @Component({
   selector: 'modal-logout',
@@ -10,12 +10,13 @@ export class LogoutModal {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public viewCtrl: ViewController,
-    public events: Events) {}
+    public events: Events,
+    public dbProvider: PouchdbProvider) {}
   ionViewDidLoad() {
   }
 
   signout () {
-    Auth.signOut().then((result) => {
+    this.dbProvider.logout().then((response) => {
       this.dismiss();
     });
   }
