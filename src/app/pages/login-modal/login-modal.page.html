@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar color="darkbar">
+      <ion-buttons start>
+        <button ion-button icon-only (click)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-segment [(ngModel)]="page" (ionChange)="reset()">
+        <ion-segment-button value="login" class="sign-in">
+          Sign In
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+  
+    <div [ngSwitch]="page">
+      <div class="container" *ngSwitchCase="'login'">
+        <form (ngSubmit)="signin()" #signinForm="ngForm">
+  
+          <ion-card *ngIf="message" color='secondary'>
+            <ion-card-content>
+              {{message}}
+            </ion-card-content>
+          </ion-card>
+  
+          <ion-card *ngIf="error" color='danger'>
+            <ion-card-content>
+              {{error}}
+            </ion-card-content>
+          </ion-card>
+  
+          <ion-list inset>
+            <ion-item>
+              <ion-label fixed>Username</ion-label>
+              <ion-input type="text" name="username" required [(ngModel)]="credentials.username" #username="ngModel"></ion-input>
+            </ion-item>
+  
+            <ion-item>
+              <ion-label fixed>Password</ion-label>
+              <ion-input type="password" name="password" required [(ngModel)]="credentials.password" #password="ngModel"></ion-input>
+            </ion-item>
+          </ion-list>
+          <button ion-button full type="submit" [disabled]="!signinForm.form.valid">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </ion-content>  
