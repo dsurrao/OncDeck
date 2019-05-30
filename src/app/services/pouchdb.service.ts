@@ -39,20 +39,20 @@ export class PouchdbService {
     // });
 
     // IBM cloud instance oncdeck, without accounts
-    // let _username: string = 'terrentypticilikedinglel';
-    // let _password: string = 'b22ff6beeab8954e123783d1a85675b0553f307d';
-    // this.remoteDb = new PouchDB(
-    //   'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
-    //     {auth: {username: _username, password: _password}});
+    let _username: string = 'terrentypticilikedinglel';
+    let _password: string = 'b22ff6beeab8954e123783d1a85675b0553f307d';
+    this.remoteDb = new PouchDB(
+      'https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck',
+        {auth: {username: _username, password: _password}});
 
     // IBM cloud instance oncdeck-dev, without accounts
     // pass in logged in credentials (opts.credentials)
-    this.remoteDb = new PouchDB('https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck-dev', {
-      fetch: function (url, opts) {
-        opts.credentials='include';
-        return PouchDB.fetch(url, opts);
-      }
-    });
+    // this.remoteDb = new PouchDB('https://89ca2ae2-6aed-490c-8ba7-4a8897cbedf7-bluemix.cloudant.com/oncdeck-dev', {
+    //   fetch: function (url, opts) {
+    //     opts.credentials='include';
+    //     return PouchDB.fetch(url, opts);
+    //   }
+    // });
 
     // live sync dbs
     //this.syncDbs();
@@ -123,6 +123,18 @@ export class PouchdbService {
       })
       .catch((error) => {
         reject(error);
+      });
+    });
+  }
+
+  getPatient(id: string): Promise<Patient> {
+    return new Promise((resolve, reject) => {
+      this.db.get(id).then(function(doc) {
+          resolve(doc);
+        }.bind(this)
+      )
+      .catch((error) => {
+        console.log(error);
       });
     });
   }

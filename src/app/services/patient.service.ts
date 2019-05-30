@@ -8,20 +8,24 @@ import { PouchdbService } from './pouchdb.service';
 })
 export class PatientService {
 
-  constructor(public http: HttpClient, public db: PouchdbService) {
+  constructor(public http: HttpClient, public dbSvc: PouchdbService) {
   }
 
-  // pass in credentials from caller, maybe this should be the way to do it?
+  // pass in credentials from caller?
   getPatients(): Promise<Patient[]> {
-    return this.db.getPatients();
+    return this.dbSvc.getPatients();
+  }
+
+  getPatient(id): Promise<Patient> {
+    return this.dbSvc.getPatient(id);
   }
 
   savePatient(patient: Patient): Promise<Patient> {
-    return this.db.savePatient(patient);
+    return this.dbSvc.savePatient(patient);
   }
 
   removePatient(patient: Patient): Promise<Patient> {
-    return this.db.removePatient(patient);
+    return this.dbSvc.removePatient(patient);
   }
 
   watchPatient(patient: Patient, deviceUuid: string): Promise<Patient> {

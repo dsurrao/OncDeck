@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Patient Information</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button icon-only (click)="edit()">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Patient bio -->
+  <div id="patient-container">
+    <div id="patient-name">{{patient.lastName}}, {{patient.firstName}}</div>
+    <div id="patient-information">({{patient.gender}}, {{patient.dob}})</div>
+    <div>
+      <span *ngIf="patient.biopsyStatus != null">
+        Biopsy Status: {{patient.biopsyStatus.status}}
+        <span *ngIf="patient.biopsyStatus.biopsyDate != null"> on {{patient.biopsyStatus.biopsyDate}}</span>
+      </span>
+      <span *ngIf="patient.phoneNumber != null">Phone: {{patient.phoneNumber}} <br/></span>
+      <span *ngIf="patient.contactFirstName != null">Contact: {{patient.contactLastName}}, {{patient.contactFirstName}}, </span>
+      <span *ngIf="patient.contactPhoneNumber != null">Contact Phone: {{patient.contactPhoneNumber}}</span>
+    </div>
+  </div>
+
+  <!-- Patient information -->
+  <ion-card class="card-container">
+
+    <!-- Summary -->
+    <ion-card-header class="card-header">
+      <ion-icon name="clipboard"></ion-icon>
+      Summary
+      </ion-card-header>
+      <ion-card-content>
+        <patient-summary [patient]="patient"></patient-summary>
+      </ion-card-content>
+
+
+    <div class="patient-divider"></div>
+
+    <!-- Scheduled Surgery -->
+      <ion-card-header class="card-header">
+        <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
+      </ion-card-header>
+
+      <ion-list #surgeryList>
+        <ion-item-sliding *ngFor="let surgery of patient.surgeries">
+          <ion-item text-wrap *ngIf="surgery.completedDate != null; else elseBlock" (click)="viewScheduledSurgery(surgery)">
+            Surgery completed on {{toLocaleDateString(surgery.completedDate)}} at {{surgery.facility}} with {{surgery.providerName}}
+          </ion-item>
+          <ng-template #elseBlock>
+            <ion-item text-wrap (click)="viewScheduledSurgery(surgery)">
+              Scheduled on {{toLocaleDateString(surgery.scheduledDate)}} at {{surgery.facility}} with {{surgery.providerName}}
+            </ion-item>
+          </ng-template>
+          <!-- delete option -->
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="removeSurgeryConfirm(surgery)">
+              Remove
+            </ion-item-option>
+          </ion-item-options> 
+        </ion-item-sliding>
+      </ion-list>
+      
+      <!-- <ion-buttons slot="start"> -->
+        <ion-button slot="start" round (click)="addScheduledSurgery()" class="add-button">
+          <ion-icon name="add"></ion-icon>
+          Add Surgery
+        </ion-button>
+      <!-- </ion-buttons> -->
+
+    <div class="patient-divider"></div>
+    
+    <!--  Surgical Pathology -->
+    <ion-card-header class="card-header">
+      <ion-icon name="body"></ion-icon>
+      Surgical Pathology
+    </ion-card-header>
+
+    <ion-list #surgicalPathologyList>
+      <ion-item-sliding *ngFor="let pathology of patient.surgicalPathologies">
+        <ion-item text-wrap (click)="viewSurgicalPathology(pathology)">
+          {{pathology.surgeryType}} on {{toLocaleDateString(pathology.surgeryDate)}}
+        </ion-item>
+        <!-- delete option -->
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="removeSurgicalPathologyConfirm(pathology)">
+            Remove
+          </ion-item-option>
+        </ion-item-options> 
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- <ion-buttons slot="end"> -->
+      <ion-button slot="start" round (click)="addSurgicalPathology()" class="add-button">
+        <ion-icon name="add"></ion-icon>
+        Add Pathology
+      </ion-button>
+    <!-- </ion-buttons> -->
+
+  </ion-card>
+</ion-content>

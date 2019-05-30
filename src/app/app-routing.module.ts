@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'patients', loadChildren: './pages/patients/patients.module#PatientsPageModule' },
   { path: 'login-modal', loadChildren: './pages/login-modal/login-modal.module#LoginModalPageModule' },
   { path: 'logout-modal', loadChildren: './pages/logout-modal/logout-modal.module#LogoutModalPageModule' },
+  { path: 'patient/:id', loadChildren: './pages/patient/patient.module#PatientPageModule' },
 ];
 
 @NgModule({
