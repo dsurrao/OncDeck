@@ -50,15 +50,17 @@ export class PathologySurgeryPage implements OnInit {
     let patientId = this.route.snapshot.paramMap.get('patientId');
     this.patientSvc.getPatient(patientId).then((patient) => {
       this.patient = patient;
+      let pathologyId = this.route.snapshot.paramMap.get('pathologyId');
+      if (pathologyId != null) {
+        for (let p of patient.surgicalPathologies) {
+          if (pathologyId === p.id) {
+            this.surgicalPathology = p;
+            this.surgeryDate = this.dateUtils.isoStringToYyyymmdd(this.surgicalPathology.surgeryDate);
+            break;
+          }
+        }
+      }
     });
-
-    let pathologyId = this.route.snapshot.paramMap.get('pathologyId');
-    if (pathologyId != null) {
-      this.surgerySvc.getSurgicalPathology(pathologyId).then((pathology) => {
-        this.surgicalPathology = pathology;
-        this.surgeryDate = this.dateUtils.isoStringToYyyymmdd(this.surgicalPathology.surgeryDate);
-      });
-    }
   }
   
   submit() {

@@ -31,18 +31,20 @@ export class ScheduledSurgeryPage implements OnInit {
     let patientId = this.route.snapshot.paramMap.get('patientId');
     this.patientSvc.getPatient(patientId).then((patient) => {
       this.patient = patient;
-    });
-
-    let surgeryId = this.route.snapshot.paramMap.get('surgeryId');
-    if (surgeryId != null) {
-      this.surgerySvc.getSurgery(surgeryId).then((surgery) => {
-        this.surgery = surgery;
-        this.scheduledDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.scheduledDate);
-        if (this.surgery.completedDate != null) {
-          this.completedDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.completedDate);
+      let surgeryId = this.route.snapshot.paramMap.get('surgeryId');
+      if (surgeryId != null) {
+        for (let s of patient.surgeries) {
+          if (s.id === surgeryId) {
+            this.surgery = s;
+            this.scheduledDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.scheduledDate);
+            if (this.surgery.completedDate != null) {
+              this.completedDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.completedDate);
+            }
+            break;
+          }
         }
-      });
-    }
+      }
+    });
   }
 
   submit() {
