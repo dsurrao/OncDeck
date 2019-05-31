@@ -16,6 +16,14 @@ export class SurgeryService {
     console.log('Hello SurgeryProvider Provider');
   }
 
+  getSurgery(id: string): Promise<Surgery> {
+    return this.db.getDocument(id);
+  }
+
+  getSurgicalPathology(id: string): Promise<SurgicalPathology> {
+    return this.db.getDocument(id);
+  }
+
   /* 
     save scheduled surgery info for a patient 
   */

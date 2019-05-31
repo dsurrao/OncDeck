@@ -1,0 +1,154 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Surgical Pathology for {{patient.lastName}}, {{patient.firstName}}</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+      
+<ion-content>
+    <form (ngSubmit)="submit()" #pathologyForm="ngForm">
+        <ion-item>
+            <ion-label>Surgery Date</ion-label>
+            <ion-input type="date" name="surgeryDate" [(ngModel)]="surgeryDate" required></ion-input>
+        </ion-item>
+
+        <ion-list>
+            <ion-list-header>Surgery Type</ion-list-header>
+            <ion-radio-group name="surgeryType" [(ngModel)]="surgicalPathology.surgeryType" required>
+                <ion-item>
+                    <ion-label>Lumpectomy</ion-label>
+                    <ion-radio value="{{surgeryType.Lumpectomy}}"></ion-radio>
+                    </ion-item>
+                <ion-item>
+                    <ion-label>Modified Radical Mastectomy</ion-label>
+                    <ion-radio value="{{surgeryType.ModifiedRadicalMastectomy}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Other</ion-label>
+                    <ion-radio value="{{surgeryType.Other}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+
+        <ion-list>
+            <ion-list-header>Surgery Histology</ion-list-header>
+            <ion-radio-group name="surgeryHistology" [(ngModel)]="surgicalPathology.surgeryHistology" required>
+                <ion-item>
+                    <ion-label>Invasive Ductal Carcinoma</ion-label>
+                    <ion-radio value="{{surgeryHistology.InvasiveDuctalCarcinoma}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Invasive Lobular Carcinoma</ion-label>
+                    <ion-radio value="{{surgeryHistology.InvasiveLobularCarcinoma}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>DCIS (Ductal Carcinoma In Situ)</ion-label>
+                    <ion-radio value="{{surgeryHistology.DCIS}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>LCIS (Lobular Carcinoma In Situ)</ion-label>
+                    <ion-radio value="{{surgeryHistology.LCIS}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Other</ion-label>
+                    <ion-radio value="{{surgeryHistology.Other}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        
+        <ion-list>
+            <ion-list-header>Estrogren Receptor</ion-list-header>
+            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="surgicalPathology.erReceptor" required>
+                <ion-item>
+                    <ion-label>ER+</ion-label>
+                    <ion-radio value="{{estrogenReceptor.Positive}}"></ion-radio>
+                    </ion-item>
+                <ion-item>
+                    <ion-label>ER-</ion-label>
+                    <ion-radio value="{{estrogenReceptor.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{estrogenReceptor.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+
+        <ion-list>
+            <ion-list-header>Progesterone Receptor</ion-list-header>
+            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="surgicalPathology.progesteroneReceptor" required>
+                <ion-item>
+                    <ion-label>PR+</ion-label>
+                    <ion-radio value="{{progesteroneReceptor.Positive}}"></ion-radio>
+                    </ion-item>
+                <ion-item>
+                    <ion-label>PR-</ion-label>
+                    <ion-radio value="{{progesteroneReceptor.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{progesteroneReceptor.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+
+        <ion-list>
+            <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
+            <ion-radio-group name="her2Receptor" [(ngModel)]="surgicalPathology.her2Receptor" required>
+                <ion-item>
+                    <ion-label>HER2+</ion-label>
+                    <ion-radio value="{{her2Receptor.Positive}}"></ion-radio>
+                    </ion-item>
+                <ion-item>
+                    <ion-label>HER2-</ion-label>
+                    <ion-radio value="{{her2Receptor.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{her2Receptor.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        
+        <ion-list>
+            <ion-list-header>Surgical Features</ion-list-header>
+            <ion-radio-group name="surgicalFeatures" [(ngModel)]="surgicalPathology.surgicalFeature" required>
+                <ion-item>
+                    <ion-label>LVI+</ion-label>
+                    <ion-radio value="{{surgicalFeature.LVIPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>LVI-</ion-label>
+                    <ion-radio value="{{surgicalFeature.LVIPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{surgicalFeature.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        <ion-list>
+            <ion-list-header>Surgical Margins</ion-list-header>
+            <ion-radio-group name="surgicalMargins" [(ngModel)]="surgicalPathology.surgicalMargin" required>
+                <ion-item>
+                    <ion-label>Focally Positive</ion-label>
+                    <ion-radio value="{{surgicalMargin.FocallyPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Broadly Positive</ion-label>
+                    <ion-radio value="{{surgicalMargin.BroadlyPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{surgicalMargin.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        <div padding>
+            <!-- <button ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid">Save</button> -->
+            <button ion-button color="primary" type="submit">Save</button>
+        </div>
+    </form>
+</ion-content>

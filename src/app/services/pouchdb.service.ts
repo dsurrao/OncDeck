@@ -127,7 +127,7 @@ export class PouchdbService {
     });
   }
 
-  getPatient(id: string): Promise<Patient> {
+  getDocument(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.db.get(id).then(function(doc) {
           resolve(doc);

@@ -17,7 +17,7 @@ export class PatientService {
   }
 
   getPatient(id): Promise<Patient> {
-    return this.dbSvc.getPatient(id);
+    return this.dbSvc.getDocument(id);
   }
 
   savePatient(patient: Patient): Promise<Patient> {

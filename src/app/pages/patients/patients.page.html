@@ -8,7 +8,7 @@
   <ion-content>
     <ion-list>
       <div id="menu-padding"></div>
-      <ion-button ion-item menuClose (click)="addPatient()">
+      <ion-button ion-item menuClose [routerLink]="['patient-form']">
         <ion-icon name="body" class="icon-menu"></ion-icon>Add patient
       </ion-button>
       <ion-button ion-item menuClose (click)="showGraph()">
@@ -75,7 +75,6 @@
       (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
     <ion-list #patientList>
       <ion-item-sliding *ngFor="let patient of patients">        
-        <!-- <ion-item *ngIf="showPatient(patient)" (click)="viewPatient(patient)" text-wrap> -->
         <ion-item *ngIf="showPatient(patient)" [routerLink]="['/patient/' + patient._id]" text-wrap>
           <ion-avatar item-start>
             <ion-icon name="contact" class="icon-contact"></ion-icon>
@@ -135,8 +134,8 @@
     </ion-list>
     
 
-    <ion-fab vertical="bottom" horizontal="end">
-      <ion-button ion-fab (click)="addPatient()"> <ion-icon name="add"></ion-icon></ion-button> 
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button [routerLink]="['/patient-form']"><ion-icon name="add"></ion-icon></ion-fab-button> 
     </ion-fab>
 
 </ion-content>

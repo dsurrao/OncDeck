@@ -8,6 +8,16 @@ const routes: Routes = [
   { path: 'login-modal', loadChildren: './pages/login-modal/login-modal.module#LoginModalPageModule' },
   { path: 'logout-modal', loadChildren: './pages/logout-modal/logout-modal.module#LogoutModalPageModule' },
   { path: 'patient/:id', loadChildren: './pages/patient/patient.module#PatientPageModule' },
+  { path: 'patient-form', loadChildren: './pages/patient-form/patient-form.module#PatientFormPageModule' },
+  { path: 'patient-form/:id', loadChildren: './pages/patient-form/patient-form.module#PatientFormPageModule' },
+  { path: 'biopsy-status/:id', loadChildren: './pages/biopsy-status/biopsy-status.module#BiopsyStatusPageModule' },
+  { path: 'scheduled-surgery/:patientId', loadChildren: './pages/scheduled-surgery/scheduled-surgery.module#ScheduledSurgeryPageModule' },
+  { path: 'scheduled-surgery/:patientId/:surgeryId', loadChildren: './pages/scheduled-surgery/scheduled-surgery.module#ScheduledSurgeryPageModule' },
+  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
+  { path: 'graph', loadChildren: './pages/graph/graph.module#GraphPageModule' },
+  { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
+  { path: 'pathology-surgery/:patientId', loadChildren: './pages/pathology-surgery/pathology-surgery.module#PathologySurgeryPageModule' },
+  { path: 'pathology-surgery/:patientId/:pathologyId', loadChildren: './pages/pathology-surgery/pathology-surgery.module#PathologySurgeryPageModule' },
 ];
 
 @NgModule({

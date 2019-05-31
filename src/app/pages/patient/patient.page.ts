@@ -33,7 +33,6 @@ export class PatientPage implements OnInit {
 
   constructor(
 //    public navCtrl: NavController, 
-//    public navParams: NavParams,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public events: Events,
@@ -42,44 +41,24 @@ export class PatientPage implements OnInit {
     public patientSvc: PatientService
     //public surgerySvc: SurgeryProvider
     ) {
-    //this.patient = this.navParams.data.params;
   }
 
   ngOnInit() {
+    this.refreshPatient();
+
+    this.events.subscribe('patientSaved', () => {
+      this.refreshPatient();
+    });
+  }
+  
+  refreshPatient() {
     let id = this.route.snapshot.paramMap.get('id');
     this.patientSvc.getPatient(id).then((patient) => {
       this.patient = patient;
       this.patient['genderInitial'] = this.getGenderInitial(this.patient['Gender']);
       this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
       // this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
-      this.events.subscribe('patientSaved', () => {
-        this.refreshPatient();
-      });
     });
-  }
-
-  edit() {
-    //this.navCtrl.push(PatientFormPage, {params: this.patient});
-  }
-
-  addScheduledSurgery() {
-    //this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient}});
-  }
-
-  viewScheduledSurgery(surgery) {
-    //this.navCtrl.push(ScheduledSurgeryPage, {params: {patient: this.patient, surgery: surgery}});
-  }
-
-  addSurgicalPathology() {
-    //this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient}});
-  }
-
-  viewSurgicalPathology(pathology: SurgicalPathology) {
-    //this.navCtrl.push(PathologySurgeryPage, {params: {patient: this.patient, surgicalPathology: pathology}});
-  }
-  
-  refreshPatient() {
-    
   }
 
   removeSurgeryConfirm(surgery: Surgery) {

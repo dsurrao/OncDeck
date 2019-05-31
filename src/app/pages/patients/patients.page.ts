@@ -4,7 +4,6 @@ import { DateUtils } from '../../common/dateutils';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, 
   Events, 
-//  IonicPage, 
   LoadingController,
   ModalController, 
   NavController, 
@@ -46,7 +45,6 @@ export class PatientsPage implements OnInit {
   isSearchbarOpened: boolean = false;
 
   constructor(public navCtrl: NavController, 
-//    public navParams: NavParams, 
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
