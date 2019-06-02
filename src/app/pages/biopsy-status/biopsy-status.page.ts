@@ -1,9 +1,12 @@
+/**
+ * Pattern for parent child interaction: https://angular.io/guide/component-interaction
+ */
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController, NavParams, Events } from '@ionic/angular';
+import { AlertController, NavController, Events } from '@ionic/angular';
 import { Patient } from '../../models/patient';
 import { PatientService } from '../../services/patient.service';
-import { BiopsyStatus } from '../../models/biopsy-status';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-biopsy-status',
@@ -11,16 +14,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./biopsy-status.page.scss'],
 })
 export class BiopsyStatusPage implements OnInit {
-  patient: Patient = new Patient();
+  patient$: Observable<Patient>;
 
   constructor(public navCtrl: NavController, 
     public patientSvc: PatientService,
     public events: Events,
     public alertController: AlertController,
     public route: ActivatedRoute) {
-    if (this.patient.biopsyStatus == null) {
-      this.patient.biopsyStatus = new BiopsyStatus();
-    }
   }
 
   ngOnInit() {
@@ -28,15 +28,15 @@ export class BiopsyStatusPage implements OnInit {
     // existing patient
     if (patientId != null) {
       this.patientSvc.getPatient(patientId).then((patient) => {
-        this.patient = patient;
+        this.patient$ = of(patient);
       });
     }
   }
 
-  next() {
-    this.patientSvc.savePatient(this.patient).then(updatedPatient => {
+  save(patient: Patient) {
+    this.patientSvc.savePatient(patient).then(updatedPatient => {
       console.log("patient saved");
-      this.navCtrl.navigateBack('patient/' + this.patient._id);
+      this.navCtrl.navigateBack('patient/' + patient._id);
     })
     .catch(error => {
       let title: string = 'Error saving patient';

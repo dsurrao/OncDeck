@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { BiopsyStatusPage } from './biopsy-status.page';
+import { BiopsyStatusComponent } from 'src/app/components/biopsy-status/biopsy-status.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [BiopsyStatusPage]
+  declarations: [BiopsyStatusPage, BiopsyStatusComponent]
 })
 export class BiopsyStatusPageModule {}
