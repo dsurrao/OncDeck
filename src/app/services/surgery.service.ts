@@ -5,6 +5,7 @@ import { Surgery } from '../models/surgery';
 import { PouchdbService } from './pouchdb.service';
 import UUID from 'uuid';
 import { SurgicalPathology } from '../models/surgical-pathology';
+import { DateUtils } from '../common/dateutils';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import { SurgicalPathology } from '../models/surgical-pathology';
 export class SurgeryService {
 
   constructor(public http: HttpClient, 
-    public db: PouchdbService) {
+    public db: PouchdbService,
+    public dateUtils: DateUtils) {
     console.log('Hello SurgeryProvider Provider');
   }
 

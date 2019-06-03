@@ -7,29 +7,35 @@ export class DateUtils {
      * takes a string with format yyyy-mm-dd and converts it into an ISO string
      */
     public yyyymmddToISOString(yyyymmdd: string): string {
-        let isoString: string = '';
-        let inputValidationRegEx: RegExp = new RegExp('^(\\d{4})[-](\\d{2})[-](\\d{2})$');
-        let res = inputValidationRegEx.exec(yyyymmdd);
-        console.log(res);
-        if (res != null) {
-            if (res.length == 4) {
-                let year: number = parseInt(res[1]);
-                let month: number = parseInt(res[2].replace(new RegExp('^[0]'), ''));
-                let day: number = parseInt(res[3].replace(new RegExp('^[0]'), ''));
-                isoString = new Date(year, month - 1, day).toISOString();
+        let isoString: string = null;
+        if (yyyymmdd != '' && yyyymmdd != null) {
+            let inputValidationRegEx: RegExp = new RegExp('^(\\d{4})[-](\\d{2})[-](\\d{2})$');
+            let res = inputValidationRegEx.exec(yyyymmdd);
+            console.log(res);
+            if (res != null) {
+                if (res.length == 4) {
+                    let year: number = parseInt(res[1]);
+                    let month: number = parseInt(res[2].replace(new RegExp('^[0]'), ''));
+                    let day: number = parseInt(res[3].replace(new RegExp('^[0]'), ''));
+                    isoString = new Date(year, month - 1, day).toISOString();
+                }
             }
-        }
+        }        
         return isoString;
     }
 
     public isoStringToYyyymmdd(isoString: string): string {
-        let inputDate: Date = new Date(isoString);
-        let yyyy: string = String(inputDate.getFullYear());
-        let mm: string = (inputDate.getMonth() + 1) < 10 ? "0" + String(inputDate.getMonth() + 1) : 
-            String(inputDate.getMonth() + 1);
-        let dd: string = inputDate.getDate() < 10 ? "0" + String(inputDate.getDate()) : 
-            String(inputDate.getDate());
-        return yyyy + '-' + mm + '-' + dd;
+        let yyyymmdd = null;
+        if (isoString != '' && isoString != null) {
+            let inputDate: Date = new Date(isoString);
+            let yyyy: string = String(inputDate.getFullYear());
+            let mm: string = (inputDate.getMonth() + 1) < 10 ? "0" + String(inputDate.getMonth() + 1) : 
+                String(inputDate.getMonth() + 1);
+            let dd: string = inputDate.getDate() < 10 ? "0" + String(inputDate.getDate()) : 
+                String(inputDate.getDate());
+            yyyymmdd = yyyy + '-' + mm + '-' + dd;
+        }
+        return yyyymmdd;
     }
 
     public daysFromToday(isoDate: string): number {

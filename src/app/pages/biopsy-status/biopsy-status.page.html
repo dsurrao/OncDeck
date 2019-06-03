@@ -1,15 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-      <ion-title>Biopsy Status</ion-title>
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-    <biopsy-status *ngIf="(patient$ | async) != null" 
-      [patient]="patient$ | async" 
-      (save)="save($event)">
-  </biopsy-status>
-</ion-content>
+<!-- need to specify height: 100%, otherwise component display is cut off -->
+<biopsy-status style="height:100%" [patient]="patient$ | async" (save)="save($event)">
+</biopsy-status>

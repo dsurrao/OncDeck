@@ -6,7 +6,8 @@ import { AlertController, NavController, Events } from '@ionic/angular';
 import { Patient } from '../../models/patient';
 import { PatientService } from '../../services/patient.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-biopsy-status',
@@ -27,15 +28,17 @@ export class BiopsyStatusPage implements OnInit {
     let patientId = this.route.snapshot.paramMap.get('id');
     // existing patient
     if (patientId != null) {
-      this.patientSvc.getPatient(patientId).then((patient) => {
-        this.patient$ = of(patient);
-      });
+      // create an observable by converting service return promise to observable, 
+      // and taking the first result
+      // https://www.learnrxjs.io/operators/filtering/take.html
+      this.patient$ = from(this.patientSvc.getPatient(patientId)).pipe(take(1));
     }
   }
 
   save(patient: Patient) {
     this.patientSvc.savePatient(patient).then(updatedPatient => {
       console.log("patient saved");
+      this.events.publish('patientSaved');
       this.navCtrl.navigateBack('patient/' + patient._id);
     })
     .catch(error => {

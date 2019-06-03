@@ -3,9 +3,10 @@ import { AlertController, Events, NavController } from '@ionic/angular';
 import { SurgeryService } from '../../services/surgery.service';
 import { Patient } from '../../models/patient';
 import { Surgery } from '../../models/surgery';
-import { DateUtils } from '../../common/dateutils';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
+import { Observable, of, from, Subscription } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scheduled-surgery',
@@ -13,61 +14,57 @@ import { PatientService } from 'src/app/services/patient.service';
   styleUrls: ['./scheduled-surgery.page.scss'],
 })
 export class ScheduledSurgeryPage implements OnInit {
-  patient: Patient = new Patient();
-  surgery: Surgery = new Surgery(); // pass in existing surgery details, if this is for an update
+  patient$: Observable<Patient>;
+  surgery$: Observable<Surgery>; // pass in existing surgery details, if this is for an update
   scheduledDate: string;
   completedDate: string;
+  subscriptions: Subscription[] = [];
 
   constructor(public navCtrl: NavController, 
     public surgerySvc: SurgeryService,
     public patientSvc: PatientService,
     public events: Events,
-    public dateUtils: DateUtils,
     public alertController: AlertController,
     public route: ActivatedRoute) {
   }
 
   ngOnInit() {
     let patientId = this.route.snapshot.paramMap.get('patientId');
-    this.patientSvc.getPatient(patientId).then((patient) => {
-      this.patient = patient;
-      let surgeryId = this.route.snapshot.paramMap.get('surgeryId');
-      if (surgeryId != null) {
+    let surgeryId = this.route.snapshot.paramMap.get('surgeryId');
+
+    this.patient$ = from(this.patientSvc.getPatient(patientId)).pipe(take(1));
+    if (surgeryId != null) {
+      this.surgery$ = this.patient$.pipe(map(patient => {
         for (let s of patient.surgeries) {
           if (s.id === surgeryId) {
-            this.surgery = s;
-            this.scheduledDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.scheduledDate);
-            if (this.surgery.completedDate != null) {
-              this.completedDate = this.dateUtils.isoStringToYyyymmdd(this.surgery.completedDate);
-            }
-            break;
+            return s;
           }
         }
-      }
-    });
+      }));
+    }
+    else {
+      this.surgery$ = of(new Surgery());
+    }
   }
 
-  submit() {
-    if (this.scheduledDate != null) {
-      this.surgery.scheduledDate = this.dateUtils.yyyymmddToISOString(this.scheduledDate);
-    }
-    if (this.completedDate != null) {
-      this.surgery.completedDate = this.dateUtils.yyyymmddToISOString(this.completedDate);
-    }
-    this.surgerySvc.save(this.patient, this.surgery).then((resp) => {
-      this.events.publish('patientSaved');
-      this.navCtrl.pop();
-    }).catch((error) => {
-      let title: string = 'Error saving patient';
-      let subTitle: string = '';
-      if (error.status == '409') {
-        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-      }
-      else {
-        subTitle = error;
-      }
-      this.showAlert(title, subTitle);
-    });
+  save(surgery: Surgery) {
+    let subscription = this.patient$.subscribe((patient) => {
+      this.surgerySvc.save(patient, surgery).then((resp) => {
+        this.events.publish('patientSaved');
+        this.navCtrl.navigateBack('patient/' + patient._id);
+      }).catch((error) => {
+        let title: string = 'Error saving patient';
+        let subTitle: string = '';
+        if (error.status == '409') {
+          subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+        }
+        else {
+          subTitle = error;
+        }
+        this.showAlert(title, subTitle);
+      });
+    })
+    this.subscriptions.push(subscription);
   }
 
   async showAlert(titleTxt: string, subTitleTxt: string) {
@@ -79,5 +76,10 @@ export class ScheduledSurgeryPage implements OnInit {
     await alert.present();
   }
 
+  ngOnDestroy(): void {
+    for (let s of this.subscriptions) {
+      s.unsubscribe();
+    }
+  }
 }
 
