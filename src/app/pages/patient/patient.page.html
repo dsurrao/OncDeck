@@ -86,7 +86,7 @@
 
     <ion-list #surgicalPathologyList>
       <ion-item-sliding *ngFor="let pathology of patient.surgicalPathologies">
-        <ion-item text-wrap [routerLink]="['/pathology-surgery/' + patient._id + '/' + pathology.id]">
+        <ion-item text-wrap [routerLink]="['/surgical-pathology/' + patient._id + '/' + pathology.id]">
           {{pathology.surgeryType}} on {{toLocaleDateString(pathology.surgeryDate)}}
         </ion-item>
         <!-- delete option -->
@@ -99,7 +99,7 @@
     </ion-list>
 
     <!-- <ion-buttons slot="end"> -->
-      <ion-button slot="start" round [routerLink]="['/pathology-surgery/' + patient._id]" class="add-button">
+      <ion-button slot="start" round [routerLink]="['/surgical-pathology/' + patient._id]" class="add-button">
         <ion-icon name="add"></ion-icon>
         Add Pathology
       </ion-button>

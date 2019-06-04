@@ -1,14 +1,14 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>Surgical Pathology for {{patient.lastName}}, {{patient.firstName}}</ion-title>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+      <ion-title>Surgical Pathology for {{patient.lastName}}, {{patient.firstName}}</ion-title>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
 </ion-header>
-      
+    
 <ion-content>
-    <form (ngSubmit)="submit()" #pathologyForm="ngForm">
+  <form #pathologyForm="ngForm">
         <ion-item>
             <ion-label>Surgery Date</ion-label>
             <ion-input type="date" name="surgeryDate" [(ngModel)]="surgeryDate" required></ion-input>
@@ -16,7 +16,7 @@
 
         <ion-list>
             <ion-list-header>Surgery Type</ion-list-header>
-            <ion-radio-group name="surgeryType" [(ngModel)]="surgicalPathology.surgeryType" required>
+            <ion-radio-group name="surgeryType" [(ngModel)]="pathology.surgeryType" required>
                 <ion-item>
                     <ion-label>Lumpectomy</ion-label>
                     <ion-radio value="{{surgeryType.Lumpectomy}}"></ion-radio>
@@ -34,7 +34,7 @@
 
         <ion-list>
             <ion-list-header>Surgery Histology</ion-list-header>
-            <ion-radio-group name="surgeryHistology" [(ngModel)]="surgicalPathology.surgeryHistology" required>
+            <ion-radio-group name="surgeryHistology" [(ngModel)]="pathology.surgeryHistology" required>
                 <ion-item>
                     <ion-label>Invasive Ductal Carcinoma</ion-label>
                     <ion-radio value="{{surgeryHistology.InvasiveDuctalCarcinoma}}"></ion-radio>
@@ -60,7 +60,7 @@
         
         <ion-list>
             <ion-list-header>Estrogren Receptor</ion-list-header>
-            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="surgicalPathology.erReceptor" required>
+            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="pathology.erReceptor" required>
                 <ion-item>
                     <ion-label>ER+</ion-label>
                     <ion-radio value="{{estrogenReceptor.Positive}}"></ion-radio>
@@ -78,7 +78,7 @@
 
         <ion-list>
             <ion-list-header>Progesterone Receptor</ion-list-header>
-            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="surgicalPathology.progesteroneReceptor" required>
+            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="pathology.progesteroneReceptor" required>
                 <ion-item>
                     <ion-label>PR+</ion-label>
                     <ion-radio value="{{progesteroneReceptor.Positive}}"></ion-radio>
@@ -96,7 +96,7 @@
 
         <ion-list>
             <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
-            <ion-radio-group name="her2Receptor" [(ngModel)]="surgicalPathology.her2Receptor" required>
+            <ion-radio-group name="her2Receptor" [(ngModel)]="pathology.her2Receptor" required>
                 <ion-item>
                     <ion-label>HER2+</ion-label>
                     <ion-radio value="{{her2Receptor.Positive}}"></ion-radio>
@@ -114,7 +114,7 @@
         
         <ion-list>
             <ion-list-header>Surgical Features</ion-list-header>
-            <ion-radio-group name="surgicalFeatures" [(ngModel)]="surgicalPathology.surgicalFeature" required>
+            <ion-radio-group name="surgicalFeatures" [(ngModel)]="pathology.surgicalFeature" required>
                 <ion-item>
                     <ion-label>LVI+</ion-label>
                     <ion-radio value="{{surgicalFeature.LVIPositive}}"></ion-radio>
@@ -131,7 +131,7 @@
         </ion-list>
         <ion-list>
             <ion-list-header>Surgical Margins</ion-list-header>
-            <ion-radio-group name="surgicalMargins" [(ngModel)]="surgicalPathology.surgicalMargin" required>
+            <ion-radio-group name="surgicalMargins" [(ngModel)]="pathology.surgicalMargin" required>
                 <ion-item>
                     <ion-label>Focally Positive</ion-label>
                     <ion-radio value="{{surgicalMargin.FocallyPositive}}"></ion-radio>
@@ -146,9 +146,7 @@
                 </ion-item>
             </ion-radio-group>
         </ion-list>
-        <div padding>
-            <!-- <button ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid">Save</button> -->
-            <button ion-button color="primary" type="submit">Save</button>
-        </div>
+        <ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid" (click)="save()">Save</ion-button>
+        <!-- <ion-button color="primary" (click)="save()">Save</ion-button> -->
     </form>
 </ion-content>

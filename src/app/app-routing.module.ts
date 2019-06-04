@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
   { path: 'graph', loadChildren: './pages/graph/graph.module#GraphPageModule' },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
-  { path: 'pathology-surgery/:patientId', loadChildren: './pages/pathology-surgery/pathology-surgery.module#PathologySurgeryPageModule' },
-  { path: 'pathology-surgery/:patientId/:pathologyId', loadChildren: './pages/pathology-surgery/pathology-surgery.module#PathologySurgeryPageModule' },
+  { path: 'surgical-pathology/:patientId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
+  { path: 'surgical-pathology/:patientId/:pathologyId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
 ];
 
 @NgModule({

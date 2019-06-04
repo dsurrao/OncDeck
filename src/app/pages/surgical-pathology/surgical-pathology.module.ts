@@ -5,12 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PathologySurgeryPage } from './pathology-surgery.page';
+import { SurgicalPathologyPage } from './surgical-pathology.page';
+import { SurgicalPathologyComponent } from 'src/app/components/surgical-pathology/surgical-pathology.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PathologySurgeryPage
+    component: SurgicalPathologyPage
   }
 ];
 
@@ -21,6 +22,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PathologySurgeryPage]
+  declarations: [SurgicalPathologyPage, SurgicalPathologyComponent]
 })
-export class PathologySurgeryPageModule {}
+export class SurgicalPathologyPageModule {}

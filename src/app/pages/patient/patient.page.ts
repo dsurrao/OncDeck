@@ -16,8 +16,8 @@ import { Surgery } from '../../models/surgery';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
+import { SurgeryService } from 'src/app/services/surgery.service';
 import { Observable, of } from 'rxjs';
-//import { SurgeryProvider } from '../../providers/surgery/surgery';
 
 @Component({
   selector: 'app-patient',
@@ -38,8 +38,8 @@ export class PatientPage implements OnInit {
     public events: Events,
     public dateUtils: DateUtils,
     public route: ActivatedRoute,
-    public patientSvc: PatientService
-    //public surgerySvc: SurgeryProvider
+    public patientSvc: PatientService,
+    public surgerySvc: SurgeryService
     ) {
   }
 
@@ -61,82 +61,82 @@ export class PatientPage implements OnInit {
     });
   }
 
-  removeSurgeryConfirm(surgery: Surgery) {
-    // const confirm = this.alertCtrl.create({
-    //   title: 'Remove surgery entry?',
-    //   message: 'Are you sure you want to remove this surgery entry?',
-    //   buttons: [
-    //     {
-    //       text: 'No',
-    //       handler: () => {
-    //         this.surgeryList.closeSlidingItems();
-    //       }
-    //     },
-    //     {
-    //       text: 'Yes',
-    //       handler: () => {
-    //         this.surgeryList.closeSlidingItems();
-    //         this.removeSurgery(surgery);
-    //       }
-    //     }
-    //   ]
-    // });
-    // confirm.present();
+  async removeSurgeryConfirm(surgery: Surgery) {
+    const confirm = await this.alertCtrl.create({
+      header: 'Remove surgery entry?',
+      subHeader: 'Are you sure you want to remove this surgery entry?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.surgeryList.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.surgeryList.closeSlidingItems();
+            this.removeSurgery(surgery);
+          }
+        }
+      ]
+    });
+    await confirm.present();
   }
 
   removeSurgery(surgery: Surgery) {
-    // this.surgerySvc.removeSurgery(surgery, this.patient).then((patient) => {
-    //   // do nothing
-    // }).catch((error) => {
-    //   let title: string = 'Error saving patient';
-    //   let subTitle: string = '';
-    //   if (error.status == '409') {
-    //     subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-    //   }
-    //   else {
-    //     subTitle = error;
-    //   }
-    //   this.showAlert(title, subTitle);
-    // });
+    this.surgerySvc.removeSurgery(surgery, this.patient).then((patient) => {
+      // do nothing
+    }).catch((error) => {
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
+    });
   }
 
-  removeSurgicalPathologyConfirm(pathology: SurgicalPathology) {
-    // const confirm = this.alertCtrl.create({
-    //   title: 'Remove surgical pathology report?',
-    //   message: 'Are you sure you want to remove this surgical pathology report?',
-    //   buttons: [
-    //     {
-    //       text: 'No',
-    //       handler: () => {
-    //         this.surgicalPathologyList.closeSlidingItems();
-    //       }
-    //     },
-    //     {
-    //       text: 'Yes',
-    //       handler: () => {
-    //         this.surgicalPathologyList.closeSlidingItems();
-    //         this.removeSurgicalPathology(pathology);
-    //       }
-    //     }
-    //   ]
-    // });
-    // confirm.present();
+  async removeSurgicalPathologyConfirm(pathology: SurgicalPathology) {
+    const confirm = await this.alertCtrl.create({
+      header: 'Remove surgical pathology report?',
+      subHeader: 'Are you sure you want to remove this surgical pathology report?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.surgicalPathologyList.closeSlidingItems();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.surgicalPathologyList.closeSlidingItems();
+            this.removeSurgicalPathology(pathology);
+          }
+        }
+      ]
+    });
+    await confirm.present();
   }
 
   removeSurgicalPathology(pathology: SurgicalPathology) {
-    // this.surgerySvc.removeSurgicalPathology(pathology, this.patient).then((patient) => {
-    //   // do nothing
-    // }).catch((error) => {
-    //   let title: string = 'Error saving patient';
-    //   let subTitle: string = '';
-    //   if (error.status == '409') {
-    //     subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-    //   }
-    //   else {
-    //     subTitle = error;
-    //   }
-    //   this.showAlert(title, subTitle);
-    // });
+    this.surgerySvc.removeSurgicalPathology(pathology, this.patient).then((patient) => {
+      // do nothing
+    }).catch((error) => {
+      let title: string = 'Error saving patient';
+      let subTitle: string = '';
+      if (error.status == '409') {
+        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+      }
+      else {
+        subTitle = error;
+      }
+      this.showAlert(title, subTitle);
+    });
   }
 
   toLocaleDateString(isoString: string): string {

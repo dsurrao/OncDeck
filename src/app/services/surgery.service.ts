@@ -21,7 +21,7 @@ export class SurgeryService {
   /* 
     save scheduled surgery info for a patient 
   */
-  save(patient: Patient, surgery: Surgery): Promise<Patient> {
+  saveSurgery(patient: Patient, surgery: Surgery): Promise<Patient> {
     if (surgery.id == null) {
       // new surgery
       if (patient.surgeries == null) {
@@ -44,6 +44,29 @@ export class SurgeryService {
     return this.db.savePatient(patient);
   }
 
+  saveSurgicalPathology(patient: Patient, pathology: SurgicalPathology): Promise<Patient> {
+    if (pathology.id == null) {
+      // new surgery
+      if (patient.surgicalPathologies == null) {
+        patient.surgicalPathologies = [];
+      } 
+      pathology.id = UUID.v4();
+      patient.surgicalPathologies.push(pathology);
+    }
+    else {
+      // update existing surgery
+      for (var i: number = 0; i < patient.surgicalPathologies.length; i++) {
+        if (patient.surgicalPathologies[i].id === pathology.id) {
+          patient.surgicalPathologies[i] = pathology;
+          break;
+        }
+      }
+    }
+    
+    // finally, update db
+    return this.db.savePatient(patient);
+  }
+  
   removeSurgery(surgery: Surgery, patient: Patient): Promise<Patient> {
     let removeIndex: number = -1;
     for (var i: number = 0; i < patient.surgeries.length; i++) {

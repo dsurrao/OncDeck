@@ -1,0 +1,5 @@
+<surgical-pathology 
+    [patient]="patient$ | async" 
+    [pathology]="pathology$ | async" 
+    (saveEmitter)="save($event)" 
+    class="sp"></surgical-pathology>

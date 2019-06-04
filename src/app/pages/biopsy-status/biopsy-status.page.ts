@@ -35,7 +35,7 @@ export class BiopsyStatusPage implements OnInit {
     }
   }
 
-  save(patient: Patient) {
+  saveReturn(patient: Patient) {
     this.patientSvc.savePatient(patient).then(updatedPatient => {
       console.log("patient saved");
       this.events.publish('patientSaved');
