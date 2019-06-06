@@ -1,10 +1,10 @@
 import { BiopsyTissueEnum } from '../enums/biopsy-tissue-enum';
 import { BiopsySideEnum } from '../enums/biopsy-side-enum';
-import { LymphNode } from '../enums/lymph-node';
+import { LymphNodeEnum } from '../enums/lymph-node-enum';
 
 export class BiopsySite {
     tissue: BiopsyTissueEnum;
     side: BiopsySideEnum;
-    lymphNode: LymphNode;
+    lymphNode: LymphNodeEnum;
     otherTissue: string;
 }

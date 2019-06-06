@@ -1,7 +1,7 @@
-import { Grade } from '../enums/grade';
-import { LVI } from '../enums/lvi';
+import { GradeEnum } from '../enums/grade-enum';
+import { LVIEnum } from '../enums/lvi-enum';
 
 export class BiopsyFeatures {
-    grade: Grade;
-    lvi: LVI;
+    grade: GradeEnum;
+    lvi: LVIEnum;
 }

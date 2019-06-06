@@ -1,4 +1,4 @@
-export enum SurgicalFeature {
+export enum SurgicalFeatureEnum {
     None = "None",
     LVIPositive = "LVI+",
     LVINegative = "LVI-"

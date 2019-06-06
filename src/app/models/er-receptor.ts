@@ -1,7 +1,7 @@
-import { ReceptorStatus } from '../enums/receptor-status';
-import { ReceptorStrength } from '../enums/receptor-strength';
+import { ReceptorStatusEnum } from '../enums/receptor-status-enum';
+import { ReceptorStrengthEnum } from '../enums/receptor-strength-enum';
 
 export class EstrogenReceptor {
-    status: ReceptorStatus;
-    strength: ReceptorStrength;
+    status: ReceptorStatusEnum;
+    strength: ReceptorStrengthEnum;
 }

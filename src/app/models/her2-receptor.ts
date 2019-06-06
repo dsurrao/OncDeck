@@ -1,7 +1,7 @@
-import { ReceptorStatus } from '../enums/receptor-status';
-import { Her2TestingMethod } from '../enums/her2-testing-method';
+import { ReceptorStatusEnum } from '../enums/receptor-status-enum';
+import { Her2TestingMethodEnum } from '../enums/her2-testing-method-enum';
 
 export class Her2Receptor {
-    status: ReceptorStatus;
-    testingMethod: Her2TestingMethod
+    status: ReceptorStatusEnum;
+    testingMethod: Her2TestingMethodEnum
 }
