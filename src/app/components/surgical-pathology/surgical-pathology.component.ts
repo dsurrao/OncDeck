@@ -4,9 +4,9 @@ import { SurgicalPathology } from 'src/app/models/surgical-pathology';
 import { DateUtils } from 'src/app/common/dateutils';
 import { SurgeryType } from '../../enums/surgery-type';
 import { SurgeryHistology } from '../../enums/surgery-histology';
-import { EstrogenReceptor } from '../../enums/er-receptor';
-import { ProgesteroneReceptor } from '../../enums/pr-receptor';
-import { Her2Receptor } from '../../enums/her2-receptor';
+//import { EstrogenReceptor } from '../../enums/receptor-status';
+//import { ProgesteroneReceptor } from '../../enums/pr-receptor';
+//import { Her2Receptor } from '../../enums/her2-receptor';
 import { SurgicalFeature } from '../../enums/surgical-feature';
 import { SurgicalMargin } from '../../enums/surgical-margin';
 
@@ -25,9 +25,9 @@ export class SurgicalPathologyComponent implements OnInit {
   // make these enums available in template
   surgeryType = SurgeryType; 
   surgeryHistology = SurgeryHistology;
-  estrogenReceptor = EstrogenReceptor;
-  progesteroneReceptor = ProgesteroneReceptor;
-  her2Receptor = Her2Receptor;
+  // estrogenReceptor = EstrogenReceptor;
+  // progesteroneReceptor = ProgesteroneReceptor;
+  // her2Receptor = Her2Receptor;
   surgicalFeature = SurgicalFeature;
   surgicalMargin = SurgicalMargin;
 

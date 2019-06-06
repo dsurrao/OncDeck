@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
   { path: 'surgical-pathology/:patientId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
   { path: 'surgical-pathology/:patientId/:pathologyId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
+  { path: 'biopsy', loadChildren: './pages/biopsy/biopsy.module#BiopsyPageModule' },
 ];
 
 @NgModule({
