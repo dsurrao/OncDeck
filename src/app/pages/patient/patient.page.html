@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Patient Information</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+        <ion-back-button defaultHref=""></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button icon-only [routerLink]="['/patient-form/' + patient._id]">
@@ -45,36 +45,38 @@
     <div class="patient-divider"></div>
 
     <!-- Scheduled Surgery -->
-      <ion-card-header class="card-header">
-        <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
-      </ion-card-header>
+    <ion-card-header class="card-header">
+      <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Scheduled Surgery
+    </ion-card-header>
 
-      <ion-list #surgeryList>
-        <ion-item-sliding *ngFor="let surgery of patient.surgeries">
-          <ion-item text-wrap *ngIf="surgery.completedDate != null; else elseBlock" 
-            [routerLink]="['/scheduled-surgery/' + patient._id + '/' + surgery.id]">
-            Surgery completed on {{toLocaleDateString(surgery.completedDate)}} at {{surgery.facility}} with {{surgery.providerName}}
+    <ion-list #surgeryList>
+      <ion-item-sliding *ngFor="let surgery of patient.surgeries">
+        <ion-item text-wrap *ngIf="surgery.completedDate != null; else elseBlock" 
+          [routerLink]="['/scheduled-surgery/' + patient._id + '/' + surgery.id]">
+          Surgery completed on {{toLocaleDateString(surgery.completedDate)}} at {{surgery.facility}} with {{surgery.providerName}}
+        </ion-item>
+        <ng-template #elseBlock>
+          <ion-item text-wrap [routerLink]="['/scheduled-surgery/' + patient._id + '/' + surgery.id]">
+            Scheduled on {{toLocaleDateString(surgery.scheduledDate)}} at {{surgery.facility}} with {{surgery.providerName}}
           </ion-item>
-          <ng-template #elseBlock>
-            <ion-item text-wrap [routerLink]="['/scheduled-surgery/' + patient._id + '/' + surgery.id]">
-              Scheduled on {{toLocaleDateString(surgery.scheduledDate)}} at {{surgery.facility}} with {{surgery.providerName}}
-            </ion-item>
-          </ng-template>
-          <!-- delete option -->
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="removeSurgeryConfirm(surgery)">
-              Remove
-            </ion-item-option>
-          </ion-item-options> 
-        </ion-item-sliding>
-      </ion-list>
-      
-      <!-- <ion-buttons slot="start"> -->
-        <ion-button slot="start" round [routerLink]="['/scheduled-surgery/' + patient._id]" class="add-button">
-          <ion-icon name="add"></ion-icon>
-          Add Surgery
+        </ng-template>
+        <!-- delete option -->
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="removeSurgeryConfirm(surgery)">
+            Remove
+          </ion-item-option>
+        </ion-item-options> 
+      </ion-item-sliding>
+    </ion-list>
+    
+    <ion-toolbar>
+      <ion-buttons slot="end">
+          <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/scheduled-surgery/' + patient._id]" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Add Surgery
         </ion-button>
-      <!-- </ion-buttons> -->
+      </ion-buttons>
+    </ion-toolbar>
 
     <div class="patient-divider"></div>
     
@@ -98,12 +100,14 @@
       </ion-item-sliding>
     </ion-list>
 
-    <!-- <ion-buttons slot="end"> -->
-      <ion-button slot="start" round [routerLink]="['/surgical-pathology/' + patient._id]" class="add-button">
-        <ion-icon name="add"></ion-icon>
-        Add Pathology
-      </ion-button>
-    <!-- </ion-buttons> -->
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/surgical-pathology/' + patient._id]" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Add Pathology
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
 
   </ion-card>
 </ion-content>
