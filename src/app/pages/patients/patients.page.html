@@ -40,9 +40,11 @@
     <ion-title *ngIf="!isAuthenticated">Please log in</ion-title>
 
     <ion-buttons slot="start">
-      <ion-button *ngIf="isAuthenticated" menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </ion-button>
+      <ion-menu-toggle>
+        <ion-button *ngIf="isAuthenticated" menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
     </ion-buttons>
 
     <ion-buttons slot="end">
