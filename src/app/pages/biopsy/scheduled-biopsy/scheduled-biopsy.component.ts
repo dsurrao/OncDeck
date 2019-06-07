@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-scheduled-biopsy',
@@ -7,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScheduledBiopsyComponent implements OnInit {
 
-  constructor() { }
+  patientId: string;
 
-  ngOnInit() {}
+  constructor(public route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.patientId = this.route.snapshot.paramMap.get('patientId');
+  }
 
 }

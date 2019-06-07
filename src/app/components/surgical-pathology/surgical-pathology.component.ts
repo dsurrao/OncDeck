@@ -25,7 +25,7 @@ export class SurgicalPathologyComponent implements OnInit {
   // ngModel fields
   surgeryDate: string;
   erStatus: ReceptorStatusEnum;
-  prStatus: ReceptorStatusEnum
+  prStatus: ReceptorStatusEnum;
   her2Status: ReceptorStatusEnum;
 
   // make these enums available in template

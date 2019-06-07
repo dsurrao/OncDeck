@@ -9,29 +9,24 @@
   
   <ion-content *ngIf="patient != null">
     <ion-list>
-        <ion-radio-group [(ngModel)]="patient.biopsyStatus.status">
+        <ion-radio-group [(ngModel)]="biopsyStatus">
           <ion-item>
             <ion-label>Completed</ion-label>
-            <ion-radio value="completed"></ion-radio>
+            <ion-radio value={{biopsyStatusEnum.Completed}}></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Scheduled</ion-label>
-            <ion-radio value="scheduled"></ion-radio>
+            <ion-radio value={{biopsyStatusEnum.Scheduled}}></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Not Scheduled</ion-label>
-            <ion-radio value="notScheduled"></ion-radio>
+            <ion-radio value={{biopsyStatusEnum.NotScheduled}}></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Not Indicated</ion-label>
-            <ion-radio value="notIndicated"></ion-radio>
+            <ion-radio value={{biopsyStatusEnum.NotIndicated}}></ion-radio>
           </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-item *ngIf="patient.biopsyStatus && 
-        (patient.biopsyStatus.status == 'completed' || patient.biopsyStatus.status == 'scheduled')">
-        <ion-label floating>Biopsy Date</ion-label>
-        <ion-input type="date" name="biopsyDate" [(ngModel)]="patient.biopsyStatus.biopsyDate"></ion-input>
-      </ion-item>
     <ion-button color="primary" (click)="save()">Save</ion-button>
   </ion-content>

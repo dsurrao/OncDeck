@@ -70,9 +70,9 @@ export class PatientSummaryComponent implements OnInit {
       pathologySummary += 'Date: ' + new Date(pathology.surgeryDate).toLocaleDateString() + ', '
         + 'Type: ' + pathology.surgeryType + ', ' 
         + 'Histology: ' + pathology.surgeryHistology + ', ' 
-        + 'PR: ' + pathology.prReceptor + ', ' 
-        + 'ER: ' + pathology.erReceptor + ', ' 
-        + 'HER2: ' + pathology.her2Receptor + ', ' 
+        + 'PR: ' + pathology.pr.status + ', ' 
+        + 'ER: ' + pathology.er.status + ', ' 
+        + 'HER2: ' + pathology.her2.status + ', ' 
         + 'LVI: ' + pathology.surgicalFeature + ', ' 
         + 'Surgical Margins: ' + pathology.surgicalMargin
     }

@@ -30,10 +30,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
-    AppRoutingModule,
     HttpClientModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule,
   ],
   providers: [
     StatusBar,
