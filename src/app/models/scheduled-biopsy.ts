@@ -1,6 +1,8 @@
+import { BiopsyType } from './biopsy-type';
+
 export class ScheduledBiopsy {
     scheduledDate: string;
     facility: string;
-    biopsyType: string;
+    biopsyType: BiopsyType;
     contactPerson: string;   
 }
