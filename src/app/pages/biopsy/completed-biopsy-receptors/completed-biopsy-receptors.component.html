@@ -1,0 +1,112 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-back-button></ion-back-button>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- ER -->
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.er.status">
+      <ion-list-header>ER</ion-list-header>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Positive}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Positive"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Negative}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Negative"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.None}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.None"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.er.strength">
+      <ion-list-header>ER Strength</ion-list-header>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Strong}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Strong"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Moderate}}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Moderate"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Weak}}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Weak"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- PR -->
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.pr.status">
+      <ion-list-header>PR</ion-list-header>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Positive}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Positive"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Negative}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Negative"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.None}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.None"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.pr.strength">
+      <ion-list-header>PR Strength</ion-list-header>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Strong}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Strong"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Moderate}}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Moderate"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStrengthEnum.Weak}}</ion-label>
+        <ion-radio slot="start" value="receptorStrengthEnum.Weak"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- HER2 -->
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.her2.status">
+      <ion-list-header>HER2</ion-list-header>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Positive}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Positive"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.Negative}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.Negative"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{receptorStatusEnum.None}}</ion-label>
+        <ion-radio slot="start" value="receptorStatusEnum.None"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.receptors.her2.testingMethod">
+      <ion-list-header>HER2 Testing Method</ion-list-header>
+      <ion-item>
+        <ion-label>{{her2TestingMethodEnum.IHC}</ion-label>
+        <ion-radio slot="start" value="her2TestingMethodEnum.IHC"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{her2TestingMethodEnum.FISH}}</ion-label>
+        <ion-radio slot="start" value="her2TestingMethodEnum.FISH"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>  
+
+  <ion-button color="primary" (click)="save()">Save</ion-button>
+</ion-content>

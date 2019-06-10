@@ -41,8 +41,22 @@
         <patient-summary [patient]="patient"></patient-summary>
       </ion-card-content>
 
+      <!-- Completed Biopsy -->
+      <ng-container *ngIf="patient.biopsy != null && patient.biopsy.completedBiopsies != null">
+        <div class="patient-divider"></div>
+        
+        <ion-card-header class="card-header">
+          <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Completed Biopsies
+        </ion-card-header>
+        <ion-list>
+          <ion-item text-wrap *ngFor="let biopsy of patient.biopsy.completedBiopsies"
+            [routerLink]="['/biopsy/' + patient._id + '/completed-biopsy/' + biopsy.id]">
+            Biopsy completed on {{toLocaleDateString(biopsy.procedureDate)}} at {{biopsy.facility}} with {{biopsy.pathologistName}}
+          </ion-item>
+        </ion-list>
+      </ng-container>
 
-    <div class="patient-divider"></div>
+      <div class="patient-divider"></div>
 
     <!-- Scheduled Surgery -->
     <ion-card-header class="card-header">

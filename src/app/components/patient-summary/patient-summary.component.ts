@@ -65,20 +65,21 @@ export class PatientSummaryComponent implements OnInit {
     let pathologySummary = 'Surgical Pathology: ';
     let pathologies = patient.surgicalPathologies != null ? patient.surgicalPathologies : [];
 
-    if (pathologies.length > 0) {
-      let pathology: SurgicalPathology = pathologies[0];
-      pathologySummary += 'Date: ' + new Date(pathology.surgeryDate).toLocaleDateString() + ', '
-        + 'Type: ' + pathology.surgeryType + ', ' 
-        + 'Histology: ' + pathology.surgeryHistology + ', ' 
-        + 'PR: ' + pathology.pr.status + ', ' 
-        + 'ER: ' + pathology.er.status + ', ' 
-        + 'HER2: ' + pathology.her2.status + ', ' 
-        + 'LVI: ' + pathology.surgicalFeature + ', ' 
-        + 'Surgical Margins: ' + pathology.surgicalMargin
-    }
-    else {
-      pathologySummary += 'No pathology report';
-    }
+    // TODO: implement this!
+    // if (pathologies.length > 0) {
+    //   let pathology: SurgicalPathology = pathologies[0];
+    //   pathologySummary += 'Date: ' + new Date(pathology.surgeryDate).toLocaleDateString() + ', '
+    //     + 'Type: ' + pathology.surgeryType + ', ' 
+    //     + 'Histology: ' + pathology.surgeryHistology + ', ' 
+    //     + 'PR: ' + pathology.pr.status + ', ' 
+    //     + 'ER: ' + pathology.er.status + ', ' 
+    //     + 'HER2: ' + pathology.her2.status + ', ' 
+    //     + 'LVI: ' + pathology.surgicalFeature + ', ' 
+    //     + 'Surgical Margins: ' + pathology.surgicalMargin
+    // }
+    // else {
+    //   pathologySummary += 'No pathology report';
+    // }
     return pathologySummary;
   }
 }

@@ -4,7 +4,8 @@ import { LymphNodeEnum } from '../enums/lymph-node-enum';
 
 export class BiopsySite {
     tissue: BiopsyTissueEnum;
+    otherTissue: string;
     side: BiopsySideEnum;
     lymphNode: LymphNodeEnum;
-    otherTissue: string;
+    otherLymphNode: string;
 }

@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-back-button></ion-back-button>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- Grade -->
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.features.grade">
+      <ion-list-header>Grade</ion-list-header>
+      <ion-item>
+        <ion-label>{{gradeEnum.G1}}</ion-label>
+        <ion-radio slot="start" value="gradeEnum.G1"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{gradeEnum.G2}}</ion-label>
+        <ion-radio slot="start" value="gradeEnum.G2"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{gradeEnum.G3}}</ion-label>
+        <ion-radio slot="start" value="gradeEnum.G3"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{gradeEnum.Unable}}</ion-label>
+        <ion-radio slot="start" value="gradeEnum.Unable"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{gradeEnum.NotGiven}}</ion-label>
+        <ion-radio slot="start" value="gradeEnum.NotGiven"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- LVI -->
+  <ion-list>
+    <ion-radio-group [(ngModel)]="biopsy.features.lvi">
+      <ion-list-header>LVI</ion-list-header>
+      <ion-item>
+        <ion-label>{{lviEnum.Positive}}</ion-label>
+        <ion-radio slot="start" value="lviEnum.Positive"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{lviEnum.Negative}}</ion-label>
+        <ion-radio slot="start" value="lviEnum.Negative"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{lviEnum.NotDetermined}}</ion-label>
+        <ion-radio slot="start" value="lviEnum.NotDetermined"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-button color="primary" (click)="save()">Save</ion-button>
+</ion-content>

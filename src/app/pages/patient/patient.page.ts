@@ -1,23 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateUtils } from './../../common/dateutils';
-// import { ScheduledSurgeryPage } from './../scheduled-surgery/scheduled-surgery';
-// import { PathologySurgeryPage } from './../pathology-surgery/pathology-surgery';
-// import { PatientFormPage } from './../patient-form/patient-form';
-import { Events, 
-  //IonicPage, 
-  NavController, 
-  NavParams, 
-  ModalController, 
-  AlertController, 
-  IonList 
-} from '@ionic/angular';
+import { Events, ModalController, AlertController, IonList } from '@ionic/angular';
 import { SurgicalPathology } from '../../models/surgical-pathology';
 import { Surgery } from '../../models/surgery';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { SurgeryService } from 'src/app/services/surgery.service';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-patient',
@@ -32,7 +21,6 @@ export class PatientPage implements OnInit {
   pathologies: any;
 
   constructor(
-//    public navCtrl: NavController, 
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public events: Events,

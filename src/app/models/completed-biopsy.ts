@@ -5,6 +5,7 @@ import { Receptors } from './receptors';
 import { BiopsySite } from './biopsy-site';
 
 export class CompletedBiopsy {
+    id: string;
     reportText: string;
     procedureDate: string;
     reportDate: string;
