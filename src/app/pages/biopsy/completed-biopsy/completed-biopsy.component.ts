@@ -15,7 +15,7 @@ import { LymphNodeEnum } from 'src/app/enums/lymph-node-enum';
 import { BiopsyHistologyEnum } from 'src/app/enums/biopsy-histology-enum';
 import { BiopsyTissueEnum } from 'src/app/enums/biopsy-tissue-enum';
 import { Patient } from 'src/app/models/patient';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CompletedBiopsy } from 'src/app/models/completed-biopsy';
 import { Events, NavController } from '@ionic/angular';
 import { BiopsyService } from 'src/app/services/biopsy.service';
@@ -23,7 +23,6 @@ import { PatientService } from 'src/app/services/patient.service';
 import { BiopsyType } from 'src/app/models/biopsy-type';
 import { BiopsySite } from 'src/app/models/biopsy-site';
 import { BiopsyHistology } from 'src/app/models/biopsy-histology';
-import { BiopsyFeatures } from 'src/app/models/biopsy-features';
 
 @Component({
   selector: 'app-completed-biopsy',
@@ -33,7 +32,7 @@ import { BiopsyFeatures } from 'src/app/models/biopsy-features';
 export class CompletedBiopsyComponent implements OnInit {
   // input url params
   patientId: string;
-  biopsyId: string;
+  completedBiopsyId: string;
 
   patient: Patient;
   completedBiopsy: CompletedBiopsy;
@@ -46,6 +45,7 @@ export class CompletedBiopsyComponent implements OnInit {
   tissueEnum: BiopsyTissueEnum;
 
   constructor(public route: ActivatedRoute,
+    public router: Router,
     public patientSvc: PatientService,
     public biopsySvc: BiopsyService,
     public events: Events,
@@ -53,7 +53,7 @@ export class CompletedBiopsyComponent implements OnInit {
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patientId');
-    this.biopsyId = this.route.snapshot.paramMap.get('biopsyId');
+    this.completedBiopsyId = this.route.snapshot.paramMap.get('completedBiopsyId');
 
     this.patientSvc.getPatient(this.patientId).then(patient => {
       this.patient = patient;
@@ -63,9 +63,9 @@ export class CompletedBiopsyComponent implements OnInit {
         this.completedBiopsy = this.patient.biopsy.completedBiopsies[0];
       }
 
-      if (this.biopsyId != null) {
+      if (this.completedBiopsyId != null) {
         for (let b of this.patient.biopsy.completedBiopsies) {
-          if (b.id === this.biopsyId) {
+          if (b.id === this.completedBiopsyId) {
             this.completedBiopsy = b;
             break;
           }
@@ -81,9 +81,16 @@ export class CompletedBiopsyComponent implements OnInit {
   }
 
   save() {
-    this.biopsySvc.saveCompletedBiopsy(this.patient, this.completedBiopsy).then(patient => {
+    this.biopsySvc.saveCompletedBiopsy(this.patient, this.completedBiopsy).then(completedBiopsyId => {
+      let currentPath: string = this.router.url;
       this.events.publish('patientSaved');
-      this.navCtrl.navigateBack('patient/' + this.patientId);
+
+      // if this was a newly generated biopsy report, append it to the url
+      if (this.completedBiopsyId == null) {
+        this.completedBiopsyId = completedBiopsyId;
+        currentPath += '/' + this.completedBiopsyId;
+      }
+      this.navCtrl.navigateForward(currentPath + '/receptors');
     });
   }
 }
