@@ -18,6 +18,9 @@ const routes: Routes = [
   { path: 'surgical-pathology/:patientId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
   { path: 'surgical-pathology/:patientId/:pathologyId', loadChildren: './pages/surgical-pathology/surgical-pathology.module#SurgicalPathologyPageModule' },
   { path: 'biopsy/:patientId', loadChildren: './pages/biopsy/biopsy.module#BiopsyPageModule' },
+  { path: 'patient/:patientId/radiation-therapy', loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' },
+  { path: 'patient/:patientId/radiation-therapy/:radiationTherapyId', 
+    loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' }
 ];
 
 @NgModule({

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>RadiationTherapy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="radiationTherapy != null">
+  <ion-item>
+    <ion-label>Start Date</ion-label>
+    <ion-input type="date" [(ngModel)]="radiationTherapy.startDate"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Number of Fractions/Treatments</ion-label>
+    <ion-input type="number" [(ngModel)]="radiationTherapy.numTreatments"></ion-input>
+  </ion-item>
+  <ion-list>
+    <ion-list-header>Radiation Fields</ion-list-header>
+    <ion-item *ngFor="let field of radiationFields">
+      <ion-label>{{field.val}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="field.isChecked"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+  <ion-item>
+    <ion-label>Radiation Field (Other)</ion-label>
+    <ion-input type="text" [(ngModel)]="radiationFieldOther"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Projected End Date</ion-label>
+    <ion-input type="date" [(ngModel)]="radiationTherapy.projectedEndDate"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Actual End Date</ion-label>
+    <ion-input type="date" [(ngModel)]="radiationTherapy.actualEndDate"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Comments</ion-label>
+    <ion-input type="text" [(ngModel)]="radiationTherapy.comments"></ion-input>
+  </ion-item>
+
+  <ion-button color="primary" (click)="save()">Save</ion-button>
+</ion-content>
