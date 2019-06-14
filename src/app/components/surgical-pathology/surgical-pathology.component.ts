@@ -10,6 +10,7 @@ import { ReceptorStatusEnum } from 'src/app/enums/receptor-status-enum';
 import { Her2Receptor } from 'src/app/models/her2-receptor';
 import { ProgesteroneReceptor } from 'src/app/models/pr-receptor';
 import { EstrogenReceptor } from 'src/app/models/er-receptor';
+import { GradeEnum } from '../../enums/grade-enum';
 
 @Component({
   selector: 'surgical-pathology',
@@ -27,6 +28,7 @@ export class SurgicalPathologyComponent implements OnInit {
   erStatus: ReceptorStatusEnum;
   prStatus: ReceptorStatusEnum;
   her2Status: ReceptorStatusEnum;
+  tumorGrade: GradeEnum;
 
   // make these enums available in template
   surgeryTypeEnum = SurgeryTypeEnum; 
@@ -36,6 +38,7 @@ export class SurgicalPathologyComponent implements OnInit {
   her2Enum = ReceptorStatusEnum;
   surgicalFeatureEnum = SurgicalFeatureEnum;
   surgicalMarginEnum = SurgicalMarginEnum;
+  tumorGradeEnum = GradeEnum;
 
   constructor(public dateUtils: DateUtils) { }
 
