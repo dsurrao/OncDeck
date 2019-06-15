@@ -7,6 +7,7 @@ import { RadiationFieldEnum } from 'src/app/enums/radiation-field-enum';
 import { RadiationFieldTreated } from 'src/app/models/radiation-field-treated';
 import { Events, NavController } from '@ionic/angular';
 import { RadiationService } from 'src/app/services/radiation.service';
+import { DateUtils } from 'src/app/common/dateutils';
 
 @Component({
   selector: 'app-radiation-therapy',
@@ -36,7 +37,8 @@ export class RadiationTherapyPage implements OnInit {
     public patientSvc: PatientService,
     public radiationSvc: RadiationService,
     public events: Events,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController,
+    public dateUtils: DateUtils) { }
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patientId');
@@ -66,8 +68,8 @@ export class RadiationTherapyPage implements OnInit {
     if (this.radiationTherapy != null) {
       // calculate projected end date
       // TODO: factor in weekends and holidays
-      this.radiationTherapy.projectedEndDate.setDate(this.radiationTherapy.startDate.getDate()
-        + this.radiationTherapy.numTreatments);
+      this.radiationTherapy.projectedEndDate = this.dateUtils.addDays(
+        this.radiationTherapy.startDate, this.radiationTherapy.numTreatments - 1);
     }
   }
 
@@ -96,7 +98,7 @@ export class RadiationTherapyPage implements OnInit {
     }
 
     // now save to db
-    this.radiationSvc.saveRadiationTherapy(this.patient, this.radiationTherapy).then(id => {
+    this.radiationSvc.saveRadiationTherapy(this.radiationTherapy, this.patient).then(id => {
       this.events.publish('patientSaved');
       this.navCtrl.navigateBack('patient/' + this.patientId);
     })

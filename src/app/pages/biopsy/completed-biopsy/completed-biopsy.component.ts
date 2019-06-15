@@ -81,7 +81,7 @@ export class CompletedBiopsyComponent implements OnInit {
   }
 
   save() {
-    this.biopsySvc.saveCompletedBiopsy(this.patient, this.completedBiopsy).then(completedBiopsyId => {
+    this.biopsySvc.saveCompletedBiopsy(this.completedBiopsy, this.patient).then(completedBiopsyId => {
       let currentPath: string = this.router.url;
       this.events.publish('patientSaved');
 

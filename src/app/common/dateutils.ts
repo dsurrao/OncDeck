@@ -54,6 +54,17 @@ export class DateUtils {
         return days;
     }
 
+    public addDays(isoDate: string, days: number): string {
+        let inputDate:Date = new Date(isoDate);
+        inputDate.setHours(0);
+        inputDate.setMinutes(0);
+        inputDate.setSeconds(0);
+        inputDate.setMilliseconds(0);
+        let outputDate: Date = new Date();
+        outputDate.setTime(inputDate.getTime() + (1000 * 60 * 60 * 24 * days));
+        return outputDate.toISOString();
+    }
+
     public getAge(isoDob: string): number {
         let dob: Date = new Date(isoDob);
         let today: Date = new Date();

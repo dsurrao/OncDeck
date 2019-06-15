@@ -2,11 +2,12 @@ import { RadiationFieldTreated } from './radiation-field-treated';
 
 export class RadiationTherapy {
     id: string; 
-    startDate: Date;
+    // ISO 8601 Datetime Format: YYYY-MM-DDTHH:mmZ
+    startDate: string;
     totalDose: string;
     numTreatments: number;
     fieldsTreated: RadiationFieldTreated[];
-    projectedEndDate: Date; // startDate + numTreatments + weekend days/holidays
-    actualEndDate: Date;
+    projectedEndDate: string; // startDate + numTreatments + weekend days/holidays
+    actualEndDate: string;
     comments: string;
 }

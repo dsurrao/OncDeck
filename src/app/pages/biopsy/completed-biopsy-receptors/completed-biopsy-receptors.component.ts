@@ -63,7 +63,7 @@ export class CompletedBiopsyReceptorsComponent implements OnInit {
     }
   
     save() {
-      this.biopsySvc.saveCompletedBiopsy(this.patient, this.completedBiopsy).then(completedBiopsyId => {
+      this.biopsySvc.saveCompletedBiopsy(this.completedBiopsy, this.patient).then(completedBiopsyId => {
         // strip out last part of path
         let currentPath: string = this.router.url.replace(/\/[^\/]+$/, "");
         this.events.publish('patientSaved');

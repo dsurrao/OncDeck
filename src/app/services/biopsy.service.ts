@@ -12,7 +12,7 @@ export class BiopsyService {
 
   constructor(public db: PouchdbService) {}
 
-  saveCompletedBiopsy(patient: Patient, completedBiopsy: CompletedBiopsy): Promise<string> {
+  saveCompletedBiopsy(completedBiopsy: CompletedBiopsy, patient: Patient): Promise<string> {
     return new Promise((resolve, reject) => {
       if (completedBiopsy.id == null) {
         // save new biopsy
@@ -44,5 +44,21 @@ export class BiopsyService {
         console.log(error);
       });
     });
+  }
+
+  removeCompletedBiopsy(completedBiopsy: CompletedBiopsy, patient: Patient): Promise<Patient> {
+    let removeIndex: number = -1;
+    for (var i: number = 0; i < patient.biopsy.completedBiopsies.length; i++) {
+      if (patient.biopsy.completedBiopsies[i].id === completedBiopsy.id) {
+        removeIndex = i;
+        break;
+      }
+    }
+    if (removeIndex != -1) {
+      patient.biopsy.completedBiopsies.splice(removeIndex, 1);
+    }
+
+    // finally, update db
+    return this.db.savePatient(patient);
   }
 }

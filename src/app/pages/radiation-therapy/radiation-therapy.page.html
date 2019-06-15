@@ -7,11 +7,11 @@
 <ion-content *ngIf="radiationTherapy != null">
   <ion-item>
     <ion-label>Start Date</ion-label>
-    <ion-input type="date" [(ngModel)]="radiationTherapy.startDate"></ion-input>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.startDate" (ionChange)="updateProjectedEndDate()"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Number of Fractions/Treatments</ion-label>
-    <ion-input type="number" [(ngModel)]="radiationTherapy.numTreatments"></ion-input>
+    <ion-input type="number" [(ngModel)]="radiationTherapy.numTreatments" (ionChange)="updateProjectedEndDate()"></ion-input>
   </ion-item>
   <ion-list>
     <ion-list-header>Radiation Fields</ion-list-header>
@@ -26,11 +26,11 @@
   </ion-item>
   <ion-item>
     <ion-label>Projected End Date</ion-label>
-    <ion-input type="date" [(ngModel)]="radiationTherapy.projectedEndDate"></ion-input>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.projectedEndDate"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Actual End Date</ion-label>
-    <ion-input type="date" [(ngModel)]="radiationTherapy.actualEndDate"></ion-input>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.actualEndDate"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Comments</ion-label>

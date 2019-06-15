@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+// TODO: reformat scheduled-surgery, surgical-pathology and biopsy urls to follow radiation-therapy format
 const routes: Routes = [
   { path: '', redirectTo: 'patients', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },

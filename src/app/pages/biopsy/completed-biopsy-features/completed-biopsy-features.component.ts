@@ -54,7 +54,7 @@ export class CompletedBiopsyFeaturesComponent implements OnInit {
     }
   
     save() {
-      this.biopsySvc.saveCompletedBiopsy(this.patient, this.completedBiopsy).then(completedBiopsyId => {
+      this.biopsySvc.saveCompletedBiopsy(this.completedBiopsy, this.patient).then(completedBiopsyId => {
         this.events.publish('patientSaved');
         this.navCtrl.navigateBack('patient/' + this.patientId);
       });
