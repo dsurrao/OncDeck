@@ -20,7 +20,9 @@ const routes: Routes = [
   { path: 'biopsy/:patientId', loadChildren: './pages/biopsy/biopsy.module#BiopsyPageModule' },
   { path: 'patient/:patientId/radiation-therapy', loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' },
   { path: 'patient/:patientId/radiation-therapy/:radiationTherapyId', 
-    loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' }
+    loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' },
+  { path: 'clinical-breast-staging/:patientId', loadChildren: './pages/clinical-breast-staging/clinical-breast-staging.module#ClinicalBreastStagingPageModule' }
+
 ];
 
 @NgModule({

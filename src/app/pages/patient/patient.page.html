@@ -123,5 +123,21 @@
       </ion-buttons>
     </ion-toolbar>
 
+    <!-- Clinical Breast Staging -->
+    <ion-card-header class="card-header">
+      <ion-icon name="body"></ion-icon>
+      Clinical Breast Staging
+    </ion-card-header>
+
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/clinical-breast-staging/' + patient._id]" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Add Clinical Breast Staging
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+
   </ion-card>
 </ion-content>
