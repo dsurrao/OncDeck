@@ -8,5 +8,63 @@
 </ion-header>
 
 <ion-content>
+  <ion-card [hidden]=isHideDescription>
+    <ion-card-content>
+      Description: {{clinicalOptionText}} 
+    </ion-card-content>
+  </ion-card>
 
+  <ion-list>      
+    <ion-list-header>Clinical Tumor Stage</ion-list-header>
+    <ion-radio-group radio-group name="clinicaltumorstage" (ionChange)="clickClinicalTumorStage($event)" required>
+        <ion-item>
+          <ion-label>TX</ion-label>
+          <ion-radio slot="start" value="TX"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>T0</ion-label>
+          <ion-radio slot="start" value="T0"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tis(DCIS)</ion-label>
+          <ion-radio slot="start" value="Tis(DCIS)"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tis(Paget)</ion-label>
+          <ion-radio slot="start" value="Tis(Paget)"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>T1</ion-label>
+          <ion-radio slot="start" value="T1"></ion-radio>
+        </ion-item>
+
+            <div [hidden]=isHideSubRadioButtons class="hiddenSubRadioButtons">
+              <ion-item >
+                  <ion-label>T1mi</ion-label>
+                  <ion-radio slot="start" value="T1mi"></ion-radio>
+              </ion-item>
+
+              <ion-item >
+                  <ion-label>T1a</ion-label>
+                  <ion-radio slot="start" value="T1a"></ion-radio>
+              </ion-item>
+          
+              <ion-item >
+                  <ion-label>T1b</ion-label>
+                  <ion-radio slot="start" value="T1b"></ion-radio>
+              </ion-item>
+          
+              <ion-item >
+                  <ion-label>T1c</ion-label>
+                  <ion-radio slot="start" value="T1c"></ion-radio>
+              </ion-item>
+            </div>
+
+        <ion-item>
+          <ion-label>T2</ion-label>
+          <ion-radio slot="start" value="T2"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  
 </ion-content>
