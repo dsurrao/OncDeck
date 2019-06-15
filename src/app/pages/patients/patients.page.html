@@ -81,39 +81,41 @@
           <ion-avatar item-start>
             <ion-icon name="contact" class="icon-contact"></ion-icon>
           </ion-avatar>
-          <h2>
-            {{patient.lastName}}, {{patient.firstName}}
-          </h2>
-          <div *ngIf="getSurgeryStatus(patient) == 0">
-            <span class='patient-status'>
-              <ion-icon name="warning" style='color:red'></ion-icon>
-              {{getSurgerySummary(patient)}}
-            </span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 1">
+          <div class='patient-container'>
+            <h2>
+              {{patient.lastName}}, {{patient.firstName}}
+            </h2>
+            <div *ngIf="getSurgeryStatus(patient) == 0">
               <span class='patient-status'>
-                Surgery <span style='color:green'>{{getSurgeryStatusText(patient)}}</span>
+                <ion-icon name="warning" style='color:red'></ion-icon>
                 {{getSurgerySummary(patient)}}
               </span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 2">
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == 1">
+                <span class='patient-status'>
+                  Surgery <span style='color:green'>{{getSurgeryStatusText(patient)}}</span>
+                  {{getSurgerySummary(patient)}}
+                </span>
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == 2">
+                <span class='patient-status'>
+                  Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
+                  {{getSurgerySummary(patient)}}
+                </span>
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == 3">
+                <span class='patient-status'>
+                  Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
+                  {{getSurgerySummary(patient)}}
+                </span>
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == 4">
               <span class='patient-status'>
-                Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
+                <ion-icon name="warning" style='color:red'></ion-icon>
+                Surgery <span style='color:red'>{{getSurgeryStatusText(patient)}}</span>
                 {{getSurgerySummary(patient)}}
               </span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 3">
-              <span class='patient-status'>
-                Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
-                {{getSurgerySummary(patient)}}
-              </span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == 4">
-            <span class='patient-status'>
-              <ion-icon name="warning" style='color:red'></ion-icon>
-              Surgery <span style='color:red'>{{getSurgeryStatusText(patient)}}</span>
-              {{getSurgerySummary(patient)}}
-            </span>
+            </div>
           </div>
           <ion-note slot="end">
               <ion-icon name="arrow-dropright" class="icon-right-arrow"></ion-icon>
