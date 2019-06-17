@@ -58,11 +58,6 @@ export class CompletedBiopsyComponent implements OnInit {
     this.patientSvc.getPatient(this.patientId).then(patient => {
       this.patient = patient;
 
-      // TODO: remove after testing. for now, just stick to one completed biopsy
-      if (this.patient.biopsy != null && this.patient.biopsy.completedBiopsies != null) {
-        this.completedBiopsy = this.patient.biopsy.completedBiopsies[0];
-      }
-
       if (this.completedBiopsyId != null) {
         for (let b of this.patient.biopsy.completedBiopsies) {
           if (b.id === this.completedBiopsyId) {

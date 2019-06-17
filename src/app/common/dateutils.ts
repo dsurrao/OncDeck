@@ -81,4 +81,8 @@ export class DateUtils {
         }
         return yrs;
     }
+
+    public toLocaleDateString(isoString: string): string {
+        return new Date(isoString).toLocaleDateString();
+    }
 }

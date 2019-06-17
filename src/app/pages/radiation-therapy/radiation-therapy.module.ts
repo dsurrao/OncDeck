@@ -9,8 +9,7 @@ import { RadiationTherapyPage } from './radiation-therapy.page';
 
 const routes: Routes = [
   {
-    path: '',
-    component: RadiationTherapyPage
+    path: '', component: RadiationTherapyPage
   }
 ];
 
@@ -21,6 +20,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RadiationTherapyPage]
+  declarations: [
+    RadiationTherapyPage
+  ]
 })
 export class RadiationTherapyPageModule {}

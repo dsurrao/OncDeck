@@ -1,0 +1,27 @@
+<ion-card-header class="card-header">
+  <ion-icon name="body"></ion-icon>
+  Radiation Therapy
+</ion-card-header>
+
+<ion-list #therapyList>
+  <ion-item-sliding *ngFor="let therapy of patient.radiationTherapies">
+    <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/radiation-therapy/' + therapy.id]">
+      Radiation started on {{this.dateUtils.toLocaleDateString(therapy.startDate)}}, projected end on {{this.dateUtils.toLocaleDateString(therapy.projectedEndDate)}}
+    </ion-item>
+    <!-- delete option -->
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="removeRadiationTherapyConfirm(therapy)">
+        Remove
+      </ion-item-option>
+    </ion-item-options> 
+  </ion-item-sliding>
+</ion-list>
+
+<ion-toolbar>
+  <ion-buttons slot="end">
+    <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/radiation-therapy/']" class="add-button">
+        <ion-icon name="add"></ion-icon>
+        Record Radiation Therapy
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

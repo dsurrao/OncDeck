@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DateUtils } from './../../common/dateutils';
-import { Events, ModalController, AlertController, IonList } from '@ionic/angular';
-import { SurgicalPathology } from '../../models/surgical-pathology';
-import { Surgery } from '../../models/surgery';
+import { Events, ModalController, AlertController } from '@ionic/angular';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
@@ -14,12 +12,8 @@ import { SurgeryService } from 'src/app/services/surgery.service';
   styleUrls: ['./patient.page.scss'],
 })
 export class PatientPage implements OnInit {
-  @ViewChild('surgeryList', {read: IonList}) surgeryList: IonList;
-  @ViewChild('surgicalPathologyList', {read: IonList}) surgicalPathologyList: IonList;
-
   patient: Patient = new Patient();
-  pathologies: any;
-
+  
   constructor(
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
@@ -44,91 +38,7 @@ export class PatientPage implements OnInit {
     this.patientSvc.getPatient(id).then((patient) => {
       this.patient = patient;
       this.patient['genderInitial'] = this.getGenderInitial(this.patient['Gender']);
-      this.pathologies = this.patient['Pathologies'] != null ? this.patient['Pathologies'] : [];
-      // this.patient['Age'] = dateUtils.getAge(this.patient['DOB']);
     });
-  }
-
-  async removeSurgeryConfirm(surgery: Surgery) {
-    const confirm = await this.alertCtrl.create({
-      header: 'Remove surgery entry?',
-      subHeader: 'Are you sure you want to remove this surgery entry?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            this.surgeryList.closeSlidingItems();
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.surgeryList.closeSlidingItems();
-            this.removeSurgery(surgery);
-          }
-        }
-      ]
-    });
-    await confirm.present();
-  }
-
-  removeSurgery(surgery: Surgery) {
-    this.surgerySvc.removeSurgery(surgery, this.patient).then((patient) => {
-      // do nothing
-    }).catch((error) => {
-      let title: string = 'Error saving patient';
-      let subTitle: string = '';
-      if (error.status == '409') {
-        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-      }
-      else {
-        subTitle = error;
-      }
-      this.showAlert(title, subTitle);
-    });
-  }
-
-  async removeSurgicalPathologyConfirm(pathology: SurgicalPathology) {
-    const confirm = await this.alertCtrl.create({
-      header: 'Remove surgical pathology report?',
-      subHeader: 'Are you sure you want to remove this surgical pathology report?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            this.surgicalPathologyList.closeSlidingItems();
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.surgicalPathologyList.closeSlidingItems();
-            this.removeSurgicalPathology(pathology);
-          }
-        }
-      ]
-    });
-    await confirm.present();
-  }
-
-  removeSurgicalPathology(pathology: SurgicalPathology) {
-    this.surgerySvc.removeSurgicalPathology(pathology, this.patient).then((patient) => {
-      // do nothing
-    }).catch((error) => {
-      let title: string = 'Error saving patient';
-      let subTitle: string = '';
-      if (error.status == '409') {
-        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-      }
-      else {
-        subTitle = error;
-      }
-      this.showAlert(title, subTitle);
-    });
-  }
-
-  toLocaleDateString(isoString: string): string {
-    return new Date(isoString).toLocaleDateString();
   }
   
   getGenderInitial(gender: String): string {
