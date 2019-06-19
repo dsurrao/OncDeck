@@ -46,7 +46,7 @@ export class PatientFormPage implements OnInit {
     this.patientSvc.savePatient(this.patient).then(updatedPatient => {
       console.log("patient saved");
       this.events.publish('patientSaved');
-      this.navCtrl.navigateForward('/biopsy/' + this.patient._id);
+      this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy');
     })
     .catch(error => {
       let title: string = 'Error saving patient';

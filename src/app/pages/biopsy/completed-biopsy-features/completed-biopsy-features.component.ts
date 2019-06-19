@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LVIEnum } from 'src/app/enums/lvi-enum';
 import { GradeEnum } from 'src/app/enums/grade-enum';
 import { Patient } from 'src/app/models/patient';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CompletedBiopsy } from 'src/app/models/completed-biopsy';
 import { Events, NavController } from '@ionic/angular';
 import { BiopsyService } from 'src/app/services/biopsy.service';
@@ -27,7 +27,6 @@ export class CompletedBiopsyFeaturesComponent implements OnInit {
   lviEnum: LVIEnum;
 
   constructor(public route: ActivatedRoute,
-    public router: Router,
     public patientSvc: PatientService,
     public biopsySvc: BiopsyService,
     public events: Events,

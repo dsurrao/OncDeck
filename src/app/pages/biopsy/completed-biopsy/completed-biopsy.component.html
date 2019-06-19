@@ -22,11 +22,12 @@
   && completedBiopsy.site != null && completedBiopsy.histology != null">
   <ion-item>
     <ion-label>Report Date</ion-label>
-    <ion-input type="date" [(ngModel)]="completedBiopsy.reportDate"></ion-input>
+    <!--TODO: convert all date inputs to use widget below-->
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.reportDate"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Procedure Date</ion-label>
-    <ion-input type="date" [(ngModel)]="completedBiopsy.procedureDate"></ion-input>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.procedureDate"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Pathologist</ion-label>
@@ -175,5 +176,5 @@
   </ion-item>
   <!-- end Histology -->
 
-  <ion-button color="primary" (click)="save()">Save</ion-button>
+  <ion-button color="primary" (click)="save()">Next</ion-button>
 </ion-content>

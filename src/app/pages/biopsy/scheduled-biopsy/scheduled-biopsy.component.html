@@ -11,7 +11,7 @@
 <ion-content *ngIf="patient && patient.biopsy && patient.biopsy.scheduledBiopsy && patient.biopsy.scheduledBiopsy.biopsyType">
   <ion-item>
     <ion-label>Scheduled Date</ion-label>
-    <ion-input type="date" name="scheduledDate" [(ngModel)]="patient.biopsy.scheduledBiopsy.scheduledDate"></ion-input>
+    <ion-datetime name="scheduledDate"  display-format="MMM DD, YYYY" [(ngModel)]="patient.biopsy.scheduledBiopsy.scheduledDate"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Facility</ion-label>

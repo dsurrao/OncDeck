@@ -70,17 +70,17 @@ export class BiopsyStatusComponent implements OnInit {
   navigateToChild(biopsyStatus: BiopsyStatusEnum) {
     switch (biopsyStatus) {
       case BiopsyStatusEnum.Completed:
-        // it'd be nice to have relative rather than absolute urls here, but doesn't seem to work
-        this.navCtrl.navigateForward('/biopsy/' + this.patient._id + '/completed-biopsy');
+        // TODO: it'd be nice to have relative rather than absolute urls here
+        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/completed-biopsy');
         break;
       case BiopsyStatusEnum.Scheduled:
-        this.navCtrl.navigateForward('/biopsy/' + this.patient._id + '/scheduled-biopsy');
+        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/scheduled-biopsy');
         break;
       case BiopsyStatusEnum.NotScheduled: 
-        this.navCtrl.navigateForward('/biopsy/' + this.patient._id + '/biopsy-not-scheduled');
+        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/biopsy-not-scheduled');
         break;
       case BiopsyStatusEnum.NotIndicated:
-        this.navCtrl.navigateForward('/biopsy/' + this.patient._id + '/completed-biopsy');
+        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/biopsy-not-indicated');
         break;
       default: 
         // do nothing
