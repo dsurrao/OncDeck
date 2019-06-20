@@ -3,12 +3,21 @@
   <ion-card-header class="card-header">
     <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Completed Biopsies
   </ion-card-header>
-  <ion-list>
-    <ion-item text-wrap *ngFor="let biopsy of patient.biopsy.completedBiopsies"
-      [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy/' + biopsy.id]">
-      Biopsy completed on {{this.dateUtils.toLocaleDateString(biopsy.procedureDate)}} at {{biopsy.facility}} with {{biopsy.pathologistName}}
-    </ion-item>
+
+  <ion-list #biopsyList>
+    <ion-item-sliding *ngFor="let biopsy of patient.biopsy.completedBiopsies">
+      <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy/' + biopsy.id]">
+        Biopsy completed on {{this.dateUtils.toLocaleDateString(biopsy.procedureDate)}} at {{biopsy.facility}} with {{biopsy.pathologistName}}
+      </ion-item>
+      <!-- delete option -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="removeBiopsyConfirm(biopsy)">
+          Remove
+        </ion-item-option>
+      </ion-item-options> 
+    </ion-item-sliding>
   </ion-list>
+
 </ng-container>
 <ion-toolbar>
   <ion-buttons slot="end">

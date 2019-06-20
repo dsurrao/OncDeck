@@ -38,11 +38,11 @@ export class CompletedBiopsyComponent implements OnInit {
   completedBiopsy: CompletedBiopsy;
 
   // enums for template
-  biopsyTypeEnum: BiopsyTypeEnum;
-  biopsySideEnum: BiopsySideEnum;
-  lymphNodeEnum: LymphNodeEnum;
-  histologyEnum: BiopsyHistologyEnum;
-  tissueEnum: BiopsyTissueEnum;
+  biopsyTypeEnum = BiopsyTypeEnum;
+  biopsySideEnum = BiopsySideEnum;
+  lymphNodeEnum = LymphNodeEnum;
+  histologyEnum = BiopsyHistologyEnum;
+  tissueEnum = BiopsyTissueEnum;
 
   constructor(public route: ActivatedRoute,
     public router: Router,

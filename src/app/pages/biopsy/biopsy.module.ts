@@ -13,6 +13,7 @@ import { BiopsyNotIndicatedComponent } from './biopsy-not-indicated/biopsy-not-i
 import { BiopsyNotScheduledComponent } from './biopsy-not-scheduled/biopsy-not-scheduled.component';
 import { CompletedBiopsyReceptorsComponent } from './completed-biopsy-receptors/completed-biopsy-receptors.component';
 import { CompletedBiopsyFeaturesComponent } from './completed-biopsy-features/completed-biopsy-features.component';
+import { CompletedBiopsySummaryComponent } from './completed-biopsy-summary/completed-biopsy-summary.component';
 
 const routes: Routes = [
   // TODO: try using loadChildren
@@ -43,6 +44,7 @@ const routes: Routes = [
     CompletedBiopsyComponent,
     CompletedBiopsyReceptorsComponent,
     CompletedBiopsyFeaturesComponent,
+    CompletedBiopsySummaryComponent,
     BiopsyNotIndicatedComponent,
     BiopsyNotScheduledComponent
   ]

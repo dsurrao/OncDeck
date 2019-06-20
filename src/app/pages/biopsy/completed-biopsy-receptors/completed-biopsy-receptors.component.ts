@@ -28,9 +28,9 @@ export class CompletedBiopsyReceptorsComponent implements OnInit {
   completedBiopsy: CompletedBiopsy;
 
   // for use in templates
-  receptorStatusEnum: ReceptorStatusEnum;
-  receptorStrengthEnum: ReceptorStrengthEnum;
-  her2TestingMethodEnum: Her2TestingMethodEnum;
+  receptorStatusEnum = ReceptorStatusEnum;
+  receptorStrengthEnum = ReceptorStrengthEnum;
+  her2TestingMethodEnum = Her2TestingMethodEnum;
 
   constructor(public route: ActivatedRoute,
     public router: Router,

@@ -23,8 +23,8 @@ export class CompletedBiopsyFeaturesComponent implements OnInit {
   completedBiopsy: CompletedBiopsy;
 
   // for use in template
-  gradeEnum: GradeEnum;
-  lviEnum: LVIEnum;
+  gradeEnum = GradeEnum;
+  lviEnum = LVIEnum;
 
   constructor(public route: ActivatedRoute,
     public patientSvc: PatientService,

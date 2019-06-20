@@ -1,0 +1,17 @@
+<ng-container *ngIf="biopsy != null">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Biopsy report on {{this.dateUtils.toLocaleDateString(biopsy.reportDate)}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        {{biopsyType}} performed on {{this.dateUtils.toLocaleDateString(biopsy.procedureDate)}} 
+        at {{biopsy.facility}} by {{biopsy.pathologistName}}.
+      </p>
+      <p>Site: {{site}}</p>
+      <p>Histology: {{histology}}</p>
+      <p>Receptors: {{receptors}}</p>
+      <p>Features: {{features}}</p>
+    </ion-card-content>
+  </ion-card>
+</ng-container>
