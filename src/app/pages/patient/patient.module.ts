@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { routing } from './patient.routing';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -11,20 +11,15 @@ import { RadiationTherapyItemsComponent } from './radiation-therapy-items/radiat
 import { CompletedBiopsyItemsComponent } from './completed-biopsy-items/completed-biopsy-items.component';
 import { ScheduledSurgeryItemsComponent } from './scheduled-surgery-items/scheduled-surgery-items.component';
 import { SurgicalPathologyItemsComponent } from './surgical-pathology-items/surgical-pathology-items.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: PatientPage
-  }
-];
+import { BiopsyPageModule } from '../biopsy/biopsy.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    routing,
+    BiopsyPageModule,
   ],
   declarations: [
     PatientPage, 

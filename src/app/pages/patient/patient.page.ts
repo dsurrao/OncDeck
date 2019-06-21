@@ -12,7 +12,7 @@ import { SurgeryService } from 'src/app/services/surgery.service';
   styleUrls: ['./patient.page.scss'],
 })
 export class PatientPage implements OnInit {
-  patient: Patient = new Patient();
+  patient: Patient;
   
   constructor(
     public alertCtrl: AlertController,

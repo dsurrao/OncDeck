@@ -55,7 +55,7 @@ export class PouchdbService {
     // });
 
     // live sync dbs
-    //this.syncDbs();
+    this.syncDbs();
   }
 
   getDb(): any {

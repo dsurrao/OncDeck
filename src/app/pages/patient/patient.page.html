@@ -4,7 +4,7 @@
     <ion-buttons slot="start">
         <ion-back-button defaultHref=""></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="patient != null">
       <ion-button icon-only [routerLink]="['/patient-form/' + patient._id]">
         <ion-icon name="create"></ion-icon>
       </ion-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="patient != null">
 
   <!-- Patient bio -->
   <!--TODO: display age -->
@@ -40,6 +40,7 @@
     </ion-card-header>
     <ion-card-content>
       <patient-summary [patient]="patient"></patient-summary>
+      <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
     </ion-card-content>
 
     <!-- Completed Biopsy -->
