@@ -6,13 +6,12 @@
   facility: string;
   type: BiopsyType;
   site: BiopsySite;
-  histology: BiopsyHistology;
+  histology: Histology;
 */
 import { Component, OnInit } from '@angular/core';
 import { BiopsyTypeEnum } from 'src/app/enums/biopsy-type-enum';
 import { BiopsySideEnum } from 'src/app/enums/biopsy-side-enum';
 import { LymphNodeEnum } from 'src/app/enums/lymph-node-enum';
-import { BiopsyHistologyEnum } from 'src/app/enums/biopsy-histology-enum';
 import { BiopsyTissueEnum } from 'src/app/enums/biopsy-tissue-enum';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +21,8 @@ import { BiopsyService } from 'src/app/services/biopsy.service';
 import { PatientService } from 'src/app/services/patient.service';
 import { BiopsyType } from 'src/app/models/biopsy-type';
 import { BiopsySite } from 'src/app/models/biopsy-site';
-import { BiopsyHistology } from 'src/app/models/biopsy-histology';
+import { HistologyEnum } from 'src/app/enums/histology-enum';
+import { Histology } from 'src/app/models/histology';
 
 @Component({
   selector: 'app-completed-biopsy',
@@ -41,7 +41,7 @@ export class CompletedBiopsyComponent implements OnInit {
   biopsyTypeEnum = BiopsyTypeEnum;
   biopsySideEnum = BiopsySideEnum;
   lymphNodeEnum = LymphNodeEnum;
-  histologyEnum = BiopsyHistologyEnum;
+  histologyEnum = HistologyEnum;
   tissueEnum = BiopsyTissueEnum;
 
   constructor(public route: ActivatedRoute,
@@ -70,7 +70,7 @@ export class CompletedBiopsyComponent implements OnInit {
         this.completedBiopsy = new CompletedBiopsy();
         this.completedBiopsy.type = new BiopsyType();
         this.completedBiopsy.site = new BiopsySite();
-        this.completedBiopsy.histology = new BiopsyHistology();
+        this.completedBiopsy.histology = new Histology();
       }
     });
   }

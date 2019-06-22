@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Biopsy } from 'src/app/models/biopsy';
 import { CompletedBiopsy } from 'src/app/models/completed-biopsy';
 import { BiopsyStatusEnum } from 'src/app/enums/biopsy-status-enum';
@@ -10,7 +10,7 @@ import { BiopsyTypeEnum } from 'src/app/enums/biopsy-type-enum';
   templateUrl: './biopsy-summary.component.html',
   styleUrls: ['./biopsy-summary.component.scss'],
 })
-export class BiopsySummaryComponent implements OnInit {
+export class BiopsySummaryComponent implements OnInit, OnChanges {
 
   @Input('biopsy') biopsy: Biopsy;
 
@@ -22,7 +22,10 @@ export class BiopsySummaryComponent implements OnInit {
 
   constructor(public dateUtils: DateUtils) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnChanges() {
+    // TODO: sort by date
     if (this.biopsy.completedBiopsies != null) {
       this.mostRecentCompletedBiopsy = this.biopsy.completedBiopsies[this.biopsy.completedBiopsies.length - 1];
     }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { AlertController, IonList } from '@ionic/angular';
+import { AlertController, IonList, Events } from '@ionic/angular';
 import { SurgeryService } from 'src/app/services/surgery.service';
 import { SurgicalPathology } from 'src/app/models/surgical-pathology';
 import { Patient } from 'src/app/models/patient';
@@ -17,7 +17,8 @@ export class SurgicalPathologyItemsComponent implements OnInit {
 
   constructor(public alertCtrl: AlertController,
     public surgerySvc: SurgeryService,
-    public dateUtils: DateUtils) { }
+    public dateUtils: DateUtils,
+    public events: Events) { }
 
   ngOnInit() {}
 
@@ -46,7 +47,7 @@ export class SurgicalPathologyItemsComponent implements OnInit {
 
   removeSurgicalPathology(pathology: SurgicalPathology) {
     this.surgerySvc.removeSurgicalPathology(pathology, this.patient).then((patient) => {
-      // do nothing
+      this.events.publish('patientSaved');
     }).catch((error) => {
       let title: string = 'Error saving patient';
       let subTitle: string = '';

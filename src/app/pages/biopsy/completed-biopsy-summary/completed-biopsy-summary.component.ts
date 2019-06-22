@@ -4,7 +4,7 @@ import { DateUtils } from 'src/app/common/dateutils';
 import { LymphNodeEnum } from 'src/app/enums/lymph-node-enum';
 import { BiopsyTissueEnum } from 'src/app/enums/biopsy-tissue-enum';
 import { BiopsyTypeEnum } from 'src/app/enums/biopsy-type-enum';
-import { BiopsyHistologyEnum } from 'src/app/enums/biopsy-histology-enum';
+import { HistologyEnum } from 'src/app/enums/histology-enum';
 
 @Component({
   selector: 'app-completed-biopsy-summary',
@@ -52,7 +52,7 @@ export class CompletedBiopsySummaryComponent implements OnInit {
     }
 
     // Histology
-    if (this.biopsy.histology.histology == BiopsyHistologyEnum.Other) {
+    if (this.biopsy.histology.histology == HistologyEnum.Other) {
       this.histology = this.biopsy.histology.other;
     }
     else {

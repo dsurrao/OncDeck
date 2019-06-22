@@ -1,4 +1,4 @@
-export enum BiopsyHistologyEnum {
+export enum HistologyEnum {
     IDC = "Invasive Ductal Carcinoma",
     ILC = "Invasive Lobular Carcinoma",
     DCIS = "Ductal Carcinoma In Situ",

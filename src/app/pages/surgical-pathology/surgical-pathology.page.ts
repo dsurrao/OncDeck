@@ -1,3 +1,4 @@
+// TODO: remove smart/dumb component pattern
 import { Component, OnInit } from '@angular/core';
 import { AlertController, Events, NavController } from '@ionic/angular';
 import { Patient } from '../../models/patient';
@@ -9,6 +10,10 @@ import { PatientService } from 'src/app/services/patient.service';
 import { SurgeryService } from 'src/app/services/surgery.service';
 import { Observable, from, of, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { EstrogenReceptor } from 'src/app/models/er-receptor';
+import { ProgesteroneReceptor } from 'src/app/models/pr-receptor';
+import { Her2Receptor } from 'src/app/models/her2-receptor';
+import { Features } from 'src/app/models/features';
 
 @Component({
   selector: 'app-surgical-pathology',
@@ -47,7 +52,12 @@ export class SurgicalPathologyPage implements OnInit {
       );
     }
     else {
-      this.pathology$ = of(new SurgicalPathology());
+      let pathology: SurgicalPathology = new SurgicalPathology();
+      pathology.er = new EstrogenReceptor();
+      pathology.pr = new ProgesteroneReceptor();
+      pathology.her2 = new Her2Receptor();
+      pathology.features = new Features();
+      this.pathology$ = of(pathology);
     }
   }
   

@@ -6,12 +6,13 @@
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
-    
+
 <ion-content>
   <form #pathologyForm="ngForm">
         <ion-item>
             <ion-label>Surgery Date</ion-label>
-            <ion-input type="date" name="surgeryDate" [(ngModel)]="surgeryDate" required></ion-input>
+            <!-- TODO: use ion-datetime everywhere -->
+            <ion-datetime name="surgeryDate" display-format="MMM DD, YYYY" [(ngModel)]="pathology.surgeryDate" required></ion-datetime>
         </ion-item>
 
         <ion-list>
@@ -34,33 +35,33 @@
 
         <ion-list>
             <ion-list-header>Surgery Histology</ion-list-header>
-            <ion-radio-group name="surgeryHistology" [(ngModel)]="pathology.surgeryHistology" required>
+            <ion-radio-group name="surgeryHistology" [(ngModel)]="pathology.histology" required>
                 <ion-item>
                     <ion-label>Invasive Ductal Carcinoma</ion-label>
-                    <ion-radio value="{{surgeryHistologyEnum.InvasiveDuctalCarcinoma}}"></ion-radio>
+                    <ion-radio value="{{histologyEnum.IDC}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>Invasive Lobular Carcinoma</ion-label>
-                    <ion-radio value="{{surgeryHistologyEnum.InvasiveLobularCarcinoma}}"></ion-radio>
+                    <ion-radio value="{{histologyEnum.ILC}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>DCIS (Ductal Carcinoma In Situ)</ion-label>
-                    <ion-radio value="{{surgeryHistologyEnum.DCIS}}"></ion-radio>
+                    <ion-radio value="{{histologyEnum.DCIS}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>LCIS (Lobular Carcinoma In Situ)</ion-label>
-                    <ion-radio value="{{surgeryHistologyEnum.LCIS}}"></ion-radio>
+                    <ion-radio value="{{histologyEnum.LCIS}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>Other</ion-label>
-                    <ion-radio value="{{surgeryHistologyEnum.Other}}"></ion-radio>
+                    <ion-radio value="{{histologyEnum.Other}}"></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
         
         <ion-list>
             <ion-list-header>Estrogren Receptor</ion-list-header>
-            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="erStatus" required>
+            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="pathology.er.status" required>
                 <ion-item>
                     <ion-label>ER+</ion-label>
                     <ion-radio value="{{erEnum.Positive}}"></ion-radio>
@@ -78,7 +79,7 @@
 
         <ion-list>
             <ion-list-header>Progesterone Receptor</ion-list-header>
-            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="prStatus" required>
+            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="pathology.pr.status" required>
                 <ion-item>
                     <ion-label>PR+</ion-label>
                     <ion-radio value="{{prEnum.Positive}}"></ion-radio>
@@ -96,7 +97,7 @@
 
         <ion-list>
             <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
-            <ion-radio-group name="her2Receptor" [(ngModel)]="her2Status" required>
+            <ion-radio-group name="her2Receptor" [(ngModel)]="pathology.her2.status" required>
                 <ion-item>
                     <ion-label>HER2+</ion-label>
                     <ion-radio value="{{her2Enum.Positive}}"></ion-radio>
@@ -114,28 +115,28 @@
 
         <ion-list>
             <ion-list-header>Surgical Features</ion-list-header>
-            <ion-radio-group name="surgicalFeature" [(ngModel)]="pathology.surgicalFeature" required>
+            <ion-radio-group name="surgicalFeature" [(ngModel)]="pathology.features.lvi" required>
                 <ion-item>
                     <ion-label>LVI+</ion-label>
-                    <ion-radio value="{{surgicalFeatureEnum.LVIPositive}}"></ion-radio>
+                    <ion-radio value="{{lviEnum.Positive}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>LVI-</ion-label>
-                    <ion-radio value="{{surgicalFeatureEnum.LVINegative}}"></ion-radio>
+                    <ion-radio value="{{lviEnum.Negative}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{surgicalFeatureEnum.None}}"></ion-radio>
+                    <ion-radio value="{{lviEnum.NotDetermined}}"></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
         
        <ion-list>
             <ion-list-header>Tumor Grade</ion-list-header>
-            <ion-radio-group name="tumorGrade" [(ngModel)]="pathology.tumorGrade" required>
+            <ion-radio-group name="tumorGrade" [(ngModel)]="pathology.features.grade" required>
                 <ion-item>
                     <ion-label>Grade 1</ion-label>
-                    <ion-radio value="{{tumorGradeEnum.G1}}"></ion-radio>
+                    <ion-radio value="{{gradeEnum.G1}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>Grade 2</ion-label>
@@ -144,6 +145,10 @@
                 <ion-item>
                     <ion-label>Grade 3</ion-label>
                     <ion-radio value="{{tumorGradeEnum.G3}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Unable to Grade</ion-label>
+                    <ion-radio value="{{tumorGradeEnum.Unable}}"></ion-radio>
                 </ion-item>
                 <ion-item>
                     <ion-label>Grade Not Recorded</ion-label>

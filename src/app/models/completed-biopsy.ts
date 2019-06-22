@@ -1,8 +1,8 @@
 import { BiopsyType } from './biopsy-type';
-import { BiopsyHistology } from './biopsy-histology';
-import { BiopsyFeatures } from './biopsy-features';
 import { Receptors } from './receptors';
 import { BiopsySite } from './biopsy-site';
+import { Histology } from './histology';
+import { Features } from './features';
 
 export class CompletedBiopsy {
     id: string;
@@ -13,7 +13,7 @@ export class CompletedBiopsy {
     facility: string;
     type: BiopsyType;
     site: BiopsySite;
-    histology: BiopsyHistology;
+    histology: Histology;
     receptors: Receptors;
-    features: BiopsyFeatures;
+    features: Features;
 }

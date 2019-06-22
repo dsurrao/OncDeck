@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Patient } from 'src/app/models/patient';
 import { DateUtils } from 'src/app/common/dateutils';
-import { IonList, AlertController } from '@ionic/angular';
+import { IonList, AlertController, Events } from '@ionic/angular';
 import { CompletedBiopsy } from 'src/app/models/completed-biopsy';
 import { BiopsyService } from 'src/app/services/biopsy.service';
 
@@ -17,7 +17,8 @@ export class CompletedBiopsyItemsComponent implements OnInit {
 
   constructor(public dateUtils: DateUtils, 
     public alertCtrl: AlertController,
-    public biopsySvc: BiopsyService) { }
+    public biopsySvc: BiopsyService,
+    public events: Events) { }
 
   ngOnInit() {}
 
@@ -46,7 +47,7 @@ export class CompletedBiopsyItemsComponent implements OnInit {
 
   removeCompletedBiopsy(biopsy: CompletedBiopsy) {
     this.biopsySvc.removeCompletedBiopsy(biopsy, this.patient).then((patient) => {
-      // do nothing
+      this.events.publish('patientSaved');
     }).catch((error) => {
       let title: string = 'Error saving patient';
       let subTitle: string = '';

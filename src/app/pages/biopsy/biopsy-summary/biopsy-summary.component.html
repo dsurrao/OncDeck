@@ -13,6 +13,7 @@
 <ng-template #scheduledBlock>
   {{biopsyType}} scheduled on {{this.dateUtils.toLocaleDateString(biopsy.scheduledBiopsy.scheduledDate)}} 
   at {{biopsy.scheduledBiopsy.facility}}. Contact Person {{biopsy.scheduledBiopsy.contactPerson}}.
+  <ion-icon name="create" [routerLink]="'biopsy/scheduled-biopsy'"></ion-icon>
 </ng-template>
 <ng-template #notScheduledBlock>
   Not scheduled: {{biopsy.notScheduled.reason}} (recorded {{this.dateUtils.toLocaleDateString(biopsy.notScheduled.dateRecorded)}})

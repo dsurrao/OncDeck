@@ -7,7 +7,7 @@ import { CompletedBiopsy } from 'src/app/models/completed-biopsy';
 import { Events, NavController } from '@ionic/angular';
 import { BiopsyService } from 'src/app/services/biopsy.service';
 import { PatientService } from 'src/app/services/patient.service';
-import { BiopsyFeatures } from 'src/app/models/biopsy-features';
+import { Features } from 'src/app/models/features';
 
 @Component({
   selector: 'app-completed-biopsy-features',
@@ -47,7 +47,7 @@ export class CompletedBiopsyFeaturesComponent implements OnInit {
         }
         
         if (this.completedBiopsy.features == null) {
-          this.completedBiopsy.features = new BiopsyFeatures();
+          this.completedBiopsy.features = new Features();
         }
       });
     }
