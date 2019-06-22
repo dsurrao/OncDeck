@@ -41,6 +41,9 @@
     <ion-card-content>
       <patient-summary [patient]="patient"></patient-summary>
       <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
+      <app-radiation-therapy-summary 
+        [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
+      </app-radiation-therapy-summary>
     </ion-card-content>
 
     <!-- Completed Biopsy -->

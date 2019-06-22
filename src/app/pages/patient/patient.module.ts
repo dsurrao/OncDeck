@@ -12,6 +12,7 @@ import { CompletedBiopsyItemsComponent } from './completed-biopsy-items/complete
 import { ScheduledSurgeryItemsComponent } from './scheduled-surgery-items/scheduled-surgery-items.component';
 import { SurgicalPathologyItemsComponent } from './surgical-pathology-items/surgical-pathology-items.component';
 import { BiopsyPageModule } from '../biopsy/biopsy.module';
+import { RadiationTherapyPageModule } from '../radiation-therapy/radiation-therapy.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { BiopsyPageModule } from '../biopsy/biopsy.module';
     IonicModule,
     routing,
     BiopsyPageModule,
+    RadiationTherapyPageModule
   ],
   declarations: [
     PatientPage, 

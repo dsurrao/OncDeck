@@ -25,7 +25,7 @@ export class BiopsySummaryComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    // TODO: sort by date
+    // TODO: get latest biopsy by date
     if (this.biopsy.completedBiopsies != null) {
       this.mostRecentCompletedBiopsy = this.biopsy.completedBiopsies[this.biopsy.completedBiopsies.length - 1];
     }

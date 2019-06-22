@@ -1,19 +1,17 @@
-<ion-card *ngIf="biopsy != null">
-  <ion-card-header>
-    <ion-card-subtitle>Biopsies</ion-card-subtitle>
-  </ion-card-header>
-  <ion-card-content>
-    <ng-container *ngIf="biopsy.status == biopsyStatusEnum.Scheduled; then scheduledBlock"></ng-container>
-    <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotScheduled; then notScheduledBlock"></ng-container>
-    <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotIndicated; then notIndicatedBlock"></ng-container>
-    <ng-container *ngIf="mostRecentCompletedBiopsy != null; then completedBlock"></ng-container>
-  </ion-card-content>
-</ion-card>
+<ng-container *ngIf="biopsy != null">
+  <b>Biopsies</b>
+  <br/>
+  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.Scheduled; then scheduledBlock"></ng-container>
+  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotScheduled; then notScheduledBlock"></ng-container>
+  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotIndicated; then notIndicatedBlock"></ng-container>
+  <ng-container *ngIf="mostRecentCompletedBiopsy != null; then completedBlock"></ng-container>
+</ng-container>
 
 <ng-template #scheduledBlock>
   {{biopsyType}} scheduled on {{this.dateUtils.toLocaleDateString(biopsy.scheduledBiopsy.scheduledDate)}} 
   at {{biopsy.scheduledBiopsy.facility}}. Contact Person {{biopsy.scheduledBiopsy.contactPerson}}.
   <ion-icon name="create" [routerLink]="'biopsy/scheduled-biopsy'"></ion-icon>
+  <br/>
 </ng-template>
 <ng-template #notScheduledBlock>
   Not scheduled: {{biopsy.notScheduled.reason}} (recorded {{this.dateUtils.toLocaleDateString(biopsy.notScheduled.dateRecorded)}})

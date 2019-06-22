@@ -21,8 +21,12 @@
 <ion-content *ngIf="completedBiopsy != null && completedBiopsy.type != null 
   && completedBiopsy.site != null && completedBiopsy.histology != null">
 
-  <app-completed-biopsy-summary [biopsy]="completedBiopsy"
-    *ngIf="completedBiopsyId != null"></app-completed-biopsy-summary>
+  <ion-card>
+    <ion-card-content>
+      <app-completed-biopsy-summary [biopsy]="completedBiopsy" 
+        *ngIf="completedBiopsyId != null"></app-completed-biopsy-summary>
+    </ion-card-content>
+  </ion-card>
   
   <ion-item>
     <ion-label>Report Date</ion-label>
@@ -42,6 +46,7 @@
     <ion-input type="text" [(ngModel)]="completedBiopsy.facility"></ion-input>
   </ion-item>
 
+  <!--TODO: allowEmptySelection for radio buttons-->
   <ion-list>
     <ion-radio-group [(ngModel)]="completedBiopsy.type.type">
       <ion-list-header>Biopsy Type</ion-list-header>

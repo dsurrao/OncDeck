@@ -5,9 +5,18 @@
 </ion-header>
 
 <ion-content *ngIf="radiationTherapy != null">
+  <ion-card>
+    <ion-card-content>
+      <app-radiation-therapy-summary [radiationTherapy]="radiationTherapy"></app-radiation-therapy-summary>
+    </ion-card-content>
+  </ion-card>
   <ion-item>
     <ion-label>Start Date</ion-label>
     <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.startDate" (ionChange)="updateProjectedEndDate()"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Total Dose</ion-label>
+    <ion-input type="text" [(ngModel)]="radiationTherapy.totalDose"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Number of Fractions/Treatments</ion-label>
@@ -17,7 +26,7 @@
     <ion-list-header>Radiation Fields</ion-list-header>
     <ion-item *ngFor="let field of radiationFields">
       <ion-label>{{field.val}}</ion-label>
-      <ion-checkbox slot="end" [(ngModel)]="field.isChecked"></ion-checkbox>
+      <ion-checkbox slot="end" [(ngModel)]="field.isChecked" (ionChange)="updateRadiationFields()"></ion-checkbox>
     </ion-item>
   </ion-list>
   <ion-item>

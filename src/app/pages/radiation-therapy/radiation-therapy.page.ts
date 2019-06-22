@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Patient } from 'src/app/models/patient';
 import { RadiationTherapy } from 'src/app/models/radiation-therapy';
 import { ActivatedRoute } from '@angular/router';
@@ -53,7 +53,7 @@ export class RadiationTherapyPage implements OnInit {
         for (let r of this.radiationTherapy.fieldsTreated) {
           this.radiationFields.find(f => {return f.val === r.field}).isChecked = true;
           if (r.field === RadiationFieldEnum.Other) {
-            this.radiationFieldOther = r.fieldOther;
+            this.radiationFieldOther = r.other;
           }
         }
       }
@@ -62,6 +62,31 @@ export class RadiationTherapyPage implements OnInit {
         this.radiationTherapy.fieldsTreated = [];
       }
     });
+  }
+
+  updateRadiationFields() {
+    // checked radiation fields
+    let checkedRadiationFields = this.radiationFields;
+    for (let f of checkedRadiationFields) {
+      if (f.isChecked) {
+        let fieldTreated = this.radiationTherapy.fieldsTreated.find(r => {return r.field === f.val});
+        if (fieldTreated == null) {
+          let fieldTreated = new RadiationFieldTreated();
+          fieldTreated.field = f.val;
+          if (fieldTreated.field === RadiationFieldEnum.Other) {
+            fieldTreated.other = this.radiationFieldOther;
+          }
+          this.radiationTherapy.fieldsTreated.push(fieldTreated);
+        }
+      }
+      else {
+        let fieldTreated = this.radiationTherapy.fieldsTreated.find(r => {return r.field === f.val});
+        if (fieldTreated != null) {
+          let fieldTreatedIndex = this.radiationTherapy.fieldsTreated.indexOf(fieldTreated);
+          this.radiationTherapy.fieldsTreated.splice(fieldTreatedIndex, 1);
+        }
+      }
+    }
   }
 
   updateProjectedEndDate() {
@@ -74,20 +99,6 @@ export class RadiationTherapyPage implements OnInit {
   }
 
   save() {
-    // add checked radiation fields
-    let checkedRadiationFields = this.radiationFields.filter(f => f.isChecked);
-    for (let f of checkedRadiationFields) {
-      let fieldTreated = this.radiationTherapy.fieldsTreated.find(r => {return r.field === f.val});
-      if (fieldTreated == null) {
-        let fieldTreated = new RadiationFieldTreated();
-        fieldTreated.field = f.val;
-        if (fieldTreated.field === RadiationFieldEnum.Other) {
-          fieldTreated.fieldOther = this.radiationFieldOther;
-        }
-        this.radiationTherapy.fieldsTreated.push(fieldTreated);
-      }
-    }
-
     // remove unchecked radiation fields
     let uncheckedRadiationFields = this.radiationFields.filter(f => !f.isChecked);
     for (let f of uncheckedRadiationFields) {

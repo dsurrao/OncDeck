@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RadiationTherapyPage } from './radiation-therapy.page';
+import { RadiationTherapySummaryComponent } from './radiation-therapy-summary/radiation-therapy-summary.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,11 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    RadiationTherapyPage
+    RadiationTherapyPage,
+    RadiationTherapySummaryComponent
+  ],
+  exports: [
+    RadiationTherapySummaryComponent
   ]
 })
 export class RadiationTherapyPageModule {}
