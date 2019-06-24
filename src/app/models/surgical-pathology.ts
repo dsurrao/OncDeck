@@ -14,6 +14,9 @@ export class SurgicalPathology {
     her2: Her2Receptor;
     features: Features;
     surgicalMargin: SurgicalMarginEnum;
-    surgeryDate: string;
-    id: string;
+    report: string;
+    reportDate: string;
+    lymphNodeDissectionType: string;
+    pathologistName: string;
+    pathologistFacility: string;
 }

@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { Patient } from '../../models/patient';
-import { SurgicalPathology } from '../../models/surgical-pathology';
 
 @Component({
   selector: 'patient-summary',
@@ -11,8 +10,6 @@ export class PatientSummaryComponent implements OnInit {
 
   @Input('patient') patient: Patient;
   patientDemographics: string;
-  surgicalPathologySummary: string;
-  surgerySummary: string;
 
   constructor() { }
 
@@ -22,8 +19,6 @@ export class PatientSummaryComponent implements OnInit {
 
   populateComponent(pt: Patient) {
     this.patientDemographics = this.constructPatientDemographics(pt);
-    this.surgicalPathologySummary = this.constructSurgicalPathologySummary(pt);
-    this.surgerySummary = this.constructSurgerySummary(pt);
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
@@ -40,46 +35,5 @@ export class PatientSummaryComponent implements OnInit {
   constructPatientDemographics(patient: Patient): string {
     return patient.firstName + ' ' + patient.lastName
     + ' (' + patient.gender + ', ' + patient.dob + ')';
-  }
-
-  constructSurgerySummary(patient: Patient): string {
-    let surgerySummary = "Surgery: ";
-    let surgeries = patient.surgeries != null ? patient.surgeries : [];
-    if (surgeries.length > 0) {
-      if (surgeries[0].completedDate != null) {
-        surgerySummary = "Surgery completed on " + new Date(surgeries[0].completedDate).toLocaleDateString()
-        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
-      }
-      else if (surgeries[0]['ScheduledDate'] != null) {
-        surgerySummary = "Surgery scheduled on " + new Date(surgeries[0].scheduledDate).toLocaleDateString()
-        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
-      }
-    }
-    else {
-      surgerySummary += "Surgery not scheduled";
-    }
-    return (surgerySummary);
-  }
-
-  constructSurgicalPathologySummary(patient: Patient): string {
-    let pathologySummary = 'Surgical Pathology: ';
-    let pathologies = patient.surgicalPathologies != null ? patient.surgicalPathologies : [];
-
-    // TODO: implement this!
-    // if (pathologies.length > 0) {
-    //   let pathology: SurgicalPathology = pathologies[0];
-    //   pathologySummary += 'Date: ' + new Date(pathology.surgeryDate).toLocaleDateString() + ', '
-    //     + 'Type: ' + pathology.surgeryType + ', ' 
-    //     + 'Histology: ' + pathology.surgeryHistology + ', ' 
-    //     + 'PR: ' + pathology.pr.status + ', ' 
-    //     + 'ER: ' + pathology.er.status + ', ' 
-    //     + 'HER2: ' + pathology.her2.status + ', ' 
-    //     + 'LVI: ' + pathology.surgicalFeature + ', ' 
-    //     + 'Surgical Margins: ' + pathology.surgicalMargin
-    // }
-    // else {
-    //   pathologySummary += 'No pathology report';
-    // }
-    return pathologySummary;
   }
 }

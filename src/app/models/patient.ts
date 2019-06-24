@@ -1,6 +1,5 @@
 import { Biopsy } from "./biopsy";
 import { Surgery } from "./surgery";
-import { SurgicalPathology } from "./surgical-pathology";
 import { RadiationTherapy } from './radiation-therapy';
 
 export class Patient {
@@ -13,8 +12,7 @@ export class Patient {
     contactLastName: string;
     contactPhoneNumber: string;
     biopsy: Biopsy;
-    surgeries: Surgery[];
-    surgicalPathologies: SurgicalPathology[];
+    surgery: Surgery;
     radiationTherapies: RadiationTherapy[];
     watchers: string[] = [];
     isArchived: boolean = false;
