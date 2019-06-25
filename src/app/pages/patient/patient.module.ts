@@ -11,6 +11,7 @@ import { RadiationTherapyItemsComponent } from './radiation-therapy-items/radiat
 import { CompletedBiopsyItemsComponent } from './completed-biopsy-items/completed-biopsy-items.component';
 import { BiopsyPageModule } from '../biopsy/biopsy.module';
 import { RadiationTherapyPageModule } from '../radiation-therapy/radiation-therapy.module';
+import { SurgeryPageModule } from '../surgery/surgery.module';
 
 @NgModule({
   imports: [
@@ -19,13 +20,14 @@ import { RadiationTherapyPageModule } from '../radiation-therapy/radiation-thera
     IonicModule,
     routing,
     BiopsyPageModule,
-    RadiationTherapyPageModule
+    RadiationTherapyPageModule,
+    SurgeryPageModule
   ],
   declarations: [
     PatientPage, 
     PatientSummaryComponent,
     RadiationTherapyItemsComponent,
-    CompletedBiopsyItemsComponent
+    CompletedBiopsyItemsComponent,
   ]
 })
 export class PatientPageModule {}

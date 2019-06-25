@@ -9,8 +9,12 @@
 
 <ion-content>
   <ng-container *ngIf="patient != null">
-    <app-surgery-summary [patient]="patient"></app-surgery-summary>
-
+    <ion-card>
+      <ion-card-content>
+        <app-surgery-summary [patient]="patient"></app-surgery-summary>
+      </ion-card-content>
+    </ion-card>
+    
     <ion-item-group>
       <ion-item-divider>
         <ion-label>Completed Surgeries</ion-label>

@@ -19,7 +19,7 @@ export class SurgeryService {
     console.log('Hello SurgeryProvider Provider');
   }
 
-  saveCompletedSurgery(surgery: CompletedSurgery, patient: Patient): Promise<Patient> {
+  public saveCompletedSurgery(surgery: CompletedSurgery, patient: Patient): Promise<Patient> {
     if (surgery.id == null) {
       // new surgery
       if (patient.surgery == null) {
@@ -46,7 +46,7 @@ export class SurgeryService {
     return this.saveSurgeryStatus(patient);
   }
 
-  removeCompletedSurgery(surgery: CompletedSurgery, patient: Patient): Promise<Patient> {
+  public removeCompletedSurgery(surgery: CompletedSurgery, patient: Patient): Promise<Patient> {
     let removeIndex: number = -1;
     for (var i: number = 0; i < patient.surgery.completedSurgeries.length; i++) {
       if (patient.surgery.completedSurgeries[i].id === surgery.id) {
@@ -63,7 +63,7 @@ export class SurgeryService {
     return this.saveSurgeryStatus(patient);
   }
 
-  saveSurgeryStatus(patient: Patient): Promise<Patient> {
+  public saveSurgeryStatus(patient: Patient): Promise<Patient> {
     let status: SurgeryStatusEnum = patient.surgery.surgeryStatus;
     let inferredStatus: SurgeryStatusEnum = this.inferSurgeryStatus(patient);
 
@@ -110,14 +110,31 @@ export class SurgeryService {
     return this.db.savePatient(patient);
   }
 
-  inferSurgeryStatus(patient: Patient): SurgeryStatusEnum {
-    let lastSurgeryDayCutoff: number = 180;
+  public getMostRecentCompletedSurgery(patient: Patient): CompletedSurgery {
+    let mostRecentCompletedSurgery: CompletedSurgery = null;
+    if (patient.surgery != null) {
+      for (let s of patient.surgery.completedSurgeries) {
+        if (mostRecentCompletedSurgery == null) {
+          mostRecentCompletedSurgery = s;
+        }
+        else if (s.surgeryDate > mostRecentCompletedSurgery.surgeryDate) {
+          mostRecentCompletedSurgery = s;
+        }
+      }
+    }
+    return mostRecentCompletedSurgery;
+  }
+
+  private inferSurgeryStatus(patient: Patient): SurgeryStatusEnum {
+    let lastSurgeryDaysAgoCutoff: number = -180;
     let surgeryStatus: SurgeryStatusEnum = SurgeryStatusEnum.NotIndicated;
     if (patient.surgery != null) {      
       // if there is a completed surgery in the past 180 days, mark as complete
-      if (patient.surgery.completedSurgeries.length > 0) {
-        if (this.getDaysSinceLastSurgery(patient.surgery.completedSurgeries) <= lastSurgeryDayCutoff) {
-          surgeryStatus = SurgeryStatusEnum.Completed;
+      let lastCompletedSurgery: CompletedSurgery = this.getMostRecentCompletedSurgery(patient);
+      if (lastCompletedSurgery != null) {
+        if (this.dateUtils.daysFromToday(lastCompletedSurgery.surgeryDate) 
+          >= lastSurgeryDaysAgoCutoff) {
+            surgeryStatus = SurgeryStatusEnum.Completed;
         }
       }
 
@@ -129,25 +146,5 @@ export class SurgeryService {
       }
     }
     return surgeryStatus;
-  }
-
-  // for the most recent completed surgery
-  getDaysSinceLastSurgery(completedSurgeries: CompletedSurgery[]): number {
-    let dayDiff: number = 0;
-    let currDiff: number;
-
-    for (let s of completedSurgeries) {
-      // should be a negative number since it's in the past
-      currDiff = this.dateUtils.daysFromToday(s.surgeryDate);
-      if (dayDiff == 0) {
-        dayDiff = currDiff;
-      }
-      else if (currDiff > dayDiff) {
-        dayDiff = currDiff;
-      }
-    }
-
-    // now make this difference a positive number and return it
-    return -dayDiff;
   }
 }

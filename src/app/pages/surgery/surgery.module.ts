@@ -29,6 +29,9 @@ const routes: Routes = [
     SurgeryHomeComponent,
     SurgerySummaryComponent,
     CompletedSurgeryComponent
+  ],
+  exports: [
+    SurgerySummaryComponent
   ]
 })
 export class SurgeryPageModule {}

@@ -1,3 +1,31 @@
-<p>
-  surgery-summary works!
+<p *ngIf="patient.surgery != null">
+  <b>Surgeries</b>
+  <ion-icon name="create" [routerLink]="'/patient/' + patient._id + '/surgery'"></ion-icon>
+  <br/>
+  Status: {{patient.surgery.surgeryStatus}}
+  <br/>
+  <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.Scheduled">
+    Scheduled on {{dateUtils.toLocaleDateString(patient.surgery.scheduledSurgery.scheduledDate)}} with 
+    {{patient.surgery.scheduledSurgery.surgeonName}} at 
+    {{patient.surgery.scheduledSurgery.facility}} 
+    <br/>
+  </ng-container>
+  <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotScheduled">
+    Reason: {{patient.surgery.surgeryNotScheduled.reason}} 
+    (recorded on {{patient.surgery.surgeryNotScheduled.dateRecorded}})
+    <br/>
+    Reminder Date: {{patient.surgery.surgeryNotScheduled.dateReminder}})
+    <br/>
+  </ng-container>
+  <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotIndicated">
+    Reason: {{patient.surgery.surgeryNotIndicated.reason}} 
+    (recorded on {{patient.surgery.surgeryNotIndicated.dateRecorded}})
+    <br/>
+  </ng-container>
+  <ng-container *ngIf="mostRecentCompletedSurgery != null">
+    <a [routerLink]="'/patient/' + patient._id + '/surgery/completed-surgery/' + mostRecentCompletedSurgery.id">
+      Most recent surgery completed on {{dateUtils.toLocaleDateString(mostRecentCompletedSurgery.surgeryDate)}} 
+      by {{mostRecentCompletedSurgery.surgeonName}} 
+    </a>
+  </ng-container>
 </p>
