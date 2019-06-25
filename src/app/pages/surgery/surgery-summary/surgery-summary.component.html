@@ -23,9 +23,7 @@
     <br/>
   </ng-container>
   <ng-container *ngIf="mostRecentCompletedSurgery != null">
-    <a [routerLink]="'/patient/' + patient._id + '/surgery/completed-surgery/' + mostRecentCompletedSurgery.id">
-      Most recent surgery completed on {{dateUtils.toLocaleDateString(mostRecentCompletedSurgery.surgeryDate)}} 
-      by {{mostRecentCompletedSurgery.surgeonName}} 
-    </a>
+    <app-completed-surgery-summary [surgery]="mostRecentCompletedSurgery"></app-completed-surgery-summary>
+    <ion-icon name="create" [routerLink]="'/patient/' + patient._id + '/surgery/completed-surgery/' + mostRecentCompletedSurgery.id"></ion-icon>
   </ng-container>
 </p>

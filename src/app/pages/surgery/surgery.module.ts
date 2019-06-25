@@ -9,6 +9,8 @@ import { SurgeryPage } from './surgery.page';
 import { SurgeryHomeComponent } from './surgery-home/surgery-home.component';
 import { SurgerySummaryComponent } from './surgery-summary/surgery-summary.component';
 import { CompletedSurgeryComponent } from './completed-surgery/completed-surgery.component';
+import { CompletedSurgerySummaryComponent } from './completed-surgery-summary/completed-surgery-summary.component';
+import { SurgicalPathologySummaryComponent } from './surgical-pathology-summary/surgical-pathology-summary.component';
 
 const routes: Routes = [
   //{ path: '', component: SurgeryPage},
@@ -28,7 +30,9 @@ const routes: Routes = [
     SurgeryPage,
     SurgeryHomeComponent,
     SurgerySummaryComponent,
-    CompletedSurgeryComponent
+    CompletedSurgeryComponent,
+    CompletedSurgerySummaryComponent,
+    SurgicalPathologySummaryComponent
   ],
   exports: [
     SurgerySummaryComponent

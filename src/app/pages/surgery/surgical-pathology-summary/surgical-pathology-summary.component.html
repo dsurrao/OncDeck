@@ -1,0 +1,35 @@
+<p>
+  Surgery Type: {{pathology.surgeryType}}
+</p>
+<p>
+  Histology: {{pathology.histology}}
+</p>
+<p *ngIf="pathology.er != null">
+  ER: {{pathology.er.status}} ({{pathology.er.strength}})
+</p>
+<p *ngIf="pathology.pr != null">
+  PR: {{pathology.pr.status}} ({{pathology.pr.strength}})
+</p>
+<p *ngIf="pathology.her2 != null">
+  HER2: {{pathology.her2.status}} ({{pathology.her2.testingMethod}})
+</p>
+<ng-container *ngIf="pathology.features != null">
+  <p *ngIf="pathology.features.grade != null">
+    Grade: {{pathology.features.grade}}
+  </p>
+  <p *ngIf="pathology.features.lvi != null">
+    LVI: {{pathology.features.lvi}}
+  </p>
+</ng-container>
+<p *ngIf="pathology.surgicalMargin != null">
+  Surgical Margin: {{pathology.surgicalMargin}}
+</p>
+<p *ngIf="pathology.report != null && pathology.report != ''">
+  Report ({{ dateUtils.toLocaleDateString(pathology.reportDate) }}): {{pathology.report}}
+</p>
+<p *ngIf="pathology.lymphNodeDissectionType != null && pathology.lymphNodeDissectionType != ''">
+  Lymph Node Dissection Type: {{pathology.lymphNodeDissectionType}}
+</p>
+<p>
+  Pathology performed by {{pathology.pathologistName}} at {{pathology.pathologistFacility}}
+</p>

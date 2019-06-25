@@ -1,0 +1,13 @@
+<p>
+  Surgery completed on {{dateUtils.toLocaleDateString(surgery.surgeryDate)}} by {{surgery.surgeonName}} 
+  at {{surgery.facility}}
+</p>
+<p>
+  Report: {{surgery.report}}
+</p>
+<p>
+  Surgical Pathology status: {{surgery.pathologyStatus}}
+</p>
+<ng-container *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed">
+  <app-surgical-pathology-summary [pathology]="surgery.pathology"></app-surgical-pathology-summary>
+</ng-container>

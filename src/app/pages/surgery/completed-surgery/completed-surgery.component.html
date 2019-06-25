@@ -7,225 +7,230 @@
   </ion-toolbar>
 </ion-header>
 <ion-content *ngIf="surgery != null">
-  <form #completedSurgeryForm>
+    <ion-card>
+        <ion-card-content>
+            <app-completed-surgery-summary [surgery]="surgery"></app-completed-surgery-summary>
+        </ion-card-content>
+    </ion-card>
+    <form #completedSurgeryForm>
     <ion-item>
-      <ion-label>Surgery Report Text</ion-label>
-      <ion-input type="text" name="report" [(ngModel)]="surgery.report"></ion-input>
+        <ion-label>Surgery Report Text</ion-label>
+        <ion-input type="text" name="report" [(ngModel)]="surgery.report"></ion-input>
     </ion-item>
     <ion-item>
-      <!-- TODO: use ion-datetime everywhere -->
-      <ion-label>Surgery Date</ion-label>
-      <ion-datetime name="surgeryDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.surgeryDate"></ion-datetime>
+        <!-- TODO: use ion-datetime everywhere -->
+        <ion-label>Surgery Date</ion-label>
+        <ion-datetime name="surgeryDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.surgeryDate"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label>Surgeon Name</ion-label>
-      <ion-input name="surgeonName" type="text" [(ngModel)]="surgery.surgeonName"></ion-input>
+        <ion-label>Surgeon Name</ion-label>
+        <ion-input name="surgeonName" type="text" [(ngModel)]="surgery.surgeonName"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Facility</ion-label>
-      <ion-input name="facility" type="text" [(ngModel)]="surgery.facility"></ion-input>
+        <ion-label>Facility</ion-label>
+        <ion-input name="facility" type="text" [(ngModel)]="surgery.facility"></ion-input>
     </ion-item>
     <ion-radio-group name="surgicalPathologyStatus" [(ngModel)]="surgery.pathologyStatus">
-      <ion-list-header>Surgical Pathology Status</ion-list-header>
-      <ion-item>
+        <ion-list-header>Surgical Pathology Status</ion-list-header>
+        <ion-item>
         <ion-label>{{surgicalPathologyStatusEnum.Pending}}</ion-label>
         <ion-radio value="{{surgicalPathologyStatusEnum.Pending}}"></ion-radio>
-      </ion-item>
-      <ion-item>
+        </ion-item>
+        <ion-item>
         <ion-label>{{surgicalPathologyStatusEnum.Completed}}</ion-label>
         <ion-radio value="{{surgicalPathologyStatusEnum.Completed}}"></ion-radio>
-      </ion-item>      
+        </ion-item>      
     </ion-radio-group>
 
     <ng-container *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed">
-      <ion-list>
-          <ion-list-header>Surgery Type</ion-list-header>
-          <ion-radio-group name="surgeryType" [(ngModel)]="surgery.pathology.surgeryType" required>
-              <ion-item>
-                  <ion-label>{{surgeryTypeEnum.Lumpectomy}}</ion-label>
-                  <ion-radio value="{{surgeryTypeEnum.Lumpectomy}}"></ion-radio>
-                  </ion-item>
-              <ion-item>
-                  <ion-label>{{surgeryTypeEnum.ModifiedRadicalMastectomy}}</ion-label>
-                  <ion-radio value="{{surgeryTypeEnum.ModifiedRadicalMastectomy}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>{{surgeryTypeEnum.Other}}</ion-label>
-                  <ion-radio value="{{surgeryTypeEnum.Other}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+        <ion-list>
+            <ion-list-header>Surgery Type</ion-list-header>
+            <ion-radio-group name="surgeryType" [(ngModel)]="surgery.pathology.surgeryType" required>
+                <ion-item>
+                    <ion-label>{{surgeryTypeEnum.Lumpectomy}}</ion-label>
+                    <ion-radio value="{{surgeryTypeEnum.Lumpectomy}}"></ion-radio>
+                    </ion-item>
+                <ion-item>
+                    <ion-label>{{surgeryTypeEnum.ModifiedRadicalMastectomy}}</ion-label>
+                    <ion-radio value="{{surgeryTypeEnum.ModifiedRadicalMastectomy}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{surgeryTypeEnum.Other}}</ion-label>
+                    <ion-radio value="{{surgeryTypeEnum.Other}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-list>
-          <ion-list-header>Surgery Histology</ion-list-header>
-          <ion-radio-group name="surgeryHistology" [(ngModel)]="surgery.pathology.histology" required>
-              <ion-item>
-                  <ion-label>{{histologyEnum.IDC}}</ion-label>
-                  <ion-radio value="{{histologyEnum.IDC}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>{{histologyEnum.ILC}}</ion-label>
-                  <ion-radio value="{{histologyEnum.ILC}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>{{histologyEnum.DCIS}}</ion-label>
-                  <ion-radio value="{{histologyEnum.DCIS}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>{{histologyEnum.LCIS}}</ion-label>
-                  <ion-radio value="{{histologyEnum.LCIS}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>{{histologyEnum.Other}}</ion-label>
-                  <ion-radio value="{{histologyEnum.Other}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
-      
-      <ion-list>
-          <ion-list-header>Estrogren Receptor</ion-list-header>
-          <ion-radio-group name="estrogrenReceptor" [(ngModel)]="surgery.pathology.er.status" required>
-              <ion-item>
-                  <ion-label>ER+</ion-label>
-                  <ion-radio value="{{erStatusEnum.Positive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>ER-</ion-label>
-                  <ion-radio value="{{erStatusEnum.Negative}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>None</ion-label>
-                  <ion-radio value="{{erStatusEnum.None}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+        <ion-list>
+            <ion-list-header>Surgery Histology</ion-list-header>
+            <ion-radio-group name="surgeryHistology" [(ngModel)]="surgery.pathology.histology" required>
+                <ion-item>
+                    <ion-label>{{histologyEnum.IDC}}</ion-label>
+                    <ion-radio value="{{histologyEnum.IDC}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{histologyEnum.ILC}}</ion-label>
+                    <ion-radio value="{{histologyEnum.ILC}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{histologyEnum.DCIS}}</ion-label>
+                    <ion-radio value="{{histologyEnum.DCIS}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{histologyEnum.LCIS}}</ion-label>
+                    <ion-radio value="{{histologyEnum.LCIS}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{histologyEnum.Other}}</ion-label>
+                    <ion-radio value="{{histologyEnum.Other}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        
+        <ion-list>
+            <ion-list-header>Estrogren Receptor</ion-list-header>
+            <ion-radio-group name="estrogrenReceptor" [(ngModel)]="surgery.pathology.er.status" required>
+                <ion-item>
+                    <ion-label>ER+</ion-label>
+                    <ion-radio value="{{erStatusEnum.Positive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>ER-</ion-label>
+                    <ion-radio value="{{erStatusEnum.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{erStatusEnum.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-list>
-          <ion-list-header>Progesterone Receptor</ion-list-header>
-          <ion-radio-group name="progesteroneReceptor" [(ngModel)]="surgery.pathology.pr.status" required>
-              <ion-item>
-                  <ion-label>PR+</ion-label>
-                  <ion-radio value="{{prStatusEnum.Positive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>PR-</ion-label>
-                  <ion-radio value="{{prStatusEnum.Negative}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>None</ion-label>
-                  <ion-radio value="{{prStatusEnum.None}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+        <ion-list>
+            <ion-list-header>Progesterone Receptor</ion-list-header>
+            <ion-radio-group name="progesteroneReceptor" [(ngModel)]="surgery.pathology.pr.status" required>
+                <ion-item>
+                    <ion-label>PR+</ion-label>
+                    <ion-radio value="{{prStatusEnum.Positive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>PR-</ion-label>
+                    <ion-radio value="{{prStatusEnum.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{prStatusEnum.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-list>
-          <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
-          <ion-radio-group name="her2Receptor" [(ngModel)]="surgery.pathology.her2.status" required>
-              <ion-item>
-                  <ion-label>HER2+</ion-label>
-                  <ion-radio value="{{her2StatusEnum.Positive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>HER2-</ion-label>
-                  <ion-radio value="{{her2StatusEnum.Negative}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>None</ion-label>
-                  <ion-radio value="{{her2StatusEnum.None}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+        <ion-list>
+            <ion-list-header>Human Endothelial Growth Receptor 2</ion-list-header>
+            <ion-radio-group name="her2Receptor" [(ngModel)]="surgery.pathology.her2.status" required>
+                <ion-item>
+                    <ion-label>HER2+</ion-label>
+                    <ion-radio value="{{her2StatusEnum.Positive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>HER2-</ion-label>
+                    <ion-radio value="{{her2StatusEnum.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{her2StatusEnum.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-list>
-          <ion-list-header>Surgical Features</ion-list-header>
-          <ion-radio-group name="surgicalFeature" [(ngModel)]="surgery.pathology.features.lvi" required>
-              <ion-item>
-                  <ion-label>LVI+</ion-label>
-                  <ion-radio value="{{lviEnum.Positive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>LVI-</ion-label>
-                  <ion-radio value="{{lviEnum.Negative}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>None</ion-label>
-                  <ion-radio value="{{lviEnum.NotDetermined}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
-      
+        <ion-list>
+            <ion-list-header>Surgical Features</ion-list-header>
+            <ion-radio-group name="surgicalFeature" [(ngModel)]="surgery.pathology.features.lvi" required>
+                <ion-item>
+                    <ion-label>LVI+</ion-label>
+                    <ion-radio value="{{lviEnum.Positive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>LVI-</ion-label>
+                    <ion-radio value="{{lviEnum.Negative}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{lviEnum.NotDetermined}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        
     <ion-list>
-          <ion-list-header>Tumor Grade</ion-list-header>
-          <ion-radio-group name="tumorGrade" [(ngModel)]="surgery.pathology.features.grade" required>
-              <ion-item>
-                  <ion-label>Grade 1</ion-label>
-                  <ion-radio value="{{gradeEnum.G1}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>Grade 2</ion-label>
-                  <ion-radio value="{{gradeEnum.G2}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>Grade 3</ion-label>
-                  <ion-radio value="{{gradeEnum.G3}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>Unable to Grade</ion-label>
-                  <ion-radio value="{{gradeEnum.Unable}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>Grade Not Recorded</ion-label>
-                  <ion-radio value="{{gradeEnum.NotGiven}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+            <ion-list-header>Tumor Grade</ion-list-header>
+            <ion-radio-group name="tumorGrade" [(ngModel)]="surgery.pathology.features.grade" required>
+                <ion-item>
+                    <ion-label>Grade 1</ion-label>
+                    <ion-radio value="{{gradeEnum.G1}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Grade 2</ion-label>
+                    <ion-radio value="{{gradeEnum.G2}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Grade 3</ion-label>
+                    <ion-radio value="{{gradeEnum.G3}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Unable to Grade</ion-label>
+                    <ion-radio value="{{gradeEnum.Unable}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Grade Not Recorded</ion-label>
+                    <ion-radio value="{{gradeEnum.NotGiven}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-list>
-          <ion-list-header>Surgical Margins</ion-list-header>
-          <ion-radio-group name="surgicalMargin" [(ngModel)]="surgery.pathology.surgicalMargin" required>
-              <ion-item>
-                  <ion-label>Focally Positive</ion-label>
-                  <ion-radio value="{{surgicalMarginEnum.FocallyPositive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>Broadly Positive</ion-label>
-                  <ion-radio value="{{surgicalMarginEnum.BroadlyPositive}}"></ion-radio>
-              </ion-item>
-              <ion-item>
-                  <ion-label>None</ion-label>
-                  <ion-radio value="{{surgicalMarginEnum.None}}"></ion-radio>
-              </ion-item>
-          </ion-radio-group>
-      </ion-list>
+        <ion-list>
+            <ion-list-header>Surgical Margins</ion-list-header>
+            <ion-radio-group name="surgicalMargin" [(ngModel)]="surgery.pathology.surgicalMargin" required>
+                <ion-item>
+                    <ion-label>Focally Positive</ion-label>
+                    <ion-radio value="{{surgicalMarginEnum.FocallyPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Broadly Positive</ion-label>
+                    <ion-radio value="{{surgicalMarginEnum.BroadlyPositive}}"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-radio value="{{surgicalMarginEnum.None}}"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
 
-      <ion-item>
+        <ion-item>
         <ion-label>Pathology Report Text</ion-label>
         <ion-input type="text" name="report" [(ngModel)]="surgery.pathology.report"></ion-input>
-      </ion-item>
+        </ion-item>
 
-      <ion-item>
+        <ion-item>
         <ion-label>Pathology Report Date</ion-label>
         <ion-datetime name="pathologyReportDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.pathology.reportDate"></ion-datetime>
-      </ion-item>
+        </ion-item>
 
-      <ion-item>
+        <ion-item>
         <ion-label>Pathologist Name</ion-label>
         <ion-input type="text" name="pathologistName" [(ngModel)]="surgery.pathology.pathologistName"></ion-input>
-      </ion-item>
+        </ion-item>
 
-      <ion-item>
+        <ion-item>
         <ion-label>Pathologist Facility</ion-label>
         <ion-input type="text" name="pathologistFacility" [(ngModel)]="surgery.pathology.pathologistFacility"></ion-input>
-      </ion-item>
+        </ion-item>
 
-      <ion-item>
+        <ion-item>
         <ion-label>Lymph Node Dissection Type</ion-label>
         <ion-input type="text" name="lymphNodeDissectionType" [(ngModel)]="surgery.pathology.lymphNodeDissectionType"></ion-input>
-      </ion-item>
+        </ion-item>
     </ng-container>
     <!-- end *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed" -->
 
     <!-- <ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid" (click)="save()">Save</ion-button> -->
     <ion-button color="primary" (click)="save()">Save</ion-button>
-  </form>
+    </form>
 </ion-content>
