@@ -27,163 +27,169 @@
         *ngIf="completedBiopsyId != null"></app-completed-biopsy-summary>
     </ion-card-content>
   </ion-card>
+
+  <form #completedBiopsyForm="ngForm">
   
-  <ion-item>
-    <ion-label>Report Date</ion-label>
-    <!--TODO: convert all date inputs to use widget below-->
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.reportDate"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Procedure Date</ion-label>
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.procedureDate"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Pathologist</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.pathologistName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Facility</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.facility"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label>Report Date</ion-label>
+      <!--TODO: convert all date inputs to use widget below-->
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.reportDate" name="reportDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Procedure Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.procedureDate" name="procedureDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Pathologist</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.pathologistName" name="pathologist" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Facility</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.facility" name="facility"></ion-input>
+    </ion-item>
 
-  <!--TODO: allowEmptySelection for radio buttons-->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.type.type">
-      <ion-list-header>Biopsy Type</ion-list-header>
-      <ion-item>
-        <ion-label>Fine Needle Aspiration</ion-label>
-        <ion-radio slot="start" value="{{biopsyTypeEnum.FNA}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Core Needle Biopsy</ion-label>
-        <ion-radio slot="start" value="{{biopsyTypeEnum.CNB}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Incisional Biopsy</ion-label>
-        <ion-radio slot="start" value="{{biopsyTypeEnum.IB}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Excisional Biopsy</ion-label>
-        <ion-radio slot="start" value="{{biopsyTypeEnum.EB}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Other</ion-label>
-        <ion-radio slot="start" value="{{biopsyTypeEnum.Other}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-item>
-    <ion-label>Biopsy Type (Other)</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.type.other"></ion-input>
-  </ion-item>
+    <!--TODO: allowEmptySelection for radio buttons-->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.type.type" name="biopsyType">
+        <ion-list-header>Biopsy Type</ion-list-header>
+        <ion-item>
+          <ion-label>Fine Needle Aspiration</ion-label>
+          <ion-radio slot="start" value="{{biopsyTypeEnum.FNA}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Core Needle Biopsy</ion-label>
+          <ion-radio slot="start" value="{{biopsyTypeEnum.CNB}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Incisional Biopsy</ion-label>
+          <ion-radio slot="start" value="{{biopsyTypeEnum.IB}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Excisional Biopsy</ion-label>
+          <ion-radio slot="start" value="{{biopsyTypeEnum.EB}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio slot="start" value="{{biopsyTypeEnum.Other}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-item>
+      <ion-label>Biopsy Type (Other)</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.type.other" name="biopsyTypeOther"></ion-input>
+    </ion-item>
 
-  <!-- Site -->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue">
-      <ion-list-header>Biopsy Site</ion-list-header>
-      <ion-item>
-        <ion-label>Breast</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.Breast}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Lymph Node</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.LymphNode}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Bone</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.Bone}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Liver</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.Liver}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Skin Nodule</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.SkinNodule}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Other</ion-label>
-        <ion-radio slot="start" value="{{tissueEnum.Other}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-item>
-    <ion-label>Biopsy Site (Other)</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherTissue"></ion-input>
-  </ion-item>
-  
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.site.side">
-      <ion-list-header>Side</ion-list-header>
-      <ion-item>
-        <ion-label>Left</ion-label>
-        <ion-radio slot="start" value="{{biopsySideEnum.Left}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Right</ion-label>
-        <ion-radio slot="start" value="{{biopsySideEnum.Right}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
+    <!-- Site -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue" name="tissue">
+        <ion-list-header>Biopsy Site</ion-list-header>
+        <ion-item>
+          <ion-label>Breast</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.Breast}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Lymph Node</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.LymphNode}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Bone</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.Bone}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Liver</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.Liver}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Skin Nodule</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.SkinNodule}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio slot="start" value="{{tissueEnum.Other}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-item>
+      <ion-label>Biopsy Site (Other)</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherTissue" name="siteOther"></ion-input>
+    </ion-item>
+    
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.side" name="side">
+        <ion-list-header>Side</ion-list-header>
+        <ion-item>
+          <ion-label>Left</ion-label>
+          <ion-radio slot="start" value="{{biopsySideEnum.Left}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Right</ion-label>
+          <ion-radio slot="start" value="{{biopsySideEnum.Right}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
 
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.site.lymphNode">
-      <ion-list-header>Lymph Node</ion-list-header>
-      <ion-item>
-        <ion-label>Axillary</ion-label>
-        <ion-radio slot="start" value="{{lymphNodeEnum.Axillary}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Supraclavicular</ion-label>
-        <ion-radio slot="start" value="{{lymphNodeEnum.Supraclavicular}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Cervical</ion-label>
-        <ion-radio slot="start" value="{{lymphNodeEnum.Cervical}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Other</ion-label>
-        <ion-radio slot="start" value="{{lymphNodeEnum.Other}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-item>
-    <ion-label>Lymph Node (Other)</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherLymphNode"></ion-input>
-  </ion-item>
-  <!-- end Site -->
-  
-  <!-- Histology -->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology">
-      <ion-list-header>Histology</ion-list-header>
-      <ion-item>
-        <ion-label>Invasive Ductal Carcinoma</ion-label>
-        <ion-radio slot="start" value="{{histologyEnum.IDC}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Invasive Lobular Carcinoma</ion-label>
-        <ion-radio slot="start" value="{{histologyEnum.ILC}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Ductal Carcinoma In Situ</ion-label>
-        <ion-radio slot="start" value="{{histologyEnum.DCIS}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Lobular Carcinoma In Situ</ion-label>
-        <ion-radio slot="start" value="{{histologyEnum.LCIS}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Other</ion-label>
-        <ion-radio slot="start" value="{{histologyEnum.Other}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-item>
-    <ion-label>Histology (Other)</ion-label>
-    <ion-input type="text" [(ngModel)]="completedBiopsy.histology.other"></ion-input>
-  </ion-item>
-  <!-- end Histology -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.lymphNode" name="lymphNode">
+        <ion-list-header>Lymph Node</ion-list-header>
+        <ion-item>
+          <ion-label>Axillary</ion-label>
+          <ion-radio slot="start" value="{{lymphNodeEnum.Axillary}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Supraclavicular</ion-label>
+          <ion-radio slot="start" value="{{lymphNodeEnum.Supraclavicular}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cervical</ion-label>
+          <ion-radio slot="start" value="{{lymphNodeEnum.Cervical}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio slot="start" value="{{lymphNodeEnum.Other}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-item>
+      <ion-label>Lymph Node (Other)</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherLymphNode" name="lymphNodeOther"></ion-input>
+    </ion-item>
+    <!-- end Site -->
+    
+    <!-- Histology -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology" name="histology">
+        <ion-list-header>Histology</ion-list-header>
+        <ion-item>
+          <ion-label>Invasive Ductal Carcinoma</ion-label>
+          <ion-radio slot="start" value="{{histologyEnum.IDC}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Invasive Lobular Carcinoma</ion-label>
+          <ion-radio slot="start" value="{{histologyEnum.ILC}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ductal Carcinoma In Situ</ion-label>
+          <ion-radio slot="start" value="{{histologyEnum.DCIS}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Lobular Carcinoma In Situ</ion-label>
+          <ion-radio slot="start" value="{{histologyEnum.LCIS}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio slot="start" value="{{histologyEnum.Other}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-item>
+      <ion-label>Histology (Other)</ion-label>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.histology.other" name="histologyOther"></ion-input>
+    </ion-item>
+    <!-- end Histology -->
 
-  <ion-button color="primary" (click)="save()">Next</ion-button>
+    <ion-button color="primary" type="submit" [disabled]="!completedBiopsyForm.form.valid" 
+      (click)="save()">Next</ion-button>
+    
+    <!-- <ion-button color="primary" (click)="save()">Next</ion-button> -->
+  </form>
 </ion-content>

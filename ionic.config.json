@@ -1,5 +1,7 @@
 {
   "name": "OncDeck",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
