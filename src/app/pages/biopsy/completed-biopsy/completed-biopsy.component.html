@@ -21,12 +21,9 @@
 <ion-content *ngIf="completedBiopsy != null && completedBiopsy.type != null 
   && completedBiopsy.site != null && completedBiopsy.histology != null">
 
-  <ion-card>
-    <ion-card-content>
-      <app-completed-biopsy-summary [biopsy]="completedBiopsy" 
-        *ngIf="completedBiopsyId != null"></app-completed-biopsy-summary>
-    </ion-card-content>
-  </ion-card>
+  <ion-card-content>
+    <app-completed-biopsy-summary [biopsy]="completedBiopsy"></app-completed-biopsy-summary>
+  </ion-card-content>
 
   <form #completedBiopsyForm="ngForm">
   
@@ -74,7 +71,7 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-item>
+    <ion-item *ngIf="completedBiopsy.type.type == biopsyTypeEnum.Other">
       <ion-label>Biopsy Type (Other)</ion-label>
       <ion-input type="text" [(ngModel)]="completedBiopsy.type.other" name="biopsyTypeOther"></ion-input>
     </ion-item>
@@ -109,13 +106,13 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-item>
+    <ion-item *ngIf="completedBiopsy.site.tissue == tissueEnum.Other">
       <ion-label>Biopsy Site (Other)</ion-label>
-      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherTissue" name="siteOther"></ion-input>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherTissue" name="siteOther" required></ion-input>
     </ion-item>
     
-    <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.site.side" name="side">
+    <ion-list *ngIf="completedBiopsy.site.tissue == tissueEnum.Breast">
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.side" name="side" required>
         <ion-list-header>Side</ion-list-header>
         <ion-item>
           <ion-label>Left</ion-label>
@@ -137,7 +134,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Supraclavicular</ion-label>
-          <ion-radio slot="start" value="{{lymphNodeEnum.Supraclavicular}}"></ion-radio>
+          <ion-radio slot="start" value="{{lymphNodeEnum.SupraClavicular}}"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>Cervical</ion-label>
@@ -149,15 +146,15 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-item>
+    <ion-item *ngIf="completedBiopsy.site.lymphNode == lymphNodeEnum.Other">
       <ion-label>Lymph Node (Other)</ion-label>
-      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherLymphNode" name="lymphNodeOther"></ion-input>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.site.otherLymphNode" name="lymphNodeOther" required></ion-input>
     </ion-item>
     <!-- end Site -->
     
     <!-- Histology -->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology" name="histology">
+      <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology" name="histology" required>
         <ion-list-header>Histology</ion-list-header>
         <ion-item>
           <ion-label>Invasive Ductal Carcinoma</ion-label>
@@ -181,9 +178,9 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-item>
+    <ion-item *ngIf="completedBiopsy.histology.histology == histologyEnum.Other">
       <ion-label>Histology (Other)</ion-label>
-      <ion-input type="text" [(ngModel)]="completedBiopsy.histology.other" name="histologyOther"></ion-input>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.histology.other" name="histologyOther" required></ion-input>
     </ion-item>
     <!-- end Histology -->
 

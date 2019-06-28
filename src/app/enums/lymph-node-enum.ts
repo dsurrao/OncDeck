@@ -1,6 +1,6 @@
 export enum LymphNodeEnum {
     Axillary = "Axillary",
-    SupraClavicular = "Supra clavicular",
+    SupraClavicular = "Supraclavicular",
     Cervical = "Cervical",
     Other = "Other"
 }
