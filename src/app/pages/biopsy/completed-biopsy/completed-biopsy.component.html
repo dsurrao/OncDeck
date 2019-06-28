@@ -33,11 +33,11 @@
     <ion-item>
       <ion-label>Report Date</ion-label>
       <!--TODO: convert all date inputs to use widget below-->
-      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.reportDate" name="reportDate"></ion-datetime>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.reportDate" name="reportDate" required></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Procedure Date</ion-label>
-      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.procedureDate" name="procedureDate"></ion-datetime>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="completedBiopsy.procedureDate" name="procedureDate" required></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Pathologist</ion-label>
@@ -45,12 +45,12 @@
     </ion-item>
     <ion-item>
       <ion-label>Facility</ion-label>
-      <ion-input type="text" [(ngModel)]="completedBiopsy.facility" name="facility"></ion-input>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.facility" name="facility" required></ion-input>
     </ion-item>
 
     <!--TODO: allowEmptySelection for radio buttons-->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.type.type" name="biopsyType">
+      <ion-radio-group [(ngModel)]="completedBiopsy.type.type" name="biopsyType" required>
         <ion-list-header>Biopsy Type</ion-list-header>
         <ion-item>
           <ion-label>Fine Needle Aspiration</ion-label>
@@ -81,7 +81,7 @@
 
     <!-- Site -->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue" name="tissue">
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue" name="tissue" required>
         <ion-list-header>Biopsy Site</ion-list-header>
         <ion-item>
           <ion-label>Breast</ion-label>

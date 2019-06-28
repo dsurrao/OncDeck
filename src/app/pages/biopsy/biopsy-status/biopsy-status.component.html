@@ -7,26 +7,48 @@
     </ion-toolbar>
   </ion-header>
   
-  <ion-content *ngIf="patient != null">
-    <ion-list>
-        <ion-radio-group [(ngModel)]="biopsyStatus">
+  <ion-content *ngIf="patient != null && patient.biopsy != null">
+    <form #biopsyStatusForm="ngForm">
+      <ion-list>
+          <ion-radio-group [(ngModel)]="patient.biopsy.status" name="biopsyStatus" required>
+            <ion-item>
+              <ion-label>Completed</ion-label>
+              <ion-radio value={{biopsyStatusEnum.Completed}}></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Scheduled</ion-label>
+              <ion-radio value={{biopsyStatusEnum.Scheduled}}></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Not Scheduled</ion-label>
+              <ion-radio value={{biopsyStatusEnum.NotScheduled}}></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Not Indicated</ion-label>
+              <ion-radio value={{biopsyStatusEnum.NotIndicated}}></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <ng-container *ngIf="patient.biopsy.status == biopsyStatusEnum.NotScheduled && patient.biopsy.notScheduled != null">
           <ion-item>
-            <ion-label>Completed</ion-label>
-            <ion-radio value={{biopsyStatusEnum.Completed}}></ion-radio>
+            <ion-label>Reason Not Scheduled</ion-label>
+            <ion-input type="text" [(ngModel)]="patient.biopsy.notScheduled.reason" name="notScheduledReason" required></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-label>Scheduled</ion-label>
-            <ion-radio value={{biopsyStatusEnum.Scheduled}}></ion-radio>
+          <ion-item *ngIf="patient.biopsy.notScheduled.dateRecorded != null">
+            <ion-label>Date Recorded</ion-label>
+            <div>{{dateUtils.toLocaleDateString(patient.biopsy.notScheduled.dateRecorded)}}</div>
           </ion-item>
-          <ion-item>
-            <ion-label>Not Scheduled</ion-label>
-            <ion-radio value={{biopsyStatusEnum.NotScheduled}}></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>Not Indicated</ion-label>
-            <ion-radio value={{biopsyStatusEnum.NotIndicated}}></ion-radio>
-          </ion-item>
-      </ion-radio-group>
-    </ion-list>
-    <ion-button color="primary" (click)="save()">Next</ion-button>
+        </ng-container>
+      <ng-container *ngIf="patient.biopsy.status == biopsyStatusEnum.NotIndicated && patient.biopsy.notIndicated != null">
+        <ion-item>
+          <ion-label>Reason Not Indicated</ion-label>
+          <ion-input type="text" [(ngModel)]="patient.biopsy.notIndicated.reason" name="notIndicatedReason" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="patient.biopsy.notIndicated.dateRecorded != null">
+          <ion-label>Date Recorded</ion-label>
+          <div>{{dateUtils.toLocaleDateString(patient.biopsy.notIndicated.dateRecorded)}}</div>
+        </ion-item>
+      </ng-container>
+      <ion-button color="primary" [disabled]="biopsyStatusForm.invalid" (click)="save()">Next</ion-button>
+    </form>
   </ion-content>

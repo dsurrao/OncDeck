@@ -40,9 +40,10 @@
     </ion-card-header>
     <ion-card-content>
       <patient-summary [patient]="patient"></patient-summary>
-      <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
+      <app-biopsy-summary [biopsy]="patient.biopsy" *ngIf="patient.biopsy != null"></app-biopsy-summary>
       <app-radiation-therapy-summary 
-        [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
+        [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]" 
+        *ngIf="patient.radiationTherapies != null">
       </app-radiation-therapy-summary>
       <app-surgery-summary [patient]="patient"></app-surgery-summary>
     </ion-card-content>

@@ -26,16 +26,18 @@ export class BiopsySummaryComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // TODO: get latest biopsy by date
-    if (this.biopsy.completedBiopsies != null) {
-      this.mostRecentCompletedBiopsy = this.biopsy.completedBiopsies[this.biopsy.completedBiopsies.length - 1];
-    }
-
-    if (this.biopsy.status == BiopsyStatusEnum.Scheduled) {
-      if (this.biopsy.scheduledBiopsy.biopsyType.type == BiopsyTypeEnum.Other) {
-        this.biopsyType = this.biopsy.scheduledBiopsy.biopsyType.other;
+    if (this.biopsy != null) {
+      if (this.biopsy.completedBiopsies != null) {
+        this.mostRecentCompletedBiopsy = this.biopsy.completedBiopsies[this.biopsy.completedBiopsies.length - 1];
       }
-      else {
-        this.biopsyType = this.biopsy.scheduledBiopsy.biopsyType.type;
+  
+      if (this.biopsy.status == BiopsyStatusEnum.Scheduled) {
+        if (this.biopsy.scheduledBiopsy.biopsyType.type == BiopsyTypeEnum.Other) {
+          this.biopsyType = this.biopsy.scheduledBiopsy.biopsyType.other;
+        }
+        else {
+          this.biopsyType = this.biopsy.scheduledBiopsy.biopsyType.type;
+        }
       }
     }
   }

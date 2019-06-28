@@ -2,8 +2,8 @@
   <b>Biopsies</b>
   <br/>
   <ng-container *ngIf="biopsy.status == biopsyStatusEnum.Scheduled; then scheduledBlock"></ng-container>
-  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotScheduled; then notScheduledBlock"></ng-container>
-  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotIndicated; then notIndicatedBlock"></ng-container>
+  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotScheduled && biopsy.notScheduled != null; then notScheduledBlock"></ng-container>
+  <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotIndicated && biopsy.notIndicated != null; then notIndicatedBlock"></ng-container>
   <ng-container *ngIf="mostRecentCompletedBiopsy != null; then completedBlock"></ng-container>
 </ng-container>
 

@@ -5,6 +5,10 @@ import { PatientService } from '../../../services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { BiopsyStatusEnum } from 'src/app/enums/biopsy-status-enum';
 import { Biopsy } from 'src/app/models/biopsy';
+import { BiopsyService } from 'src/app/services/biopsy.service';
+import { BiopsyNotIndicated } from 'src/app/models/biopsy-not-indicated';
+import { BiopsyNotScheduled } from 'src/app/models/biopsy-not-scheduled';
+import { DateUtils } from 'src/app/common/dateutils';
 
 @Component({
   selector: 'app-biopsy-status',
@@ -13,58 +17,71 @@ import { Biopsy } from 'src/app/models/biopsy';
 })
 export class BiopsyStatusComponent implements OnInit {
   patient: Patient;
-  biopsyStatus: BiopsyStatusEnum;
 
   // for template
   biopsyStatusEnum = BiopsyStatusEnum;
 
   constructor(public navCtrl: NavController, 
     public patientSvc: PatientService,
+    public biopsySvc: BiopsyService,
     public events: Events,
     public alertController: AlertController,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute,
+    public dateUtils: DateUtils) {
   }
 
   ngOnInit() {
     let patientId = this.route.snapshot.paramMap.get('patientId');
-    // existing patient
-    if (patientId != null) {
-      this.patientSvc.getPatient(patientId).then(patient => {
-        this.patient = patient;
-        if (this.patient.biopsy != null) {
-          this.biopsyStatus = this.patient.biopsy.status;
-        }
-      });
-    }
-    else {
-      this.patient = new Patient();
-    }
+    this.patientSvc.getPatient(patientId).then(patient => {
+      this.patient = patient;
+      if (this.patient.biopsy == null) {
+        this.patient.biopsy = new Biopsy();
+      }
+      if (this.patient.biopsy.notIndicated == null) {
+        this.patient.biopsy.notIndicated = new BiopsyNotIndicated();
+      }
+      if (this.patient.biopsy.notScheduled == null) {
+        this.patient.biopsy.notScheduled = new BiopsyNotScheduled();
+      }
+    });
   }
 
   save() {
     if (this.patient != null) {
-      if (this.patient.biopsy == null) {
-        this.patient.biopsy = new Biopsy();
+      switch (this.patient.biopsy.status) {
+        case BiopsyStatusEnum.NotIndicated:
+          this.biopsySvc.saveBiopsyNotIndicated(this.patient).then(patient => {
+            console.log("patient saved");
+            this.events.publish('patientSaved');
+            this.navCtrl.navigateBack('/patient/' + this.patient._id);
+          });
+          break;
+        case BiopsyStatusEnum.NotScheduled:
+          this.biopsySvc.saveBiopsyNotScheduled(this.patient).then(patient => {
+            console.log("patient saved");
+            this.events.publish('patientSaved');
+            this.navCtrl.navigateBack('/patient/' + this.patient._id);
+          });
+          break;
+        default: 
+          this.patientSvc.savePatient(this.patient).then(updatedPatient => {
+            console.log("patient saved");
+            this.events.publish('patientSaved');
+            this.navigateToChild(this.patient.biopsy.status);
+          })
+          .catch(error => {
+            let title: string = 'Error saving patient';
+            let subTitle: string = '';
+            if (error.status == '409') {
+              subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
+            }
+            else {
+              subTitle = error;
+            }
+            this.showAlert(title, subTitle);
+          });
       }
-      this.patient.biopsy.status = this.biopsyStatus;
     }
-
-    this.patientSvc.savePatient(this.patient).then(updatedPatient => {
-      console.log("patient saved");
-      this.events.publish('patientSaved');
-      this.navigateToChild(this.patient.biopsy.status);
-    })
-    .catch(error => {
-      let title: string = 'Error saving patient';
-      let subTitle: string = '';
-      if (error.status == '409') {
-        subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
-      }
-      else {
-        subTitle = error;
-      }
-      this.showAlert(title, subTitle);
-    });
   }
 
   navigateToChild(biopsyStatus: BiopsyStatusEnum) {
@@ -75,13 +92,6 @@ export class BiopsyStatusComponent implements OnInit {
         break;
       case BiopsyStatusEnum.Scheduled:
         this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/scheduled-biopsy');
-        break;
-      case BiopsyStatusEnum.NotScheduled: 
-        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/biopsy-not-scheduled');
-        break;
-      case BiopsyStatusEnum.NotIndicated:
-        this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy/biopsy-not-indicated');
-        break;
       default: 
         // do nothing
     }
