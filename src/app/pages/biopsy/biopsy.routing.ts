@@ -5,8 +5,6 @@ import { CompletedBiopsyComponent } from './completed-biopsy/completed-biopsy.co
 import { CompletedBiopsyReceptorsComponent } from './completed-biopsy-receptors/completed-biopsy-receptors.component';
 import { CompletedBiopsyFeaturesComponent } from './completed-biopsy-features/completed-biopsy-features.component';
 import { ScheduledBiopsyComponent } from './scheduled-biopsy/scheduled-biopsy.component';
-import { BiopsyNotIndicatedComponent } from './biopsy-not-indicated/biopsy-not-indicated.component';
-import { BiopsyNotScheduledComponent } from './biopsy-not-scheduled/biopsy-not-scheduled.component';
 
 const routes: Routes = [
     // TODO: try using loadChildren
@@ -18,9 +16,7 @@ const routes: Routes = [
     { path: 'completed-biopsy/:completedBiopsyId', component: CompletedBiopsyComponent },
     { path: 'completed-biopsy/:completedBiopsyId/receptors', component: CompletedBiopsyReceptorsComponent },
     { path: 'completed-biopsy/:completedBiopsyId/features', component: CompletedBiopsyFeaturesComponent },
-    { path: 'scheduled-biopsy', component: ScheduledBiopsyComponent },
-    { path: 'biopsy-not-indicated', component: BiopsyNotIndicatedComponent },
-    { path: 'biopsy-not-scheduled', component: BiopsyNotScheduledComponent }
+    { path: 'scheduled-biopsy', component: ScheduledBiopsyComponent }
   ];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(routes);

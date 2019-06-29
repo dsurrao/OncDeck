@@ -70,4 +70,23 @@ export class CompletedBiopsyReceptorsComponent implements OnInit {
         this.navCtrl.navigateForward(currentPath + '/features');
       });
     }
+
+    // reset fields if relatives deselected
+    erChange() {
+      if (this.completedBiopsy.receptors.er.status == ReceptorStatusEnum.None) {
+        this.completedBiopsy.receptors.er.strength = null;
+      }
+    }
+
+    prChange() {
+      if (this.completedBiopsy.receptors.pr.status == ReceptorStatusEnum.None) {
+        this.completedBiopsy.receptors.pr.strength = null;
+      }
+    }
+
+    her2Change() {
+      if (this.completedBiopsy.receptors.her2.status == ReceptorStatusEnum.None) {
+        this.completedBiopsy.receptors.her2.testingMethod = null;
+      }
+    }
 }

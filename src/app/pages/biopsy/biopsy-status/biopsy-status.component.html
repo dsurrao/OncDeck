@@ -10,7 +10,8 @@
   <ion-content *ngIf="patient != null && patient.biopsy != null">
     <form #biopsyStatusForm="ngForm">
       <ion-list>
-          <ion-radio-group [(ngModel)]="patient.biopsy.status" name="biopsyStatus" required>
+          <ion-radio-group [(ngModel)]="patient.biopsy.status" name="biopsyStatus" 
+          (ionChange)="statusChange()" required>
             <ion-item>
               <ion-label>Completed</ion-label>
               <ion-radio value={{biopsyStatusEnum.Completed}}></ion-radio>

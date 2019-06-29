@@ -48,4 +48,9 @@ export class ScheduledBiopsyComponent implements OnInit {
     });
   }
 
+  biopsyTypeChange() {
+    if (this.patient.biopsy.scheduledBiopsy.biopsyType.type != BiopsyTypeEnum.Other) {
+      this.patient.biopsy.scheduledBiopsy.biopsyType.other = null;
+    }
+  }
 }

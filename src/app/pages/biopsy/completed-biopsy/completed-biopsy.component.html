@@ -47,7 +47,8 @@
 
     <!--TODO: allowEmptySelection for radio buttons-->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.type.type" name="biopsyType" required>
+      <ion-radio-group [(ngModel)]="completedBiopsy.type.type" name="biopsyType" 
+        (ionChange)="biopsyTypeChange()" required>
         <ion-list-header>Biopsy Type</ion-list-header>
         <ion-item>
           <ion-label>Fine Needle Aspiration</ion-label>
@@ -73,12 +74,13 @@
     </ion-list>
     <ion-item *ngIf="completedBiopsy.type.type == biopsyTypeEnum.Other">
       <ion-label>Biopsy Type (Other)</ion-label>
-      <ion-input type="text" [(ngModel)]="completedBiopsy.type.other" name="biopsyTypeOther"></ion-input>
+      <ion-input type="text" [(ngModel)]="completedBiopsy.type.other" name="biopsyTypeOther" required></ion-input>
     </ion-item>
 
     <!-- Site -->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue" name="tissue" required>
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.tissue" name="tissue" 
+        (ionChange)="tissueChange()" required>
         <ion-list-header>Biopsy Site</ion-list-header>
         <ion-item>
           <ion-label>Breast</ion-label>
@@ -86,7 +88,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Lymph Node</ion-label>
-          <ion-radio slot="start" value="{{tissueEnum.LymphNode}}"></ion-radio>
+          <ion-radio slot="start" value="{{tissueEnum.LymphNode}}"></ion-radio>`
         </ion-item>
         <ion-item>
           <ion-label>Bone</ion-label>
@@ -125,8 +127,9 @@
       </ion-radio-group>
     </ion-list>
 
-    <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.site.lymphNode" name="lymphNode">
+    <ion-list *ngIf="completedBiopsy.site.tissue == tissueEnum.LymphNode">
+      <ion-radio-group [(ngModel)]="completedBiopsy.site.lymphNode" name="lymphNode" 
+        (ionChange)="lymphNodeChange()" required>
         <ion-list-header>Lymph Node</ion-list-header>
         <ion-item>
           <ion-label>Axillary</ion-label>
@@ -154,7 +157,8 @@
     
     <!-- Histology -->
     <ion-list>
-      <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology" name="histology" required>
+      <ion-radio-group [(ngModel)]="completedBiopsy.histology.histology" name="histology" 
+        (ionChange)="histologyChange()" required>
         <ion-list-header>Histology</ion-list-header>
         <ion-item>
           <ion-label>Invasive Ductal Carcinoma</ion-label>

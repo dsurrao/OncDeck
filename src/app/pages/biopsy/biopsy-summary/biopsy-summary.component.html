@@ -15,9 +15,11 @@
 </ng-template>
 <ng-template #notScheduledBlock>
   Not scheduled: {{biopsy.notScheduled.reason}} (recorded {{this.dateUtils.toLocaleDateString(biopsy.notScheduled.dateRecorded)}})
+  <br/>
 </ng-template>
 <ng-template #notIndicatedBlock>
     Not indicated: {{biopsy.notIndicated.reason}} (recorded {{this.dateUtils.toLocaleDateString(biopsy.notIndicated.dateRecorded)}})
+    <br/>
 </ng-template>
 <ng-template #completedBlock>
   <app-completed-biopsy-summary [biopsy]="mostRecentCompletedBiopsy"></app-completed-biopsy-summary>

@@ -7,7 +7,7 @@
 <ion-content *ngIf="completedBiopsy != null && completedBiopsy.features != null">
   <!-- Grade -->
   <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.features.grade">
+    <ion-radio-group [(ngModel)]="completedBiopsy.features.grade" required>
       <ion-list-header>Grade</ion-list-header>
       <ion-item>
         <ion-label>Grade 1/Low Grade</ion-label>
@@ -27,14 +27,14 @@
       </ion-item>
       <ion-item>
         <ion-label>No Grade Given</ion-label>
-        <ion-radio slot="start" value="{{gradeEnum.NotGiven}}"></ion-radio>
+        <ion-radio slot="start" value="{{gradeEnum.NotGiven}}" checked></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
 
   <!-- LVI -->
   <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.features.lvi">
+    <ion-radio-group [(ngModel)]="completedBiopsy.features.lvi" required>
       <ion-list-header>LVI</ion-list-header>
       <ion-item>
         <ion-label>Positive</ion-label>
@@ -46,7 +46,7 @@
       </ion-item>
       <ion-item>
         <ion-label>NotDetermined</ion-label>
-        <ion-radio slot="start" value="{{lviEnum.NotDetermined}}"></ion-radio>
+        <ion-radio slot="start" value="{{lviEnum.NotDetermined}}" checked></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>

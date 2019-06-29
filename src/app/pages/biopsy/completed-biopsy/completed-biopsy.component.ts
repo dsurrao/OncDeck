@@ -8,7 +8,7 @@
   site: BiopsySite;
   histology: Histology;
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { BiopsyTypeEnum } from 'src/app/enums/biopsy-type-enum';
 import { BiopsySideEnum } from 'src/app/enums/biopsy-side-enum';
 import { LymphNodeEnum } from 'src/app/enums/lymph-node-enum';
@@ -87,5 +87,33 @@ export class CompletedBiopsyComponent implements OnInit {
       }
       this.navCtrl.navigateForward(currentPath + '/receptors');
     });
+  }
+
+  // reset 'other' fields if deselected
+  biopsyTypeChange() {
+    if (this.completedBiopsy.type.type != BiopsyTypeEnum.Other) {
+      this.completedBiopsy.type.other = null;
+    }
+  }
+
+  tissueChange() {
+    if (this.completedBiopsy.site.tissue != BiopsyTissueEnum.Other) {
+      this.completedBiopsy.site.otherTissue = null;
+    }
+    if (this.completedBiopsy.site.tissue != BiopsyTissueEnum.Breast) {
+      this.completedBiopsy.site.side = null;
+    }
+  }
+
+  lymphNodeChange() {
+    if (this.completedBiopsy.site.lymphNode != LymphNodeEnum.Other) {
+      this.completedBiopsy.site.otherLymphNode = null;
+    }
+  }
+
+  histologyChange() {
+    if (this.completedBiopsy.histology.histology != HistologyEnum.Other) {
+      this.completedBiopsy.histology.other = null;
+    }
   }
 }

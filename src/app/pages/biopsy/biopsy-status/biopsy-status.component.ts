@@ -106,4 +106,16 @@ export class BiopsyStatusComponent implements OnInit {
     await alert.present();
   }
 
+  // reset any fields
+  statusChange() {
+    if (this.patient.biopsy.status != BiopsyStatusEnum.NotScheduled) {
+      this.patient.biopsy.notScheduled.reason = null;
+      this.patient.biopsy.notScheduled.dateRecorded = null;
+    }
+    if (this.patient.biopsy.status != BiopsyStatusEnum.NotIndicated) {
+      this.patient.biopsy.notIndicated.reason = null;
+      this.patient.biopsy.notIndicated.dateRecorded = null;
+    }
+  }
+
 }

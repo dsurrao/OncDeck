@@ -11,15 +11,17 @@
 <ion-content *ngIf="patient && patient.biopsy && patient.biopsy.scheduledBiopsy && patient.biopsy.scheduledBiopsy.biopsyType">
   <ion-item>
     <ion-label>Scheduled Date</ion-label>
-    <ion-datetime name="scheduledDate"  display-format="MMM DD, YYYY" [(ngModel)]="patient.biopsy.scheduledBiopsy.scheduledDate"></ion-datetime>
+    <ion-datetime name="scheduledDate"  display-format="MMM DD, YYYY" 
+      [(ngModel)]="patient.biopsy.scheduledBiopsy.scheduledDate" required></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Facility</ion-label>
-    <ion-input type="text" name="facility" [(ngModel)]="patient.biopsy.scheduledBiopsy.facility"></ion-input>
+    <ion-input type="text" name="facility" [(ngModel)]="patient.biopsy.scheduledBiopsy.facility" required></ion-input>
   </ion-item>
 
   <ion-list>
-    <ion-radio-group [(ngModel)]="patient.biopsy.scheduledBiopsy.biopsyType.type">
+    <ion-radio-group [(ngModel)]="patient.biopsy.scheduledBiopsy.biopsyType.type" 
+      (ionChange)="biopsyTypeChange()" required>
         <ion-list-header>
           <ion-label>Biopsy Type</ion-label>
           </ion-list-header>
@@ -39,13 +41,18 @@
         <ion-label>Excisional Biopsy</ion-label>
         <ion-radio slot="start" value="{{biopsyTypeEnum.EB}}"></ion-radio>
       </ion-item>
+      <ion-item>
+        <ion-label>Other</ion-label>
+        <ion-radio slot="start" value="{{biopsyTypeEnum.Other}}"></ion-radio>
+      </ion-item>
     </ion-radio-group>
   </ion-list>
-
-  <ion-item>
+  <ion-item *ngIf="patient.biopsy.scheduledBiopsy.biopsyType.type == biopsyTypeEnum.Other">
     <ion-label>Biopsy Type (other)</ion-label>
-    <ion-input type="text" name="biopsyTypeOther" [(ngModel)]="patient.biopsy.scheduledBiopsy.biopsyType.otherType"></ion-input>
+    <ion-input type="text" name="biopsyTypeOther" 
+      [(ngModel)]="patient.biopsy.scheduledBiopsy.biopsyType.otherType" required></ion-input>
   </ion-item>
+
   <ion-item>
     <ion-label>Contact Person</ion-label>
     <ion-input type="text" name="contactPerson" [(ngModel)]="patient.biopsy.scheduledBiopsy.contactPerson"></ion-input>

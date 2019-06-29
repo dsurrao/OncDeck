@@ -7,109 +7,114 @@
 <ion-content *ngIf="completedBiopsy != null && completedBiopsy.receptors != null 
   && completedBiopsy.receptors.er != null && completedBiopsy.receptors.pr != null 
   && completedBiopsy.receptors.her2 != null">
-  <!-- ER -->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.er.status">
-      <ion-list-header>ER</ion-list-header>
-      <ion-item>
-        <ion-label>Positive</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Negative</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>None</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.None}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.er.strength">
-      <ion-list-header>ER Strength</ion-list-header>
-      <ion-item>
-        <ion-label>Strong</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Strong}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Moderate</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Moderate}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Weak</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Weak}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
+  <form #receptorForm="ngForm">
+    <!-- ER -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.er.status" name="erStatus" 
+        (ionChange)="erChange()" required>
+        <ion-list-header>ER</ion-list-header>
+        <ion-item>
+          <ion-label>Positive</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Negative</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>None</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.None}}" checked></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-list *ngIf="completedBiopsy.receptors.er.status == receptorStatusEnum.Positive">
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.er.strength" name="erStrength" required>
+        <ion-list-header>ER Strength</ion-list-header>
+        <ion-item>
+          <ion-label>Strong</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Strong}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Moderate</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Moderate}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Weak</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Weak}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
 
-  <!-- PR -->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.pr.status">
-      <ion-list-header>PR</ion-list-header>
-      <ion-item>
-        <ion-label>Positive</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Negative</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>None</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.None}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.pr.strength">
-      <ion-list-header>PR Strength</ion-list-header>
-      <ion-item>
-        <ion-label>Strong</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Strong}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Moderate</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Moderate}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Weak</ion-label>
-        <ion-radio slot="start" value="{{receptorStrengthEnum.Weak}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
+    <!-- PR -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.pr.status" name="prStatus" 
+        (ionChange)="prChange()" required>
+        <ion-list-header>PR</ion-list-header>
+        <ion-item>
+          <ion-label>Positive</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Negative</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>None</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.None}}" checked></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-list *ngIf="completedBiopsy.receptors.pr.status == receptorStatusEnum.Positive">
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.pr.strength" name="prStrength">
+        <ion-list-header>PR Strength</ion-list-header>
+        <ion-item>
+          <ion-label>Strong</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Strong}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Moderate</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Moderate}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Weak</ion-label>
+          <ion-radio slot="start" value="{{receptorStrengthEnum.Weak}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
 
-  <!-- HER2 -->
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.her2.status">
-      <ion-list-header>HER2</ion-list-header>
-      <ion-item>
-        <ion-label>Positive</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Negative</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>None</ion-label>
-        <ion-radio slot="start" value="{{receptorStatusEnum.None}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-list>
-    <ion-radio-group [(ngModel)]="completedBiopsy.receptors.her2.testingMethod">
-      <ion-list-header>HER2 Testing Method</ion-list-header>
-      <ion-item>
-        <ion-label>IHC</ion-label>
-        <ion-radio slot="start" value="{{her2TestingMethodEnum.IHC}}"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>FISH</ion-label>
-        <ion-radio slot="start" value="{{her2TestingMethodEnum.FISH}}"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>  
+    <!-- HER2 -->
+    <ion-list>
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.her2.status" name="her2Status" 
+        (ionChange)="her2Change()" required>
+        <ion-list-header>HER2</ion-list-header>
+        <ion-item>
+          <ion-label>Positive</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Positive}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Negative</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.Negative}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>None</ion-label>
+          <ion-radio slot="start" value="{{receptorStatusEnum.None}}" checked></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-list *ngIf="(completedBiopsy.receptors.her2.status == receptorStatusEnum.Positive) || (completedBiopsy.receptors.her2.status == receptorStatusEnum.Negative)">
+      <ion-radio-group [(ngModel)]="completedBiopsy.receptors.her2.testingMethod" name="her2TestingMethod" required>
+        <ion-list-header>HER2 Testing Method</ion-list-header>
+        <ion-item>
+          <ion-label>IHC</ion-label>
+          <ion-radio slot="start" value="{{her2TestingMethodEnum.IHC}}"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>FISH</ion-label>
+          <ion-radio slot="start" value="{{her2TestingMethodEnum.FISH}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>  
 
-  <ion-button color="primary" (click)="save()">Next</ion-button>
+    <ion-button color="primary" [disabled]="!receptorForm.form.valid" (click)="save()">Next</ion-button>
+  </form>
 </ion-content>
