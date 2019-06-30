@@ -38,7 +38,7 @@
           <ion-radio slot="start" value="T1"></ion-radio>
         </ion-item>
 
-            <div [hidden]=isHideSubRadioButtons class="hiddenSubRadioButtons">
+            <div [hidden]=isHideT1SubRadioButtons class="hiddenSubRadioButtons">
               <ion-item >
                   <ion-label>T1mi</ion-label>
                   <ion-radio slot="start" value="T1mi"></ion-radio>
@@ -63,8 +63,40 @@
         <ion-item>
           <ion-label>T2</ion-label>
           <ion-radio slot="start" value="T2"></ion-radio>
-      </ion-item>
+        </ion-item>
+        <ion-item>
+          <ion-label>T3</ion-label>
+          <ion-radio slot="start" value="T3"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>T4</ion-label>
+          <ion-radio slot="start" value="T4"></ion-radio>
+        </ion-item>
+
+            <div [hidden]=isHideT4SubRadioButtons class="hiddenSubRadioButtons">
+              <ion-item >
+                  <ion-label>T4a</ion-label>
+                  <ion-radio slot="start" value="T4a"></ion-radio>
+              </ion-item>
+
+              <ion-item >
+                  <ion-label>T4b</ion-label>
+                  <ion-radio slot="start" value="T4b"></ion-radio>
+              </ion-item>
+          
+              <ion-item >
+                  <ion-label>T4c</ion-label>
+                  <ion-radio slot="start" value="T4c"></ion-radio>
+              </ion-item>
+          
+              <ion-item >
+                  <ion-label>T4d</ion-label>
+                  <ion-radio slot="start" value="T4d"></ion-radio>
+              </ion-item>
+            </div>
     </ion-radio-group>
   </ion-list>
+  
+  <ion-button color="primary" type="submit" [disabled]="!isFormValid" (click)="save()">Next</ion-button>
   
 </ion-content>
