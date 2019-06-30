@@ -12,7 +12,30 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="patient != null">
+<ion-content *ngIf="patient != null" >
+
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button tab="tab1" [routerLink]="['/clinical-breast-staging/' + patient._id]" >
+        <ion-item>
+          <ion-icon name="add-circle" color="primary"></ion-icon>
+          <ion-label>Staging</ion-label>
+        </ion-item>
+      </ion-tab-button>
+      <ion-tab-button tab="tab2" [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy']">
+        <ion-item>
+          <ion-icon name="add-circle" color="primary"></ion-icon>
+          <ion-label>Bioposy</ion-label>
+        </ion-item>
+      </ion-tab-button>
+      <ion-tab-button tab="tab3"  [routerLink]="['/patient/' + patient._id + '/radiation-therapy/']" >
+        <ion-item>
+          <ion-icon name="add-circle" color="primary"></ion-icon>
+          <ion-label>Radiation</ion-label>
+        </ion-item>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 
   <!-- Patient bio -->
   <!--TODO: display age -->
@@ -57,7 +80,8 @@
       <ion-icon name="body"></ion-icon>
       Clinical Breast Staging
     </ion-card-header>
-
+    <div class="patient-divider"></div>
+    <!--
     <ion-toolbar>
       <ion-buttons slot="end">
         <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/clinical-breast-staging/' + patient._id]" class="add-button">
@@ -66,7 +90,7 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-
+-->
     <!-- Radiation Therapy -->
     <radiation-therapy-items [patient]="patient"></radiation-therapy-items>
 
