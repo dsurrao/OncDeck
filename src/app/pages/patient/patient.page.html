@@ -16,24 +16,30 @@
 
   <ion-tabs>
     <ion-tab-bar slot="top">
-      <ion-tab-button tab="tab1" [routerLink]="['/clinical-breast-staging/' + patient._id]" >
-        <ion-item>
+      <ion-tab-button>
+        <ion-item [routerLink]="'clinical-breast-staging'">
           <ion-icon name="add-circle" color="primary"></ion-icon>
           <ion-label>Staging</ion-label>
         </ion-item>
       </ion-tab-button>
-      <ion-tab-button tab="tab2" [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy']">
-        <ion-item>
+      <ion-tab-button>
+        <ion-item [routerLink]="'biopsy/completed-biopsy'">
           <ion-icon name="add-circle" color="primary"></ion-icon>
-          <ion-label>Bioposy</ion-label>
+          <ion-label>Biopsy</ion-label>
         </ion-item>
       </ion-tab-button>
-      <ion-tab-button tab="tab3"  [routerLink]="['/patient/' + patient._id + '/radiation-therapy/']" >
-        <ion-item>
+      <ion-tab-button>
+        <ion-item [routerLink]="'radiation-therapy'">
           <ion-icon name="add-circle" color="primary"></ion-icon>
           <ion-label>Radiation</ion-label>
         </ion-item>
       </ion-tab-button>
+      <ion-tab-button>
+          <ion-item [routerLink]="'surgery'">
+            <ion-icon name="add-circle" color="primary"></ion-icon>
+            <ion-label>Surgery</ion-label>
+          </ion-item>
+        </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
 

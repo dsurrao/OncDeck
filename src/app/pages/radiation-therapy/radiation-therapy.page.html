@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>RadiationTherapy</ion-title>
+    <ion-title>Radiation Therapy</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,41 +13,48 @@
       <app-radiation-therapy-summary [radiationTherapy]="radiationTherapy"></app-radiation-therapy-summary>
     </ion-card-content>
   </ion-card>
-  <ion-item>
-    <ion-label>Start Date</ion-label>
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.startDate" (ionChange)="updateProjectedEndDate()"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Total Dose</ion-label>
-    <ion-input type="text" [(ngModel)]="radiationTherapy.totalDose"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Number of Fractions/Treatments</ion-label>
-    <ion-input type="number" [(ngModel)]="radiationTherapy.numTreatments" (ionChange)="updateProjectedEndDate()"></ion-input>
-  </ion-item>
-  <ion-list>
-    <ion-list-header>Radiation Fields</ion-list-header>
-    <ion-item *ngFor="let field of radiationFields">
-      <ion-label>{{field.val}}</ion-label>
-      <ion-checkbox slot="end" [(ngModel)]="field.isChecked" (ionChange)="updateRadiationFields()"></ion-checkbox>
+  <form #radiationForm="ngForm">
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.startDate" 
+        (ionChange)="updateProjectedEndDate()" name="startDate" required></ion-datetime>
     </ion-item>
-  </ion-list>
-  <ion-item>
-    <ion-label>Radiation Field (Other)</ion-label>
-    <ion-input type="text" [(ngModel)]="radiationFieldOther"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Projected End Date</ion-label>
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.projectedEndDate"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Actual End Date</ion-label>
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.actualEndDate"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Comments</ion-label>
-    <ion-input type="text" [(ngModel)]="radiationTherapy.comments"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label>Total Dose</ion-label>
+      <ion-input type="text" [(ngModel)]="radiationTherapy.totalDose" name="totalDose" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Number of Fractions/Treatments</ion-label>
+      <ion-input type="number" [(ngModel)]="radiationTherapy.numTreatments" 
+        (ionChange)="updateProjectedEndDate()" name="numTreatments" required></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-list-header>Radiation Fields</ion-list-header>
+      <ion-item *ngFor="let field of radiationFields">
+        <ion-label>{{field.val}}</ion-label>
+        <ion-checkbox slot="end" [(ngModel)]="field.isChecked" name="{{field.val}}" (ionChange)="updateRadiationFields()"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <ion-item *ngIf="otherRadiationFieldChecked">
+      <ion-label>Radiation Field (Other)</ion-label>
+      <ion-input type="text" [(ngModel)]="radiationFieldOther" name="radiationFieldOther" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Projected End Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.projectedEndDate" 
+        name="projectedEndDate" required></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Actual End Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="radiationTherapy.actualEndDate" 
+        name="actualEndDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Comments</ion-label>
+      <ion-input type="text" [(ngModel)]="radiationTherapy.comments" name="comments"></ion-input>
+    </ion-item>
 
-  <ion-button color="primary" (click)="save()">Save</ion-button>
+    <ion-button color="primary" [disabled]="!radiationForm.form.valid || !anyRadiationFieldChecked" 
+      (click)="save()">Save</ion-button>
+  </form>
 </ion-content>

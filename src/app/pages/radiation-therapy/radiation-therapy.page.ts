@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Patient } from 'src/app/models/patient';
 import { RadiationTherapy } from 'src/app/models/radiation-therapy';
 import { ActivatedRoute } from '@angular/router';
@@ -32,6 +32,8 @@ export class RadiationTherapyPage implements OnInit {
     { val: RadiationFieldEnum.WholeBrain, isChecked: false },
     { val: RadiationFieldEnum.Other, isChecked: false },
   ];
+  anyRadiationFieldChecked: boolean = false;
+  otherRadiationFieldChecked: boolean = false;
 
   constructor(public route: ActivatedRoute,
     public patientSvc: PatientService,
@@ -54,7 +56,9 @@ export class RadiationTherapyPage implements OnInit {
           this.radiationFields.find(f => {return f.val === r.field}).isChecked = true;
           if (r.field === RadiationFieldEnum.Other) {
             this.radiationFieldOther = r.other;
+            this.otherRadiationFieldChecked = true;
           }
+          this.anyRadiationFieldChecked = true; // may be set redundantly
         }
       }
       else {
@@ -66,8 +70,8 @@ export class RadiationTherapyPage implements OnInit {
 
   updateRadiationFields() {
     // checked radiation fields
-    let checkedRadiationFields = this.radiationFields;
-    for (let f of checkedRadiationFields) {
+    this.anyRadiationFieldChecked = false; // will be set to true if any are checked below
+    for (let f of this.radiationFields) {
       if (f.isChecked) {
         let fieldTreated = this.radiationTherapy.fieldsTreated.find(r => {return r.field === f.val});
         if (fieldTreated == null) {
@@ -75,9 +79,11 @@ export class RadiationTherapyPage implements OnInit {
           fieldTreated.field = f.val;
           if (fieldTreated.field === RadiationFieldEnum.Other) {
             fieldTreated.other = this.radiationFieldOther;
+            this.otherRadiationFieldChecked = true;
           }
           this.radiationTherapy.fieldsTreated.push(fieldTreated);
         }
+        this.anyRadiationFieldChecked = true;
       }
       else {
         let fieldTreated = this.radiationTherapy.fieldsTreated.find(r => {return r.field === f.val});
@@ -92,7 +98,7 @@ export class RadiationTherapyPage implements OnInit {
   updateProjectedEndDate() {
     if (this.radiationTherapy != null) {
       // calculate projected end date
-      // TODO: factor in weekends and holidays
+      // TODO: factor in weekends and holidays, and fix RangeError: Invalid time value
       this.radiationTherapy.projectedEndDate = this.dateUtils.addDays(
         this.radiationTherapy.startDate, this.radiationTherapy.numTreatments - 1);
     }
@@ -105,6 +111,19 @@ export class RadiationTherapyPage implements OnInit {
       let findIndex = this.radiationTherapy.fieldsTreated.findIndex(r => {return r.field === f.val});
       if (findIndex != -1) {
         this.radiationTherapy.fieldsTreated.splice(findIndex, 1);
+      }
+    }
+
+    // other radiation field
+    if (this.radiationFieldOther != null) {
+      if (this.radiationFieldOther.trim() !== "") {
+        let fieldTreated: RadiationFieldTreated = this.radiationTherapy.fieldsTreated.find(
+          f => f.field === RadiationFieldEnum.Other);
+        if (fieldTreated == null) {
+          fieldTreated = new RadiationFieldTreated();
+          this.radiationTherapy.fieldsTreated.push(fieldTreated);
+        }
+        fieldTreated.other = this.radiationFieldOther;
       }
     }
 

@@ -14,33 +14,34 @@
     </ion-card>
     <form #completedSurgeryForm>
     <ion-item>
-        <ion-label>Surgery Report Text</ion-label>
-        <ion-input type="text" name="report" [(ngModel)]="surgery.report"></ion-input>
-    </ion-item>
-    <ion-item>
         <!-- TODO: use ion-datetime everywhere -->
         <ion-label>Surgery Date</ion-label>
-        <ion-datetime name="surgeryDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.surgeryDate"></ion-datetime>
+        <ion-datetime name="surgeryDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.surgeryDate" required></ion-datetime>
     </ion-item>
     <ion-item>
         <ion-label>Surgeon Name</ion-label>
-        <ion-input name="surgeonName" type="text" [(ngModel)]="surgery.surgeonName"></ion-input>
+        <ion-input name="surgeonName" type="text" [(ngModel)]="surgery.surgeonName" required></ion-input>
     </ion-item>
     <ion-item>
         <ion-label>Facility</ion-label>
-        <ion-input name="facility" type="text" [(ngModel)]="surgery.facility"></ion-input>
+        <ion-input name="facility" type="text" [(ngModel)]="surgery.facility" required></ion-input>
     </ion-item>
-    <ion-radio-group name="surgicalPathologyStatus" [(ngModel)]="surgery.pathologyStatus">
+    <ion-radio-group name="surgicalPathologyStatus" [(ngModel)]="surgery.pathologyStatus" required>
         <ion-list-header>Surgical Pathology Status</ion-list-header>
         <ion-item>
-        <ion-label>{{surgicalPathologyStatusEnum.Pending}}</ion-label>
-        <ion-radio value="{{surgicalPathologyStatusEnum.Pending}}"></ion-radio>
+            <ion-label>{{surgicalPathologyStatusEnum.Pending}}</ion-label>
+            <ion-radio value="{{surgicalPathologyStatusEnum.Pending}}"></ion-radio>
         </ion-item>
         <ion-item>
-        <ion-label>{{surgicalPathologyStatusEnum.Completed}}</ion-label>
-        <ion-radio value="{{surgicalPathologyStatusEnum.Completed}}"></ion-radio>
+            <ion-label>{{surgicalPathologyStatusEnum.Completed}}</ion-label>
+            <ion-radio value="{{surgicalPathologyStatusEnum.Completed}}"></ion-radio>
         </ion-item>      
     </ion-radio-group>
+
+    <ion-item>
+        <ion-label>Surgery Report Text</ion-label>
+        <ion-textarea name="surgeryReport" [(ngModel)]="surgery.report"></ion-textarea>
+    </ion-item>
 
     <ng-container *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed">
         <ion-list>
@@ -100,7 +101,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{erStatusEnum.None}}"></ion-radio>
+                    <ion-radio value="{{erStatusEnum.None}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
@@ -118,7 +119,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{prStatusEnum.None}}"></ion-radio>
+                    <ion-radio value="{{prStatusEnum.None}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
@@ -136,7 +137,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{her2StatusEnum.None}}"></ion-radio>
+                    <ion-radio value="{{her2StatusEnum.None}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
@@ -154,7 +155,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{lviEnum.NotDetermined}}"></ion-radio>
+                    <ion-radio value="{{lviEnum.NotDetermined}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
@@ -180,7 +181,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>Grade Not Recorded</ion-label>
-                    <ion-radio value="{{gradeEnum.NotGiven}}"></ion-radio>
+                    <ion-radio value="{{gradeEnum.NotGiven}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
@@ -198,39 +199,41 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>None</ion-label>
-                    <ion-radio value="{{surgicalMarginEnum.None}}"></ion-radio>
+                    <ion-radio value="{{surgicalMarginEnum.None}}" checked></ion-radio>
                 </ion-item>
             </ion-radio-group>
         </ion-list>
 
         <ion-item>
-        <ion-label>Pathology Report Text</ion-label>
-        <ion-input type="text" name="report" [(ngModel)]="surgery.pathology.report"></ion-input>
+            <ion-label>Pathology Report Date</ion-label>
+            <ion-datetime name="pathologyReportDate" display-format="MMM DD, YYYY" 
+                [(ngModel)]="surgery.pathology.reportDate" required></ion-datetime>
         </ion-item>
 
         <ion-item>
-        <ion-label>Pathology Report Date</ion-label>
-        <ion-datetime name="pathologyReportDate" display-format="MMM DD, YYYY" [(ngModel)]="surgery.pathology.reportDate"></ion-datetime>
+            <ion-label>Pathologist Name</ion-label>
+            <ion-input type="text" name="pathologistName" 
+                [(ngModel)]="surgery.pathology.pathologistName" required></ion-input>
         </ion-item>
 
         <ion-item>
-        <ion-label>Pathologist Name</ion-label>
-        <ion-input type="text" name="pathologistName" [(ngModel)]="surgery.pathology.pathologistName"></ion-input>
+            <ion-label>Pathologist Facility</ion-label>
+            <ion-input type="text" name="pathologistFacility" 
+                [(ngModel)]="surgery.pathology.pathologistFacility" required></ion-input>
         </ion-item>
 
         <ion-item>
-        <ion-label>Pathologist Facility</ion-label>
-        <ion-input type="text" name="pathologistFacility" [(ngModel)]="surgery.pathology.pathologistFacility"></ion-input>
+            <ion-label>Lymph Node Dissection Type</ion-label>
+            <ion-input type="text" name="lymphNodeDissectionType" [(ngModel)]="surgery.pathology.lymphNodeDissectionType"></ion-input>
         </ion-item>
 
         <ion-item>
-        <ion-label>Lymph Node Dissection Type</ion-label>
-        <ion-input type="text" name="lymphNodeDissectionType" [(ngModel)]="surgery.pathology.lymphNodeDissectionType"></ion-input>
+            <ion-label>Pathology Report Text</ion-label>
+            <ion-textarea name="pathologyReport" [(ngModel)]="surgery.pathology.report"></ion-textarea>
         </ion-item>
     </ng-container>
     <!-- end *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed" -->
 
-    <!-- <ion-button color="primary" type="submit" [disabled]="!pathologyForm.form.valid" (click)="save()">Save</ion-button> -->
-    <ion-button color="primary" (click)="save()">Save</ion-button>
+    <ion-button color="primary" type="submit" [disabled]="!completedSurgeryForm.form.valid" (click)="save()">Save</ion-button>
     </form>
 </ion-content>
