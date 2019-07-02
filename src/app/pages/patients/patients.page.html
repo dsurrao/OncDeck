@@ -24,7 +24,7 @@
           <ion-label>
             <ion-icon name="settings" class="icon-menu"></ion-icon>No surgeries
           </ion-label>
-          <ion-toggle checked="false" [(ngModel)]="showOnlyPatientsWithoutCompletedSurgeries" (ionChange)="togglePatients()"></ion-toggle>
+          <ion-toggle checked="false" [(ngModel)]="showOnlyPatientsWithoutSurgeries" (ionChange)="togglePatients()"></ion-toggle>
         </ion-item>
       <ion-button ion-item menuClose (click)="aboutPage()">
         About
@@ -108,10 +108,10 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option *ngIf="isWatchingPatient(patient)==false" (click)="watchPatient(patient)">
+          <ion-item-option *ngIf="!isWatchingPatient(patient)" (click)="watchPatient(patient)">
             Watch
           </ion-item-option>
-          <ion-item-option *ngIf="isWatchingPatient(patient)==true" color="secondary" (click)="unWatchPatient(patient)">
+          <ion-item-option *ngIf="isWatchingPatient(patient)" color="secondary" (click)="unWatchPatient(patient)">
             Un-watch
           </ion-item-option>
           <ion-item-option color="danger" (click)="removePatientConfirm(patient)">

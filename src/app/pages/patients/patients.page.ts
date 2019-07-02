@@ -40,7 +40,7 @@ export class PatientsPage implements OnInit {
   isAuthenticated: boolean;
   currentAuthenticatedUsername: string;
   showOnlyMyPatients: boolean;
-  showOnlyPatientsWithoutCompletedSurgeries: boolean;
+  showOnlyPatientsWithoutSurgeries: boolean;
   sortOrder: string;
   isLoading: boolean;
   lastActiveSync: string;
@@ -64,7 +64,7 @@ export class PatientsPage implements OnInit {
     this.isAuthenticated = false;
     this.currentAuthenticatedUsername = '';
     this.showOnlyMyPatients = false;
-    this.showOnlyPatientsWithoutCompletedSurgeries = false;
+    this.showOnlyPatientsWithoutSurgeries = false;
     this.sortOrder = 'descSurgDate';
     this.isLoading = false;
     this.lastActiveSync = null;
@@ -288,7 +288,7 @@ export class PatientsPage implements OnInit {
         case SurgeryStatusEnum.Completed:
           // TODO: sort by date
           let completedSurgery: CompletedSurgery = patient.surgery.completedSurgeries[
-            this.filterByCompletedSurgeries.length-1];
+            patient.surgery.completedSurgeries.length-1];
           summary += ": " + new Date(completedSurgery.surgeryDate).toLocaleDateString() 
             + " at " + completedSurgery.facility + " with " + completedSurgery.surgeonName;
           break;
@@ -380,25 +380,25 @@ export class PatientsPage implements OnInit {
       inputs: [
         {
           type: 'radio',
-          label: 'Asc By Name',
+          label: 'Name (asc)',
           value: 'ascName',
           checked: this.sortOrder == 'ascName'
         },
         {
           type: 'radio',
-          label: 'Desc By Name',
+          label: 'Name (desc)',
           value: 'descName',
           checked: this.sortOrder == 'descName'
         },
         {
           type: 'radio',
-          label: 'Asc By Surgery Date',
+          label: 'Sch.Surg (asc)',
           value: 'ascSurgDate',
           checked: this.sortOrder == 'ascSurgDate'
         },
         {
           type: 'radio',
-          label: 'Desc By Surgery Date',
+          label: 'Sch.Surg (desc)',
           value: 'descSurgDate',
           checked: this.sortOrder == 'descSurgDate'
         }
@@ -458,10 +458,10 @@ export class PatientsPage implements OnInit {
 
     this.patients = this.patients.sort((a, b)=>{
       let cmp = 0;
-      if (a['lastName'] > b['lastName']) {
+      if (a.lastName.toLowerCase() > b.lastName.toLowerCase()) {
         cmp = greaterValue;
       }
-      else if  (a['lastName'] == b['lastName'])  {
+      else if  (a.lastName.toLowerCase() == b.lastName.toLowerCase())  {
         cmp = 0;
       }
       else {
@@ -485,12 +485,16 @@ export class PatientsPage implements OnInit {
     this.patients = this.patients.sort((a, b)=>{
       let cmp = 0;
       let aSurgSchedDate: string = '';
-      if (a['surgeries'] != null) {
-        aSurgSchedDate = a['surgeries'].length > 0 ? a['surgeries'][a['surgeries'].length - 1]['scheduledDate'] : '';
+      if (a.surgery != null) {
+        if (a.surgery.scheduledSurgery != null) {
+          aSurgSchedDate = a.surgery.scheduledSurgery.scheduledDate;
+        }
       }
       let bSurgSchedDate: string = '';
-      if (b['surgeries'] != null) {
-        aSurgSchedDate = b['surgeries'].length > 0 ? b['surgeries'][b['surgeries'].length - 1]['scheduledDate'] : '';
+      if (b.surgery != null) {
+        if (b.surgery.scheduledSurgery != null) {
+          bSurgSchedDate = b.surgery.scheduledSurgery.scheduledDate;
+        }
       }
 
       if (aSurgSchedDate > bSurgSchedDate) {
@@ -514,30 +518,19 @@ export class PatientsPage implements OnInit {
       showFlag = this.filterByMyPatients(patient) && showFlag;
     }
 
-//    return showFlag;
-    return true;
+    return showFlag;
   }
 
   filterByCompletedSurgeries(patient: Patient): boolean {
-    if (this.showOnlyPatientsWithoutCompletedSurgeries) {
-      if (patient['surgeries'] != null) {
-        if (patient['surgeries'].length > 0) {
-          if (patient['surgeries'][patient['surgeries'].length - 1]['completedDate'] != null) {
-            return false;
-          }
-          else {
-            return true;
-          }
-        }
-        else {
-          return true;
-        }
-      }
-      else {
-        return true;
-      }
+    let showFlag: boolean = true;
+    let surgeryStatus: SurgeryStatusEnum = this.getSurgeryStatus(patient);
+    if (this.showOnlyPatientsWithoutSurgeries && 
+      (surgeryStatus == SurgeryStatusEnum.Completed 
+        || surgeryStatus == SurgeryStatusEnum.Scheduled 
+        || surgeryStatus == SurgeryStatusEnum.ScheduledToday)) {
+        showFlag = false;
     }
-    return true;
+    return showFlag;
   }
 
   filterByMyPatients(patient: Patient): boolean {
