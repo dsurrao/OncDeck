@@ -85,36 +85,21 @@
             <h2>
               {{patient.lastName}}, {{patient.firstName}}
             </h2>
-            <div *ngIf="getSurgeryStatus(patient) == 0">
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
               <span class='patient-status'>
                 <ion-icon name="warning" style='color:red'></ion-icon>
-                {{getSurgerySummary(patient)}}
+                <span style='color:red'>{{getSurgerySummary(patient)}}</span>
               </span>
             </div>
-            <div *ngIf="getSurgeryStatus(patient) == 1">
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.ScheduledToday">
                 <span class='patient-status'>
-                  Surgery <span style='color:green'>{{getSurgeryStatusText(patient)}}</span>
-                  {{getSurgerySummary(patient)}}
+                  <span style='color:green'>{{getSurgerySummary(patient)}}</span>
                 </span>
             </div>
-            <div *ngIf="getSurgeryStatus(patient) == 2">
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.Scheduled || getSurgeryStatus(patient) == surgeryStatusEnum.Completed">
                 <span class='patient-status'>
-                  Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
-                  {{getSurgerySummary(patient)}}
+                  <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
                 </span>
-            </div>
-            <div *ngIf="getSurgeryStatus(patient) == 3">
-                <span class='patient-status'>
-                  Surgery <span style='color:blue'>{{getSurgeryStatusText(patient)}}</span>
-                  {{getSurgerySummary(patient)}}
-                </span>
-            </div>
-            <div *ngIf="getSurgeryStatus(patient) == 4">
-              <span class='patient-status'>
-                <ion-icon name="warning" style='color:red'></ion-icon>
-                Surgery <span style='color:red'>{{getSurgeryStatusText(patient)}}</span>
-                {{getSurgerySummary(patient)}}
-              </span>
             </div>
           </div>
           <ion-note slot="end">

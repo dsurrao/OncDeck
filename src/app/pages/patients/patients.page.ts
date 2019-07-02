@@ -10,7 +10,6 @@ import { AlertController,
 //  NavParams, 
   Platform,
   IonList
-//  List,
 //  Loading
 } from '@ionic/angular';
 import { LoginModalPage } from '../login-modal/login-modal.page';
@@ -22,7 +21,10 @@ import { Device } from '@ionic-native/device/ngx';
 //import { Printer, PrintOptions }  from '@ionic-native/printer';
 import { PatientService } from '../../services/patient.service';
 import { PouchdbService } from '../../services/pouchdb.service'
-import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { SurgeryStatusEnum } from 'src/app/enums/surgery-status-enum';
+import { SurgeryNotIndicatedReasonEnum } from 'src/app/enums/surgery-not-indicated-reason-enum';
+import { ScheduledSurgery } from 'src/app/models/scheduled-surgery';
+import { CompletedSurgery } from 'src/app/models/completed-surgery';
 
 @Component({
   selector: 'app-patients',
@@ -43,6 +45,8 @@ export class PatientsPage implements OnInit {
   isLoading: boolean;
   lastActiveSync: string;
   isSearchbarOpened: boolean = false;
+
+  surgeryStatusEnum = SurgeryStatusEnum;
 
   constructor(public navCtrl: NavController, 
     public loadingCtrl: LoadingController,
@@ -273,64 +277,64 @@ export class PatientsPage implements OnInit {
     }
   }
 
-  // TODO: gets only the first surgery, need to handle multiple
-  getSurgerySummary(patient) {
-    let surgeryStatus = "Surgery not scheduled";
-    let surgeries = patient.surgeries != null ? patient.surgeries : [];
-    if (surgeries.length > 0) {
-      if (surgeries[0].completedDate != null) {
-        surgeryStatus = "on " + new Date(surgeries[0].completedDate).toLocaleDateString()
-        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
-      }
-      else if (surgeries[0].scheduledDate != null) {
-        surgeryStatus = "on " + new Date(surgeries[0].scheduledDate).toLocaleDateString()
-        + " at " + surgeries[0].facility + " with " + surgeries[0].providerName;
+  getSurgerySummary(patient: Patient): string {
+    let summary: string = "";
+    let surgeryStatus: SurgeryStatusEnum = this.getSurgeryStatus(patient);
+    let scheduledSurgery: ScheduledSurgery;
+    summary = "Surgery " + surgeryStatus.toString();
+
+    if (patient.surgery != null) {
+      switch (surgeryStatus) {
+        case SurgeryStatusEnum.Completed:
+          // TODO: sort by date
+          let completedSurgery: CompletedSurgery = patient.surgery.completedSurgeries[
+            this.filterByCompletedSurgeries.length-1];
+          summary += ": " + new Date(completedSurgery.surgeryDate).toLocaleDateString() 
+            + " at " + completedSurgery.facility + " with " + completedSurgery.surgeonName;
+          break;
+        case SurgeryStatusEnum.Scheduled:
+          scheduledSurgery = patient.surgery.scheduledSurgery;
+          summary += ": " + new Date(scheduledSurgery.scheduledDate).toLocaleDateString() 
+            + " at " + scheduledSurgery.facility + " with " + scheduledSurgery.surgeonName;
+          break;
+        case SurgeryStatusEnum.ScheduledToday:
+          scheduledSurgery = patient.surgery.scheduledSurgery;
+          summary += ": at " + scheduledSurgery.facility + " with " + scheduledSurgery.surgeonName;
+          break;
+        case SurgeryStatusEnum.NotScheduled:
+          summary + ": " + patient.surgery.surgeryNotScheduled.reason;
+          break;
+        case SurgeryStatusEnum.NotIndicated:
+          if (patient.surgery.surgeryNotIndicated.reason == SurgeryNotIndicatedReasonEnum.Other) {
+            summary += ": " + patient.surgery.surgeryNotIndicated.reasonOther;
+          }
+          else {
+            summary += ": " + patient.surgery.surgeryNotIndicated.reason;
+          }
+          break;
+        default:
+          summary = SurgeryStatusEnum.NotIndicated;
       }
     }
-    return (surgeryStatus);
+    
+    return summary;
   }
 
-  getSurgeryStatusText(patient) {
-    let surgeries = patient.surgeries != null ? patient.surgeries : [];
-    if (surgeries.length > 0) {
-      if (surgeries[0].completedDate != null)
-        return "completed";
-      else if (surgeries[0].scheduledDate != null) {
-        return "scheduled";
-      }
-    }
-  }
-
-  // returns 
-  // 0: not scheduled
-  // 1: scheduled today
-  // 2: scheduled in the future
-  // 3: completed
-  // 4: missed
-  getSurgeryStatus(patient): number {
-    let surgeryStatus: number = 0;
-    let surgeries = patient.surgeries != null ? patient.surgeries : [];
-    if (surgeries.length > 0) {
-      if (surgeries[0].completedDate != null) {
-        surgeryStatus = 3;
-      }
-      else if (surgeries[0].scheduledDate == null) {
-        surgeryStatus = 0;
-      }
-      else {
-        let daysFromToday = this.dateUtils.daysFromToday(surgeries[0].scheduledDate);
+  getSurgeryStatus(patient: Patient): SurgeryStatusEnum {
+    let status: SurgeryStatusEnum = SurgeryStatusEnum.NotIndicated;
+    if (patient.surgery != null) {
+      status = patient.surgery.surgeryStatus;
+      if (status == SurgeryStatusEnum.Scheduled) {
+        let daysFromToday: number = this.dateUtils.daysFromToday(patient.surgery.scheduledSurgery.scheduledDate);
         if (daysFromToday == 0) {
-          surgeryStatus = 1;
+          status = SurgeryStatusEnum.ScheduledToday;
         }
-        else if (daysFromToday > 0) {
-          surgeryStatus = 2;
-        }
-        else {
-          surgeryStatus = 4;
+        else if (daysFromToday < 0) {
+          status = SurgeryStatusEnum.Missed;
         }
       }
     }
-    return surgeryStatus;
+    return status;
   }
 
   /**
