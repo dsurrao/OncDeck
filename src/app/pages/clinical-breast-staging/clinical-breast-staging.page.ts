@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-clinical-breast-staging',
@@ -10,6 +11,9 @@ export class ClinicalBreastStagingPage implements OnInit {
 
   isHideT1SubRadioButtons: boolean;
   isHideT4SubRadioButtons: boolean;
+  isHidecN1SubRadioButtons: boolean;
+  isHidecN2SubRadioButtons: boolean;
+  isHidecN3SubRadioButtons: boolean;
   isHideDescription: boolean;
   clinicalOptionText: string;
   isFormValid: boolean;
@@ -21,6 +25,9 @@ export class ClinicalBreastStagingPage implements OnInit {
     let patientId = this.route.snapshot.paramMap.get('patientId');
     this.isHideT1SubRadioButtons = true;
     this.isHideT4SubRadioButtons = true;
+    this.isHidecN1SubRadioButtons = true;
+    this.isHidecN2SubRadioButtons = true;
+    this.isHidecN3SubRadioButtons = true;
     this.isHideDescription = true;
     this.isFormValid = false;
   }
@@ -37,6 +44,9 @@ export class ClinicalBreastStagingPage implements OnInit {
       || (event.detail.value == 'T1c')
     ){
       this.isHideT1SubRadioButtons = false;
+    }
+    else {
+      this.isHideT1SubRadioButtons = true;
     }
 
     /* check value to determine if subradio buttons to be shown for T2 */
@@ -117,6 +127,42 @@ export class ClinicalBreastStagingPage implements OnInit {
     if (event.detail.value == 'T4d') {
       this.clinicalOptionText = "T4d - Inflammatory carcinoma";
     }
+  }
+
+  clickClinicalNodalStage(event) {
+    this.isHideDescription = false;
+    this.isFormValid = true;
+    
+    /* check value to determine if subradio buttons to be shown for cN1 */
+    if ((event.detail.value == 'cN1')
+      || (event.detail.value == 'cN1mi')
+    ){
+      this.isHidecN1SubRadioButtons = false;
+    }
+    else {
+      this.isHidecN1SubRadioButtons = true;
+    }
+
+    /* check value to determine if subradio buttons to be shown for cN2 */
+    if ((event.detail.value == 'cN2')
+      || (event.detail.value == 'cN2a')
+    ){
+      this.isHidecN2SubRadioButtons = false;  
+    }
+    else {
+      this.isHidecN2SubRadioButtons = true;
+    }
+
+    /* check value to determine if subradio buttons to be shown for cN3 */
+    if ((event.detail.value == 'cN3')
+      || (event.detail.value == 'cN3a')
+    ){
+      this.isHidecN3SubRadioButtons = false;  
+    }
+    else {
+      this.isHidecN3SubRadioButtons = true;
+    }
 
   }
+
 }

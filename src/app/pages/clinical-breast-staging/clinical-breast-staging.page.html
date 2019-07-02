@@ -96,7 +96,71 @@
             </div>
     </ion-radio-group>
   </ion-list>
+
+  <ion-list>      
+    <ion-list-header>Clinical Nodal Stage</ion-list-header>
+    <ion-radio-group radio-group name="clinicalnodalstage" (ionChange)="clickClinicalNodalStage($event)" required>
+        <ion-item>
+          <ion-label>cNX</ion-label>
+          <ion-radio slot="start" value="cNX"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>cN0</ion-label>
+          <ion-radio slot="start" value="cN0"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>cN1</ion-label>
+          <ion-radio slot="start" value="cN1"></ion-radio>
+        </ion-item>
+
+          <div [hidden]=isHidecN1SubRadioButtons class="hiddenSubRadioButtons">
+            <ion-item >
+                <ion-label>cN1mi</ion-label>
+                <ion-radio slot="start" value="cN1mi"></ion-radio>
+            </ion-item>
+          </div>
+
+        <ion-item>
+          <ion-label>cN2</ion-label>
+          <ion-radio slot="start" value="cN2"></ion-radio>
+        </ion-item>
+
+          <div [hidden]=isHidecN2SubRadioButtons class="hiddenSubRadioButtons">
+            <ion-item >
+                <ion-label>cN2a</ion-label>
+                <ion-radio slot="start" value="cN2a"></ion-radio>
+            </ion-item>
+          </div>
+
+        <ion-item>
+          <ion-label>cN3</ion-label>
+          <ion-radio slot="start" value="cN3"></ion-radio>
+        </ion-item>
+
+          <div [hidden]=isHidecN3SubRadioButtons class="hiddenSubRadioButtons">
+            <ion-item >
+                <ion-label>cN3a</ion-label>
+                <ion-radio slot="start" value="cN3a"></ion-radio>
+            </ion-item>
+          </div>
+
+    </ion-radio-group>
+  </ion-list>
   
+  <ion-list>      
+    <ion-list-header>Metastatic Stage</ion-list-header>
+    <ion-radio-group radio-group name="clinicalmetatstaticstage" required>
+        <ion-item>
+          <ion-label>M0</ion-label>
+          <ion-radio slot="start" value="m0"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>M1</ion-label>
+          <ion-radio slot="start" value="m1"></ion-radio>
+        </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
   <ion-button color="primary" type="submit" [disabled]="!isFormValid" (click)="save()">Next</ion-button>
   
 </ion-content>
