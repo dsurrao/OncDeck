@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Patient } from "../models/patient";
 import { PouchdbService } from './pouchdb.service';
 
@@ -8,7 +7,7 @@ import { PouchdbService } from './pouchdb.service';
 })
 export class PatientService {
 
-  constructor(public http: HttpClient, public dbSvc: PouchdbService) {
+  constructor(public dbSvc: PouchdbService) {
   }
 
   // pass in credentials from caller?

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Patient } from '../models/patient';
 import { Surgery } from '../models/surgery';
 import { PouchdbService } from './pouchdb.service';
@@ -13,8 +12,7 @@ import { SurgeryStatusEnum } from '../enums/surgery-status-enum';
 })
 export class SurgeryService {
 
-  constructor(public http: HttpClient, 
-    public db: PouchdbService,
+  constructor(public db: PouchdbService,
     public dateUtils: DateUtils) {
     console.log('Hello SurgeryProvider Provider');
   }

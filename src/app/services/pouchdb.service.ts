@@ -6,8 +6,10 @@ import { Device } from '@ionic-native/device/ngx';
 import { Events, Platform } from '@ionic/angular';
 import PouchDB from 'pouchdb';
 import PouchDBAuth from 'pouchdb-authentication';
+import PouchDBFind from 'pouchdb-find';
 
 PouchDB.plugin(PouchDBAuth);
+PouchDB.plugin(PouchDBFind);
 //PouchDB.plugin(require('pouchdb-authentication'));
 
 @Injectable({
@@ -15,7 +17,7 @@ PouchDB.plugin(PouchDBAuth);
 })
 export class PouchdbService {
 
-  db = null;
+  db: any = null;
   remoteDb = null; 
 
   constructor(public http: HttpClient, 

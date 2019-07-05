@@ -1,5 +1,4 @@
 import { DateUtils } from '../../common/dateutils';
-//import { PatientFormPage } from './../patient-form/patient-form';
 //import { GraphPage } from './../graph/graph';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, 
@@ -7,14 +6,12 @@ import { AlertController,
   LoadingController,
   ModalController, 
   NavController, 
-//  NavParams, 
   Platform,
   IonList
 //  Loading
 } from '@ionic/angular';
 import { LoginModalPage } from '../login-modal/login-modal.page';
 import { LogoutModalPage } from '../logout-modal/logout-modal.page';
-// import { PatientPage } from '../patient/patient';
 // import { AboutPage } from '../about/about';
 import { Patient } from '../../models/patient';
 import { Device } from '@ionic-native/device/ngx';
@@ -25,6 +22,8 @@ import { SurgeryStatusEnum } from 'src/app/enums/surgery-status-enum';
 import { SurgeryNotIndicatedReasonEnum } from 'src/app/enums/surgery-not-indicated-reason-enum';
 import { ScheduledSurgery } from 'src/app/models/scheduled-surgery';
 import { CompletedSurgery } from 'src/app/models/completed-surgery';
+import { PatientListService } from 'src/app/services/patient-list.service';
+import { PatientListFilterEnum } from 'src/app/enums/patient-list-filter-enum';
 
 @Component({
   selector: 'app-patients',
@@ -45,14 +44,17 @@ export class PatientsPage implements OnInit {
   isLoading: boolean;
   lastActiveSync: string;
   isSearchbarOpened: boolean = false;
+  ptFilter: PatientListFilterEnum = PatientListFilterEnum.All
 
   surgeryStatusEnum = SurgeryStatusEnum;
+  patientListFilterEnum = PatientListFilterEnum;
 
   constructor(public navCtrl: NavController, 
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public patientSvc: PatientService,
+    public patientListSvc: PatientListService,
     public dbService: PouchdbService,
     public events: Events,
     public dateUtils: DateUtils,
@@ -148,7 +150,8 @@ export class PatientsPage implements OnInit {
 
       loading.present().then(() => {
         this.isLoading = true;
-        this.patientSvc.getPatients().then((data) => {
+
+        this.patientListSvc.getPatientsByFilter(this.ptFilter).then((data) => {
           this.isLoading = false;
           loading.dismiss();
 
@@ -172,20 +175,12 @@ export class PatientsPage implements OnInit {
     }
   }
 
-  addPatient() {
-    //this.navCtrl.push(PatientFormPage);
-  }
-
   showGraph() {
     //this.navCtrl.push(GraphPage);
   }
 
   aboutPage() {
     //this.navCtrl.push(AboutPage);
-  }
-
-  viewPatient(patient) {
-    //this.navCtrl.push(PatientPage, {params: patient});
   }
 
   async removePatientConfirm(patient) {
@@ -338,19 +333,6 @@ export class PatientsPage implements OnInit {
   }
 
   /**
-   * Check if ScheduledBiopsyDate is greater or lesser than current date
-   */
-  isBiopsyAfterCurrentDate(ScheduledBiopsyDate: string) {
-    if (ScheduledBiopsyDate == undefined)
-      return "";
-    else if (ScheduledBiopsyDate > new Date().toISOString())
-      return "true"
-    else {
-      return "false"
-    }
-  }
-
-  /**
    * Filter patient list by lastname, firstname
    * @param ev 
    */
@@ -365,10 +347,6 @@ export class PatientsPage implements OnInit {
     }
     else
       this.patients = this.originalPatientList;
-  }
-
-  togglePatients() {
-    this.getPatients();
   }
 
   /**
@@ -511,25 +489,13 @@ export class PatientsPage implements OnInit {
   }
 
   showPatient(patient: Patient): boolean {
-    let showFlag: boolean = this.filterByCompletedSurgeries(patient);
+    let showFlag: boolean = true;
 
     // filter by patients only for mobile devices
     if (this.platform.is('ios') || this.platform.is('android')) {
-      showFlag = this.filterByMyPatients(patient) && showFlag;
+      showFlag = this.filterByMyPatients(patient);
     }
 
-    return showFlag;
-  }
-
-  filterByCompletedSurgeries(patient: Patient): boolean {
-    let showFlag: boolean = true;
-    let surgeryStatus: SurgeryStatusEnum = this.getSurgeryStatus(patient);
-    if (this.showOnlyPatientsWithoutSurgeries && 
-      (surgeryStatus == SurgeryStatusEnum.Completed 
-        || surgeryStatus == SurgeryStatusEnum.Scheduled 
-        || surgeryStatus == SurgeryStatusEnum.ScheduledToday)) {
-        showFlag = false;
-    }
     return showFlag;
   }
 
