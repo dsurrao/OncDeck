@@ -10,11 +10,6 @@ export class PatientService {
   constructor(public dbSvc: PouchdbService) {
   }
 
-  // pass in credentials from caller?
-  getPatients(): Promise<Patient[]> {
-    return this.dbSvc.getPatients();
-  }
-
   getPatient(id): Promise<Patient> {
     return this.dbSvc.getDocument(id);
   }

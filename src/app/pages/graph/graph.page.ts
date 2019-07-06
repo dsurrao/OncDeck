@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Events, NavController, NavParams } from '@ionic/angular';
-import { PatientService } from '../../services/patient.service';
+import { PatientListService } from 'src/app/services/patient-list.service';
 //import { Chart } from 'chart.js';
 
 @Component({
@@ -19,7 +19,7 @@ export class GraphPage implements OnInit {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    public patientSvc: PatientService,
+    public patientListSvc: PatientListService,
     public events: Events) {
   }
 
@@ -27,7 +27,7 @@ export class GraphPage implements OnInit {
   }
 
   getPatients() {
-    this.patientSvc.getPatients().then((data) => {
+    this.patientListSvc.getPatients().then((data) => {
       this.patients = data;
       this.storePatientsToGraph = data;
 

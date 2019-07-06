@@ -7,6 +7,7 @@ import { Events, Platform } from '@ionic/angular';
 import PouchDB from 'pouchdb';
 import PouchDBAuth from 'pouchdb-authentication';
 import PouchDBFind from 'pouchdb-find';
+import { PatientList } from '../models/patient-list';
 
 PouchDB.plugin(PouchDBAuth);
 PouchDB.plugin(PouchDBFind);
@@ -176,29 +177,32 @@ export class PouchdbService {
   }
 
   // try to sync with remote db to get the latest, otherwise use local db
-  getPatients(): Promise<Patient[]> {
+  getPatients(args: object = {}): Promise<PatientList> {
     return new Promise((resolve, reject) => {
       this.db.sync(this.remoteDb)
       .on('complete', function () {
-        resolve(this.getPatientsLocal());
+        resolve(this.getPatientsLocal(args));
       }.bind(this))
       .on('error', function (err) {
-        resolve(this.getPatientsLocal());
+        resolve(this.getPatientsLocal(args));
       }.bind(this));
     });
   }
 
-  getPatientsLocal(): Promise<Patient[]> {
+  getPatientsLocal(args): Promise<PatientList> {
     return new Promise((resolve, reject) => {
-      this.db.allDocs({include_docs: true}).then(result => {
-        let patients: Patient[] = [];
-        for (var i = 0; i < result.total_rows; i++) {
+      args.include_docs = true;
+      this.db.allDocs(args).then(result => {
+        let list: PatientList = new PatientList();
+        list.patients = [];
+        list.totalRows = result.total_rows;
+        for (var i = 0; i < result.rows.length; i++) {
           let patient: Patient = result.rows[i].doc;
           if (patient.lastName != null) {
-            patients.push(patient);
+            list.patients.push(patient);
           }
         }
-        resolve(patients);
+        resolve(list);
       }).
       catch(error => {
         reject(error);

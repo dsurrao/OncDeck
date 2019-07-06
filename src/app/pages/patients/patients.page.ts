@@ -44,7 +44,14 @@ export class PatientsPage implements OnInit {
   isLoading: boolean;
   lastActiveSync: string;
   isSearchbarOpened: boolean = false;
-  ptFilter: PatientListFilterEnum = PatientListFilterEnum.All
+  ptFilter: PatientListFilterEnum = PatientListFilterEnum.All;
+  loading: HTMLIonLoadingElement;
+
+  // for pagination
+  pageSize: number;
+  skip: number;
+  totalRows: number;
+  startKey: string;
 
   surgeryStatusEnum = SurgeryStatusEnum;
   patientListFilterEnum = PatientListFilterEnum;
@@ -70,6 +77,7 @@ export class PatientsPage implements OnInit {
     this.sortOrder = 'descSurgDate';
     this.isLoading = false;
     this.lastActiveSync = null;
+    this.resetPaginationOptions();
 
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
@@ -88,6 +96,7 @@ export class PatientsPage implements OnInit {
       this.patients = [];
     });
 
+    // TODO: detect which patient was updated and refresh only that one
     this.events.subscribe('patientSaved', () => {
       this.getPatients();
     });
@@ -140,39 +149,71 @@ export class PatientsPage implements OnInit {
     return await modal.present();
   }
 
-  async getPatients() {
+  resetPaginationOptions() {
+    this.pageSize = 10;
+    this.skip = 0;
+    this.totalRows = -1;
+    this.startKey = null;
+    this.patients = [];
+  }
+
+  async getPatients(infiniteScrollEvent: any = null) {
     console.log("getPatients");
+
+    // if this is not triggered by the infinite scroll widget, treat this as a refresh
+    if (infiniteScrollEvent == null) {
+      this.resetPaginationOptions();
+    }
     
-    if (!this.isLoading) {
-      let loading = await this.loadingCtrl.create({
+    // only fetch if there are more patients to fetch
+    if (!this.isLoading && this.totalRows == -1) {
+      this.loading = await this.loadingCtrl.create({
         message: 'Loading patients...'
       });
 
-      loading.present().then(() => {
+      this.loading.present().then(() => {
         this.isLoading = true;
-
-        this.patientListSvc.getPatientsByFilter(this.ptFilter).then((data) => {
-          this.isLoading = false;
-          loading.dismiss();
-
-          this.patients = [];
-          data.forEach(patient => {
-            if (!patient.isArchived) {
-              this.patients.push(patient);
-            }
-          });
-          this.originalPatientList = data; // make a copy of patients for filtering purposes
-          this.displayPatientsBySortOrder(this.sortOrder);
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          loading.dismiss();
-
-          console.log('get patients error', error);
-          this.patients = [];
-        });
+        this.loadPatients(infiniteScrollEvent);
       });
     }
+    else if (this.patients.length < this.totalRows) {
+      this.loadPatients(infiniteScrollEvent);
+    }
+  }
+
+  loadPatients(infiniteScrollEvent: any) {
+    this.patientListSvc.getPatientsByFilter(this.ptFilter, 
+      {limit: this.pageSize, startkey: this.startKey, skip: this.skip}).then((data) => {
+      this.isLoading = false;
+      if (this.loading != null) {
+        this.loading.dismiss();
+      }      
+      if (infiniteScrollEvent != null) {
+        infiniteScrollEvent.target.complete();
+      }
+
+      if (data.patients.length > 0) {
+        this.totalRows = data.totalRows;
+        this.startKey = data.patients[data.patients.length - 1]._id;
+        this.skip = 1;
+
+        data.patients.forEach(patient => {
+          if (!patient.isArchived) {
+            this.patients.push(patient);
+          }
+        });
+        this.originalPatientList = data.patients; // make a copy of patients for filtering purposes
+        this.displayPatientsBySortOrder(this.sortOrder);
+      }
+      
+    })
+    .catch((error) => {
+      this.isLoading = false;
+      if (this.loading != null) {
+        this.loading.dismiss();
+      }
+      console.log('get patients error', error);
+    });
   }
 
   showGraph() {
