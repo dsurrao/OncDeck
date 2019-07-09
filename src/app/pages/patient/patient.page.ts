@@ -85,4 +85,8 @@ export class PatientPage implements OnInit {
   surgeryTabClicked() {
     this.tabClicked = 'surgery'
   }
+
+  timelineTabClicked() {
+    this.tabClicked = 'timeline'
+  }
 }

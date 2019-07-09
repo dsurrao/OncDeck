@@ -45,6 +45,11 @@
           <ion-label>Surgery</ion-label>
         </ion-item>
       </ion-tab-button>
+      <ion-tab-button (click)="timelineTabClicked()">
+        <ion-item>
+          <ion-label>Timeline</ion-label>
+        </ion-item>
+      </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
 
@@ -109,6 +114,10 @@
 
     <ng-container *ngIf="tabClicked=='surgery'">
       <app-surgery-home [patient]="patient" *ngIf="tabClicked=='surgery'"></app-surgery-home>
+    </ng-container>
+
+    <ng-container *ngIf="tabClicked=='timeline'">
+      <app-timeline [patient]="patient"></app-timeline>
     </ng-container>
 
   </div>

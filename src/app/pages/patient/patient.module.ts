@@ -13,6 +13,9 @@ import { BiopsyPageModule } from '../biopsy/biopsy.module';
 import { RadiationTherapyPageModule } from '../radiation-therapy/radiation-therapy.module';
 import { SurgeryPageModule } from '../surgery/surgery.module';
 
+import { NgxTimelineModule } from 'ngx-timeline';
+import { TimelineComponent } from './timeline/timeline.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -21,13 +24,15 @@ import { SurgeryPageModule } from '../surgery/surgery.module';
     routing,
     BiopsyPageModule,
     RadiationTherapyPageModule,
-    SurgeryPageModule
+    SurgeryPageModule,
+    NgxTimelineModule
   ],
   declarations: [
     PatientPage, 
     PatientSummaryComponent,
     RadiationTherapyItemsComponent,
-    CompletedBiopsyItemsComponent
+    CompletedBiopsyItemsComponent,
+    TimelineComponent
   ]
 })
 export class PatientPageModule {}
