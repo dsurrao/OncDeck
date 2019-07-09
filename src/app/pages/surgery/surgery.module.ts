@@ -35,7 +35,8 @@ const routes: Routes = [
     SurgicalPathologySummaryComponent
   ],
   exports: [
-    SurgerySummaryComponent
+    SurgerySummaryComponent,
+    SurgeryHomeComponent
   ]
 })
 export class SurgeryPageModule {}

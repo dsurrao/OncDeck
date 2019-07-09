@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateUtils } from './../../common/dateutils';
-import { Events, ModalController, AlertController } from '@ionic/angular';
+import { Events, ModalController, AlertController, IonTabs, IonTabBar } from '@ionic/angular';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
@@ -13,6 +13,8 @@ import { SurgeryService } from 'src/app/services/surgery.service';
 })
 export class PatientPage implements OnInit {
   patient: Patient;
+
+  tabClicked: string = 'summary';
   
   constructor(
     public alertCtrl: AlertController,
@@ -61,5 +63,26 @@ export class PatientPage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  summaryTabClicked() {
+    this.tabClicked = 'summary'
+  }
+
+  biopsyTabClicked(event: any) {
+    event.target.style.color	= 'blue';
+    this.tabClicked = 'biopsy';
+  }
+
+  radiationTabClicked(event: any) {
+    this.tabClicked = 'radiation'
+  }
+
+  stagingTabClicked() {
+    this.tabClicked = 'staging'
+  }
+
+  surgeryTabClicked() {
+    this.tabClicked = 'surgery'
   }
 }

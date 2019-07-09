@@ -27,7 +27,7 @@ import { SurgeryPageModule } from '../surgery/surgery.module';
     PatientPage, 
     PatientSummaryComponent,
     RadiationTherapyItemsComponent,
-    CompletedBiopsyItemsComponent,
+    CompletedBiopsyItemsComponent
   ]
 })
 export class PatientPageModule {}

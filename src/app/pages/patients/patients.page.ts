@@ -167,12 +167,12 @@ export class PatientsPage implements OnInit {
     
     // only fetch if there are more patients to fetch
     if (!this.isLoading && this.totalRows == -1) {
+      this.isLoading = true;
       this.loading = await this.loadingCtrl.create({
         message: 'Loading patients...'
       });
 
       this.loading.present().then(() => {
-        this.isLoading = true;
         this.loadPatients(infiniteScrollEvent);
       });
     }

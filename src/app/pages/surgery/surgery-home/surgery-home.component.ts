@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
@@ -18,8 +18,7 @@ import { Events, NavController } from '@ionic/angular';
   styleUrls: ['./surgery-home.component.scss'],
 })
 export class SurgeryHomeComponent implements OnInit {
-  patientId: string; // from url
-  patient: Patient;
+  @Input('patient') patient: Patient;
 
   // for use in template
   surgeryStatusEnum = SurgeryStatusEnum;
@@ -30,26 +29,30 @@ export class SurgeryHomeComponent implements OnInit {
     public route: ActivatedRoute, 
     public dateUtils: DateUtils,
     public events: Events,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController) {}
 
   ngOnInit() {
-    this.patientId = this.route.snapshot.paramMap.get('patientId');
-    this.patientSvc.getPatient(this.patientId).then(patient => {
-      this.patient = patient;
-      if (this.patient.surgery == null) {
-        this.patient.surgery = new Surgery();
-        this.patient.surgery.completedSurgeries = [];
-        this.patient.surgery.scheduledSurgery = new ScheduledSurgery();
-        this.patient.surgery.surgeryNotIndicated = new SurgeryNotIndicated();
-        this.patient.surgery.surgeryNotScheduled = new SurgeryNotScheduled();
-      }
-    });
+    if (this.patient.surgery == null) {
+      this.patient.surgery = new Surgery();
+    }
+    if (this.patient.surgery.completedSurgeries == null) {
+      this.patient.surgery.completedSurgeries = [];
+    }
+    if (this.patient.surgery.scheduledSurgery == null) {
+      this.patient.surgery.scheduledSurgery = new ScheduledSurgery();
+    }
+    if (this.patient.surgery.surgeryNotIndicated == null) {
+      this.patient.surgery.surgeryNotIndicated = new SurgeryNotIndicated();
+    }
+    if (this.patient.surgery.surgeryNotScheduled == null) {
+      this.patient.surgery.surgeryNotScheduled = new SurgeryNotScheduled();
+    }
   }
 
   update() {
     this.surgerySvc.saveSurgeryStatus(this.patient).then(patient => {
       this.events.publish('patientSaved');
-      this.navCtrl.navigateBack('/patient/' + this.patientId);
+      this.navCtrl.navigateBack('/patient/' + this.patient._id);
     })
   }
 }

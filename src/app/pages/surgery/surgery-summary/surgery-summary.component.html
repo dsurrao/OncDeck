@@ -1,6 +1,5 @@
 <p *ngIf="patient.surgery != null">
   <b>Surgeries</b>
-  <ion-icon name="create" [routerLink]="'/patient/' + patient._id + '/surgery'"></ion-icon>
   <br/>
   Status: {{patient.surgery.surgeryStatus}}
   <br/>
@@ -12,14 +11,14 @@
   </ng-container>
   <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotScheduled">
     Reason: {{patient.surgery.surgeryNotScheduled.reason}} 
-    (recorded on {{patient.surgery.surgeryNotScheduled.dateRecorded}})
+    (recorded on {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}})
     <br/>
-    Reminder Date: {{patient.surgery.surgeryNotScheduled.dateReminder}})
+    Reminder Date: {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateReminder)}})
     <br/>
   </ng-container>
   <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotIndicated">
     Reason: {{patient.surgery.surgeryNotIndicated.reason}} 
-    (recorded on {{patient.surgery.surgeryNotIndicated.dateRecorded}})
+    (recorded on {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotIndicated.dateRecorded)}})
     <br/>
   </ng-container>
   <ng-container *ngIf="mostRecentCompletedSurgery != null">
