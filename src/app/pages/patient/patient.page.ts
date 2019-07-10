@@ -5,6 +5,7 @@ import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { SurgeryService } from 'src/app/services/surgery.service';
+import { generateKeyPair } from 'crypto';
 
 @Component({
   selector: 'app-patient',
@@ -14,7 +15,13 @@ import { SurgeryService } from 'src/app/services/surgery.service';
 export class PatientPage implements OnInit {
   patient: Patient;
 
-  tabClicked: string = 'summary';
+  tabClicked: string;
+  summaryButtonColor: string;
+  stagingButtonColor: string;
+  biopsyButtonColor: string;
+  surgeryButtonColor: string;
+  radiationButtonColor: string;
+  timelineButtonColor: string;
   
   constructor(
     public alertCtrl: AlertController,
@@ -25,6 +32,9 @@ export class PatientPage implements OnInit {
     public patientSvc: PatientService,
     public surgerySvc: SurgeryService
     ) {
+      this.resetTabButtons();
+      this.tabClicked = 'summary';
+      this.summaryButtonColor = 'primary';
   }
 
   ngOnInit() {
@@ -66,27 +76,47 @@ export class PatientPage implements OnInit {
   }
 
   summaryTabClicked() {
-    this.tabClicked = 'summary'
+    this.tabClicked = 'summary';
+    this.resetTabButtons();
+    this.summaryButtonColor = 'primary';
   }
 
-  biopsyTabClicked(event: any) {
-    event.target.style.color	= 'blue';
+  biopsyTabClicked() {
     this.tabClicked = 'biopsy';
+    this.resetTabButtons();
+    this.biopsyButtonColor = 'primary';
   }
 
-  radiationTabClicked(event: any) {
-    this.tabClicked = 'radiation'
+  radiationTabClicked() {
+    this.tabClicked = 'radiation';
+    this.resetTabButtons();
+    this.radiationButtonColor = 'primary';
   }
 
   stagingTabClicked() {
-    this.tabClicked = 'staging'
+    this.tabClicked = 'staging';
+    this.resetTabButtons();
+    this.stagingButtonColor = 'primary';
   }
 
   surgeryTabClicked() {
-    this.tabClicked = 'surgery'
+    this.tabClicked = 'surgery';
+    this.resetTabButtons();
+    this.surgeryButtonColor = 'primary';
   }
 
   timelineTabClicked() {
-    this.tabClicked = 'timeline'
+    this.tabClicked = 'timeline';
+    this.resetTabButtons();
+    this.timelineButtonColor = 'primary';
+  }
+
+  resetTabButtons() {
+    this.summaryButtonColor = 'secondary';
+    this.stagingButtonColor = 'secondary';
+    this.biopsyButtonColor = 'secondary';
+    this.radiationButtonColor = 'secondary';
+    this.surgeryButtonColor = 'secondary';
+    this.timelineButtonColor = 'secondary';
   }
 }

@@ -18,43 +18,17 @@
 
 <ion-content *ngIf="patient != null">
 
-  <ion-tabs>
-    <ion-tab-bar slot="top">
-      <ion-tab-button (click)="summaryTabClicked()">
-        <ion-item>
-          <ion-label>Summary</ion-label>
-        </ion-item>
-      </ion-tab-button>
-      <ion-tab-button (click)="stagingTabClicked()">
-        <ion-item>
-          <ion-label>Staging</ion-label>
-        </ion-item>
-      </ion-tab-button>
-      <ion-tab-button (click)="biopsyTabClicked($event)">
-        <ion-item>
-          <ion-label>Biopsy</ion-label>
-        </ion-item>
-      </ion-tab-button>
-      <ion-tab-button (click)="radiationTabClicked($event)">
-        <ion-item>
-          <ion-label>Radiation</ion-label>
-        </ion-item>
-      </ion-tab-button>
-      <ion-tab-button (click)="surgeryTabClicked()">
-        <ion-item>
-          <ion-label>Surgery</ion-label>
-        </ion-item>
-      </ion-tab-button>
-      <ion-tab-button (click)="timelineTabClicked()">
-        <ion-item>
-          <ion-label>Timeline</ion-label>
-        </ion-item>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  <div class="scrollmenu">
+    <ion-button color="{{summaryButtonColor}}" (click)="summaryTabClicked()">Summary</ion-button>
+    <ion-button color="{{stagingButtonColor}}" (click)="stagingTabClicked()">Staging</ion-button>
+    <ion-button color="{{biopsyButtonColor}}" (click)="biopsyTabClicked()">Biopsy</ion-button>
+    <ion-button color="{{radiationButtonColor}}" (click)="radiationTabClicked()">Radiation</ion-button>
+    <ion-button color="{{surgeryButtonColor}}" (click)="surgeryTabClicked()">Surgery</ion-button>
+    <ion-button color="{{timelineButtonColor}}" (click)="timelineTabClicked()">Timeline</ion-button>
+  </div>
 
   <!-- Patient information -->
-  <div id="patient-container">
+  <div>
     <!-- Summary -->
     <ng-container *ngIf="tabClicked=='summary'">
       <ion-card class="card-container">
