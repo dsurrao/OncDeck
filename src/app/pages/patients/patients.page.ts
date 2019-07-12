@@ -79,13 +79,7 @@ export class PatientsPage implements OnInit {
     this.lastActiveSync = null;
     this.resetPaginationOptions();
 
-    this.dbService.getSessionUsername().then((username) => {
-      this.currentAuthenticatedUsername = username;
-    })
-    .catch((error) => {
-      console.log('error retrieving session username: ' + error);
-    })
-
+    // subscribe to events
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
       this.dbService.getSessionUsername().then((username) => {
@@ -112,29 +106,26 @@ export class PatientsPage implements OnInit {
       this.getPatients();
       this.lastActiveSync = new Date().toLocaleString();
     });
-
-    this.dbService.getSession().then((response) => {
-      if (!response.userCtx.name) {
-        this.isAuthenticated = false;
-      }
-      else {
-        this.isAuthenticated = true;
-      }
-    }).catch((error) => {
-      console.log(error);
-    });
   }
 
   ngOnInit() {
   }
 
   ionViewDidEnter() {
-    if (!this.isAuthenticated) {
-      this.presentLoginModal();
-    }
-    else {
-      this.getPatients();
-    }
+    // get current user
+    this.dbService.getSession().then((response) => {
+      if (response.userCtx.name != '' && response.userCtx.name != null) {
+        this.isAuthenticated = true;
+        this.currentAuthenticatedUsername = response.userCtx.name;
+        this.getPatients();
+      }
+      else {
+        this.isAuthenticated = false;
+        this.presentLoginModal();
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   login() {

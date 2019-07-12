@@ -78,7 +78,7 @@ export class CompletedSurgeryComponent implements OnInit {
   save() {
     this.surgerySvc.saveCompletedSurgery(this.surgery, this.patient).then(patient => {
       this.events.publish('patientSaved');
-      this.navCtrl.navigateBack('/patient/' + this.patientId + '/surgery');
+      this.navCtrl.navigateBack('/patient/' + this.patientId + '?tab=surgery');
     });
   }
 

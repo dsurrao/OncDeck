@@ -13,8 +13,6 @@ import { CompletedSurgerySummaryComponent } from './completed-surgery-summary/co
 import { SurgicalPathologySummaryComponent } from './surgical-pathology-summary/surgical-pathology-summary.component';
 
 const routes: Routes = [
-  //{ path: '', component: SurgeryPage},
-  { path: '', component: SurgeryHomeComponent},
   { path: 'completed-surgery', component: CompletedSurgeryComponent},
   { path: 'completed-surgery/:completedSurgeryId', component: CompletedSurgeryComponent}
 ];

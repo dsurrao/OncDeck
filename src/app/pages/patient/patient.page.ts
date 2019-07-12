@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { DateUtils } from './../../common/dateutils';
-import { Events, ModalController, AlertController, IonTabs, IonTabBar } from '@ionic/angular';
+import { Events, ModalController, AlertController } from '@ionic/angular';
 import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { SurgeryService } from 'src/app/services/surgery.service';
-import { generateKeyPair } from 'crypto';
 
 @Component({
   selector: 'app-patient',
@@ -38,6 +37,10 @@ export class PatientPage implements OnInit {
   }
 
   ngOnInit() {
+    if (this.route.snapshot.queryParamMap.get('tab') != null) {
+      this.tabClicked = this.route.snapshot.paramMap.get('tab');
+    }
+
     this.refreshPatient();
 
     this.events.subscribe('patientSaved', () => {

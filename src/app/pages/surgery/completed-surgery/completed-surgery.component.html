@@ -40,7 +40,7 @@
 
         <ion-item>
             <ion-label>Surgery Report Text</ion-label>
-            <ion-textarea name="surgeryReport" [(ngModel)]="surgery.report"></ion-textarea>
+            <ion-textarea name="surgeryReport" [(ngModel)]="surgery.report" autoGrow="true"></ion-textarea>
         </ion-item>
 
         <ng-container *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed">
@@ -229,7 +229,7 @@
 
             <ion-item>
                 <ion-label>Pathology Report Text</ion-label>
-                <ion-textarea name="pathologyReport" [(ngModel)]="surgery.pathology.report"></ion-textarea>
+                <ion-textarea name="pathologyReport" [(ngModel)]="surgery.pathology.report" autoGrow="true"></ion-textarea>
             </ion-item>
         </ng-container>
         <!-- end *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed" -->
