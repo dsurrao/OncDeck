@@ -160,7 +160,7 @@ export class PouchdbService {
       .catch((error) => {
         console.log(error);
       });
-      patient.editedDate = new Date();
+      patient.editedDate = new Date().toISOString();
       this.db.put(patient).then(function (response) {
           patient._rev = response.rev;
           resolve(patient);

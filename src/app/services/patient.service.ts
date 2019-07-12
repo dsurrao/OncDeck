@@ -22,19 +22,19 @@ export class PatientService {
     return this.dbSvc.removePatient(patient);
   }
 
-  watchPatient(patient: Patient, deviceUuid: string): Promise<Patient> {
+  watchPatient(patient: Patient, username: string): Promise<Patient> {
     if (patient.watchers == null) {
       patient.watchers = [];
     }
-    if (patient.watchers.indexOf(deviceUuid) == -1) {
-      patient.watchers.push(deviceUuid);
+    if (patient.watchers.indexOf(username) == -1) {
+      patient.watchers.push(username);
     }
     return this.savePatient(patient);
   }
 
-  unWatchPatient(patient: Patient, deviceUuid: string): Promise<Patient> {
+  unWatchPatient(patient: Patient, username: string): Promise<Patient> {
     if (patient.watchers != null) {
-      let foundIndex: number = patient.watchers.indexOf(deviceUuid);
+      let foundIndex: number = patient.watchers.indexOf(username);
       if (foundIndex != -1) {
         patient.watchers.splice(foundIndex, 1);
       }

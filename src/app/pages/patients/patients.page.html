@@ -22,7 +22,7 @@
       </ion-item>
       <ion-list>
         <ion-radio-group [(ngModel)]="ptFilter" (ionChange)="getPatients()">
-          <ion-list-header>Show patient filters</ion-list-header>
+          <ion-list-header>Patient filters</ion-list-header>
           <ion-item>
             <ion-label>{{patientListFilterEnum.All}}</ion-label>
             <ion-radio value={{patientListFilterEnum.All}}></ion-radio>
@@ -38,6 +38,31 @@
           <ion-item>
             <ion-label>{{patientListFilterEnum.ScheduledBiopsy}}</ion-label>
             <ion-radio value={{patientListFilterEnum.ScheduledBiopsy}}></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <ion-list>
+        <ion-radio-group [(ngModel)]="sortOrder" (ionChange)="displayPatientsBySortOrder()">
+          <ion-list-header>Sort Patients</ion-list-header>
+          <ion-item>
+            <ion-label>Last Edited Date (desc)</ion-label>
+            <ion-radio value="lastEditedDate"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Name (asc)</ion-label>
+            <ion-radio value="ascName"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Name (desc)</ion-label>
+            <ion-radio value="descName"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Sch. Surg (asc)</ion-label>
+            <ion-radio value="ascSurgDate"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Sch. Surg (desc)</ion-label>
+            <ion-radio value="descSurgDate"></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>
@@ -70,9 +95,6 @@
       <ion-button *ngIf="isAuthenticated" (click)="getPatients()">
         <ion-icon name="md-refresh"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isAuthenticated" (click)="doSort()">
-        <ion-icon name="md-options"></ion-icon>
-      </ion-button>
       <ion-button *ngIf="isAuthenticated" (click)="isSearchbarOpened=true">
         <ion-icon name="search"></ion-icon>
       </ion-button>
@@ -92,14 +114,12 @@
       (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
     <ion-list #patientList>
       <ion-item-sliding *ngFor="let patient of patients">        
-        <ion-item *ngIf="showPatient(patient)" [routerLink]="['/patient/' + patient._id]" text-wrap>
+        <ion-item [routerLink]="['/patient/' + patient._id]" text-wrap>
           <ion-avatar item-start>
             <ion-icon name="contact" class="icon-contact"></ion-icon>
           </ion-avatar>
           <div class='patient-container'>
-            <h2>
-              {{patient.lastName}}, {{patient.firstName}}
-            </h2>
+            {{patient.lastName}}, {{patient.firstName}}
             <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
               <span class='patient-status'>
                 <ion-icon name="warning" style='color:red'></ion-icon>

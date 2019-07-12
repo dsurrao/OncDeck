@@ -74,10 +74,17 @@ export class PatientsPage implements OnInit {
     this.currentAuthenticatedUsername = '';
     this.showOnlyMyPatients = false;
     this.showOnlyPatientsWithoutSurgeries = false;
-    this.sortOrder = 'descSurgDate';
+    this.sortOrder = 'lastEditedDate';
     this.isLoading = false;
     this.lastActiveSync = null;
     this.resetPaginationOptions();
+
+    this.dbService.getSessionUsername().then((username) => {
+      this.currentAuthenticatedUsername = username;
+    })
+    .catch((error) => {
+      console.log('error retrieving session username: ' + error);
+    })
 
     this.events.subscribe('userLoggedIn', () => {
       this.isAuthenticated = true;
@@ -182,8 +189,11 @@ export class PatientsPage implements OnInit {
   }
 
   loadPatients(infiniteScrollEvent: any) {
-    this.patientListSvc.getPatientsByFilter(this.ptFilter, 
-      {limit: this.pageSize, startkey: this.startKey, skip: this.skip}).then((data) => {
+    let args: object = {limit: this.pageSize, startkey: this.startKey, skip: this.skip};
+    if (this.showOnlyMyPatients) {
+      args['watchingProvider'] = this.currentAuthenticatedUsername;
+    }
+    this.patientListSvc.getPatientsByFilter(this.ptFilter, args).then((data) => {
       this.isLoading = false;
       if (this.loading != null) {
         this.loading.dismiss();
@@ -203,7 +213,7 @@ export class PatientsPage implements OnInit {
           }
         });
         this.originalPatientList = data.patients; // make a copy of patients for filtering purposes
-        this.displayPatientsBySortOrder(this.sortOrder);
+        this.displayPatientsBySortOrder();
       }
       
     })
@@ -264,52 +274,36 @@ export class PatientsPage implements OnInit {
   }
 
   watchPatient(patient: Patient) {
-    // execute only if this is a mobile device
-    if (this.platform.is('ios') || this.platform.is('android')) {
-      if (this.device.uuid != null) {
-        this.patientSvc.watchPatient(patient, this.device.uuid).then((data) => {
-          this.getPatients();
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-    }
+    this.patientSvc.watchPatient(patient, this.currentAuthenticatedUsername).then((data) => {
+      this.getPatients();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
     this.patientList.closeSlidingItems();
   }
 
   unWatchPatient(patient: Patient) {
-    // execute only if this is a mobile device
-    if (this.platform.is('ios') || this.platform.is('android')) {
-      if (this.device.uuid != null) {
-        this.patientSvc.unWatchPatient(patient, this.device.uuid).then((data) => {
-          this.getPatients();
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-    }
+    this.patientSvc.unWatchPatient(patient, this.currentAuthenticatedUsername).then((data) => {
+      this.getPatients();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
     this.patientList.closeSlidingItems();
   }
 
   isWatchingPatient(patient: Patient): boolean {
-    // execute only if this is a mobile device
-    if (this.platform.is('ios') || this.platform.is('android')) {
-      if (this.device.uuid != null) {
-        if (patient.watchers != null && patient.watchers.indexOf(this.device.uuid) != -1) {
-          return true;
-        }
-        else {
-          return false;
-        }
+    if (patient.watchers != null) {
+      if (patient.watchers.indexOf(this.currentAuthenticatedUsername) != -1) {
+        return true;
       }
       else {
-        return true; // watch all, if this is running in a browser
+        return false;
       }
     }
     else {
-      return true; // watch all, if this is running in a browser
+      return false;
     }
   }
 
@@ -330,8 +324,10 @@ export class PatientsPage implements OnInit {
           break;
         case SurgeryStatusEnum.Scheduled:
           scheduledSurgery = patient.surgery.scheduledSurgery;
-          summary += ": " + new Date(scheduledSurgery.scheduledDate).toLocaleDateString() 
-            + " at " + scheduledSurgery.facility + " with " + scheduledSurgery.surgeonName;
+          if (scheduledSurgery != null) {
+            summary += ": " + new Date(scheduledSurgery.scheduledDate).toLocaleDateString() 
+              + " at " + scheduledSurgery.facility + " with " + scheduledSurgery.surgeonName;
+          }
           break;
         case SurgeryStatusEnum.ScheduledToday:
           scheduledSurgery = patient.surgery.scheduledSurgery;
@@ -360,7 +356,7 @@ export class PatientsPage implements OnInit {
     let status: SurgeryStatusEnum = SurgeryStatusEnum.NotIndicated;
     if (patient.surgery != null) {
       status = patient.surgery.surgeryStatus;
-      if (status == SurgeryStatusEnum.Scheduled) {
+      if (status == SurgeryStatusEnum.Scheduled && patient.surgery.scheduledSurgery != null) {
         let daysFromToday: number = this.dateUtils.daysFromToday(patient.surgery.scheduledSurgery.scheduledDate);
         if (daysFromToday == 0) {
           status = SurgeryStatusEnum.ScheduledToday;
@@ -390,74 +386,31 @@ export class PatientsPage implements OnInit {
       this.patients = this.originalPatientList;
   }
 
-  /**
-   * Sort patients
-   */
-  async doSort() {
-    let alert = await this.alertCtrl.create({
-      header: 'Sort',
-      inputs: [
-        {
-          type: 'radio',
-          label: 'Name (asc)',
-          value: 'ascName',
-          checked: this.sortOrder == 'ascName'
-        },
-        {
-          type: 'radio',
-          label: 'Name (desc)',
-          value: 'descName',
-          checked: this.sortOrder == 'descName'
-        },
-        {
-          type: 'radio',
-          label: 'Sch.Surg (asc)',
-          value: 'ascSurgDate',
-          checked: this.sortOrder == 'ascSurgDate'
-        },
-        {
-          type: 'radio',
-          label: 'Sch.Surg (desc)',
-          value: 'descSurgDate',
-          checked: this.sortOrder == 'descSurgDate'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'OK',
-          handler: (sortOrder: string) => {
-            this.displayPatientsBySortOrder(sortOrder);
-          }
-        }
-      ],
-      translucent: true,
-      cssClass: 'sort-prompt'
-    });
-
-    await alert.present();
-  }
-
-  displayPatientsBySortOrder(sortOrder) {
-    switch(sortOrder) {
+  displayPatientsBySortOrder() {
+    switch(this.sortOrder) {
+      case "lastEditedDate":
+        this.sortPatientListByLastEditedDate();
       case "ascName":
         this.sortPatientListByName('ascend');
-        this.sortOrder = "ascName";
         break;
       case "descName":
         this.sortPatientListByName('descend');
-        this.sortOrder = "descName";
         break;
       case "ascSurgDate":
         this.sortPatientListBySurgDate('ascend');
-        this.sortOrder = "ascSurgDate";
         break;
       case "descSurgDate":
         this.sortPatientListBySurgDate('descend');
-        this.sortOrder = "descSurgDate";
     }
+  }
+
+  sortPatientListByLastEditedDate() {
+    this.patients = this.patients.sort((a, b) => {
+      let cmp = 0;
+      if (a.editedDate > b.editedDate) cmp = -1
+      else if (a.editedDate < b.editedDate) cmp = 0;
+      return cmp;
+    })
   }
 
   /**
@@ -490,7 +443,7 @@ export class PatientsPage implements OnInit {
     });
   }
 
-  sortPatientListBySurgDate(sortPreference) {
+  sortPatientListBySurgDate(sortPreference: string) {
     var greaterValue, lesserValue;
     if (sortPreference == "ascend") {
       greaterValue = 1
@@ -527,39 +480,6 @@ export class PatientsPage implements OnInit {
       }
       return (cmp);
     });
-  }
-
-  showPatient(patient: Patient): boolean {
-    let showFlag: boolean = true;
-
-    // filter by patients only for mobile devices
-    if (this.platform.is('ios') || this.platform.is('android')) {
-      showFlag = this.filterByMyPatients(patient);
-    }
-
-    return showFlag;
-  }
-
-  filterByMyPatients(patient: Patient): boolean {
-    if (this.showOnlyMyPatients) {
-      if (patient['watchers'] != null) {
-        if (patient['watchers'].length > 0) {
-          if (patient['watchers'].indexOf(this.device.uuid) == -1) {
-            return false;
-          }
-          else {
-            return true;
-          }
-        }
-        else {
-          return false;
-        }
-      }
-      else {
-        return false;
-      }
-    }
-    return true;
   }
 
   async showAlert(titleTxt: string, subTitleTxt: string) {

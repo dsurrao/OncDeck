@@ -18,7 +18,7 @@ export class Patient {
     isArchived: boolean = false;
     editorDeviceUuid: string;
     editorUsername: string;
-    editedDate: Date;
+    editedDate: string;
     _id: string; // unique id for pouchdb
     _rev: string; // document revision in pouchdb
 }

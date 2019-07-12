@@ -12,22 +12,52 @@ export class PatientListService {
 
   constructor(public dvSvc: PouchdbService) { }
 
-  getPatientsByFilter(filter: PatientListFilterEnum = PatientListFilterEnum.All,
+  getPatientsByFilter(filter: PatientListFilterEnum = PatientListFilterEnum.All, 
     args: object = {}): Promise<PatientList> {
-    switch (filter) {
-      case PatientListFilterEnum.All:
-        return this.getPatients(args);
-      case PatientListFilterEnum.NoSurgery:
-        return this.getPatientsWithNoScheduledSurgery();
-      case PatientListFilterEnum.ScheduledBiopsy:
-        return this.getPatientsScheduledForBiopsy();
-      case PatientListFilterEnum.ScheduledSurgery:
-        return this.getPatientsScheduledForSurgery();
-      default: 
-        return new Promise((resolve, reject) => {
-          reject("Invalid filter");
-        })
-    }
+    return new Promise((resolve, reject) => {
+      let patientList: Promise<PatientList>;
+      switch (filter) {
+        case PatientListFilterEnum.All:
+          patientList = this.getPatients(args);
+          break;
+        case PatientListFilterEnum.NoSurgery:
+          patientList =  this.getPatientsWithNoScheduledSurgery();
+          break;
+        case PatientListFilterEnum.ScheduledBiopsy:
+          patientList =  this.getPatientsScheduledForBiopsy();
+          break;
+        case PatientListFilterEnum.ScheduledSurgery:
+          patientList =  this.getPatientsScheduledForSurgery();
+          break;
+        default: 
+          break;
+      }
+
+      // filter by watching provider, if passed in
+      if (patientList != null) {
+        if (args['watchingProvider'] != null) {
+          let watchedPatientList: PatientList = new PatientList();
+          watchedPatientList.patients = [];
+          patientList.then(list => {
+            for (let pt of list.patients) {
+              if (pt.watchers != null) {
+                if (pt.watchers.indexOf(args['watchingProvider']) != -1) {
+                  watchedPatientList.patients.push(pt);
+                }
+              }
+            }
+            watchedPatientList.totalRows = watchedPatientList.patients.length;
+            resolve(watchedPatientList);
+          });
+        }
+        else {
+          resolve(patientList);
+        }
+      }
+      else {
+        reject('No patient filter specified');
+      }
+    });
   }
 
   getPatients(args: object = {}): Promise<PatientList> {
