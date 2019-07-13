@@ -1,6 +1,6 @@
-<p *ngIf="patient.surgery != null">
-  <b>Surgeries</b>
-  <br/>
+<b>Surgeries</b>
+<br/>
+<p *ngIf="patient.surgery != null && patient.surgery.surgeryStatus != null; else elseBlock">
   Status: {{patient.surgery.surgeryStatus}}
   <br/>
   <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.Scheduled">
@@ -13,7 +13,7 @@
     Reason: {{patient.surgery.surgeryNotScheduled.reason}} 
     (recorded on {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}})
     <br/>
-    Reminder Date: {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateReminder)}})
+    Reminder Date: {{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateReminder)}}
     <br/>
   </ng-container>
   <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotIndicated">
@@ -26,3 +26,5 @@
     <ion-icon name="create" [routerLink]="'/patient/' + patient._id + '/surgery/completed-surgery/' + mostRecentCompletedSurgery.id"></ion-icon>
   </ng-container>
 </p>
+
+<ng-template #elseBlock>No information found. </ng-template>

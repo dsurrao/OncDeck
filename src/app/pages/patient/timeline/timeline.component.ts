@@ -25,14 +25,16 @@ export class TimelineComponent implements OnInit {
     // biopsies
     if (this.patient.biopsy != null) {
       if (this.patient.biopsy.scheduledBiopsy != null) {
-        event = {
-          'date': new Date(this.patient.biopsy.scheduledBiopsy.scheduledDate),
-          'header': 'Scheduled Biopsy',
-          'body': 'Biopsy type: ' + this.patient.biopsy.scheduledBiopsy.biopsyType.type + ', '
-            + 'Contact person: ' + this.patient.biopsy.scheduledBiopsy.contactPerson + ', '
-            + 'Facility: ' + this.patient.biopsy.scheduledBiopsy.facility
+        if (this.patient.biopsy.scheduledBiopsy.scheduledDate != null) {
+          event = {
+            'date': new Date(this.patient.biopsy.scheduledBiopsy.scheduledDate),
+            'header': 'Scheduled Biopsy',
+            'body': 'Biopsy type: ' + this.patient.biopsy.scheduledBiopsy.biopsyType.type + ', '
+              + 'Contact person: ' + this.patient.biopsy.scheduledBiopsy.contactPerson + ', '
+              + 'Facility: ' + this.patient.biopsy.scheduledBiopsy.facility
+          }
+          this.events.push(event);
         }
-        this.events.push(event);
       }
       if (this.patient.biopsy.completedBiopsies != null) {
         for (let b of this.patient.biopsy.completedBiopsies) {
@@ -49,13 +51,15 @@ export class TimelineComponent implements OnInit {
     // surgeries
     if (this.patient.surgery != null) {
       if (this.patient.surgery.scheduledSurgery != null) {
-        event = {
-          'date': new Date(this.patient.surgery.scheduledSurgery.scheduledDate),
-          'header': 'Scheduled Surgery',
-          'body': 'Surgeon: ' + this.patient.surgery.scheduledSurgery.surgeonName + ', '
-            + 'Facility: ' + this.patient.surgery.scheduledSurgery.facility
+        if (this.patient.surgery.scheduledSurgery.scheduledDate != null) {
+          event = {
+            'date': new Date(this.patient.surgery.scheduledSurgery.scheduledDate),
+            'header': 'Scheduled Surgery',
+            'body': 'Surgeon: ' + this.patient.surgery.scheduledSurgery.surgeonName + ', '
+              + 'Facility: ' + this.patient.surgery.scheduledSurgery.facility
+          }
+          this.events.push(event);
         }
-        this.events.push(event);
       }
       if (this.patient.surgery.completedSurgeries != null) {
         for (let s of this.patient.surgery.completedSurgeries) {

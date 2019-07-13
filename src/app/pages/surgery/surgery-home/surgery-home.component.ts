@@ -20,6 +20,8 @@ import { Events, NavController } from '@ionic/angular';
 export class SurgeryHomeComponent implements OnInit {
   @Input('patient') patient: Patient;
 
+  updateSurgeryStatusFlag: boolean = false;
+
   // for use in template
   surgeryStatusEnum = SurgeryStatusEnum;
   surgeryNotIndicatedReasonEnum = SurgeryNotIndicatedReasonEnum;
@@ -49,10 +51,14 @@ export class SurgeryHomeComponent implements OnInit {
     }
   }
 
+  updateSurgeryStatus() {
+    this.updateSurgeryStatusFlag = !this.updateSurgeryStatusFlag;
+  }
+
   update() {
     this.surgerySvc.saveSurgeryStatus(this.patient).then(patient => {
       this.events.publish('patientSaved');
-      this.navCtrl.navigateBack('/patient/' + this.patient._id);
+      this.updateSurgeryStatusFlag = false;
     })
   }
 }

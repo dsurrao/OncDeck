@@ -19,12 +19,12 @@
 <ion-content *ngIf="patient != null">
 
   <div class="scrollmenu">
-    <ion-button color="{{summaryButtonColor}}" (click)="summaryTabClicked()">Summary</ion-button>
-    <ion-button color="{{stagingButtonColor}}" (click)="stagingTabClicked()">Staging</ion-button>
-    <ion-button color="{{biopsyButtonColor}}" (click)="biopsyTabClicked()">Biopsy</ion-button>
-    <ion-button color="{{radiationButtonColor}}" (click)="radiationTabClicked()">Radiation</ion-button>
-    <ion-button color="{{surgeryButtonColor}}" (click)="surgeryTabClicked()">Surgery</ion-button>
-    <ion-button color="{{timelineButtonColor}}" (click)="timelineTabClicked()">Timeline</ion-button>
+    <ion-button color="{{summaryButtonColor}}" (click)="resetTabButtons('summary')">Summary</ion-button>
+    <ion-button color="{{stagingButtonColor}}" (click)="resetTabButtons('staging')">Staging</ion-button>
+    <ion-button color="{{biopsyButtonColor}}" (click)="resetTabButtons('biopsy')">Biopsy</ion-button>
+    <ion-button color="{{radiationButtonColor}}" (click)="resetTabButtons('radiation')">Radiation</ion-button>
+    <ion-button color="{{surgeryButtonColor}}" (click)="resetTabButtons('surgery')">Surgery</ion-button>
+    <ion-button color="{{timelineButtonColor}}" (click)="resetTabButtons('timeline')">Timeline</ion-button>
   </div>
 
   <!-- Patient information -->

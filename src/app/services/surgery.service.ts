@@ -72,17 +72,11 @@ export class SurgeryService {
         if (inferredStatus == SurgeryStatusEnum.Completed) {
           throw new Error('There is a recent completed surgery');
         }
-        else if (inferredStatus == SurgeryStatusEnum.Scheduled) {
-          throw new Error('There is a scheduled surgery');
-        }
         patient.surgery.surgeryNotIndicated.dateRecorded = new Date().toISOString();
         patient.surgery.scheduledSurgery = null;
         patient.surgery.surgeryNotScheduled = null;
         break;
       case SurgeryStatusEnum.NotScheduled:
-          if (inferredStatus == SurgeryStatusEnum.Scheduled) {
-            throw new Error('There is a scheduled surgery');
-          }
           patient.surgery.surgeryNotScheduled.dateRecorded = new Date().toISOString();
           patient.surgery.scheduledSurgery = null;
           patient.surgery.surgeryNotIndicated = null;

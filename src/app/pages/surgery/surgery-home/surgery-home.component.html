@@ -2,30 +2,11 @@
   <ion-card>
     <ion-card-content>
       <app-surgery-summary [patient]="patient"></app-surgery-summary>
+      <ion-icon name="create" (click)="updateSurgeryStatus()"></ion-icon>
     </ion-card-content>
   </ion-card>
 
-  <div class="patient-divider"><br/><br/></div>
-  
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Completed Surgeries</ion-label>
-    </ion-item-divider>
-    <ion-list *ngIf="patient.surgery.completedSurgeries.length > 0; else noSurgeriesBlock">
-      <ion-item *ngFor="let surgery of patient.surgery.completedSurgeries" 
-        [routerLink]="'surgery/completed-surgery/' + surgery.id">
-        Surgery completed on {{surgery.completedDate}} by {{surgery.surgeonName}}
-      </ion-item>
-    </ion-list>
-    <ng-template #noSurgeriesBlock>
-      <ion-item>None</ion-item>
-    </ng-template>
-    <ion-button color="primary" [routerLink]="'surgery/completed-surgery'">Record Completed Surgery</ion-button>
-  </ion-item-group>
-
-  <div class="patient-divider"><br/><br/></div>
-
-  <ion-item-group>
+  <ion-item-group *ngIf="updateSurgeryStatusFlag==true">
     <ion-item-divider>
       <ion-label>Update Surgery Status</ion-label>
     </ion-item-divider>
@@ -105,8 +86,34 @@
         </ion-item>
       </ion-item-group>
 
-      <ion-button color="primary" [disabled]="!surgeryStatusForm.form.valid" (click)="update()">Update</ion-button>
+      <ion-toolbar>
+        <ion-button color="primary" slot="end" [disabled]="!surgeryStatusForm.form.valid" (click)="update()">Update</ion-button>
+      </ion-toolbar>
     </form>
-
   </ion-item-group>
+  
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Completed Surgeries</ion-label>
+    </ion-item-divider>
+    <ion-list *ngIf="patient.surgery.completedSurgeries.length > 0; else noSurgeriesBlock">
+      <ion-item *ngFor="let surgery of patient.surgery.completedSurgeries" 
+        [routerLink]="'surgery/completed-surgery/' + surgery.id">
+        Surgery completed on {{surgery.completedDate}} by {{surgery.surgeonName}}
+      </ion-item>
+    </ion-list>
+    <ng-template #noSurgeriesBlock>
+      <ion-item>None</ion-item>
+    </ng-template>
+
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['surgery/completed-surgery']" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Record Completed Surgery
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-item-group>
+
 </ng-container>
