@@ -23,7 +23,6 @@
   </ng-container>
   <ng-container *ngIf="mostRecentCompletedSurgery != null">
     <app-completed-surgery-summary [surgery]="mostRecentCompletedSurgery"></app-completed-surgery-summary>
-    <ion-icon name="create" [routerLink]="'/patient/' + patient._id + '/surgery/completed-surgery/' + mostRecentCompletedSurgery.id"></ion-icon>
   </ng-container>
 </p>
 

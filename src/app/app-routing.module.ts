@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'patients', loadChildren: './pages/patients/patients.module#PatientsPageModule' },
   { path: 'patient-form', loadChildren: './pages/patient-form/patient-form.module#PatientFormPageModule' },
   { path: 'patient-form/:id', loadChildren: './pages/patient-form/patient-form.module#PatientFormPageModule' },
-  { path: 'patient/:id', loadChildren: './pages/patient/patient.module#PatientPageModule' },
+  { path: 'patient/:id', loadChildren: './pages/patient/patient.module#PatientPageModule', pathMatch: 'full' },
   { path: 'patient/:patientId/surgery', loadChildren: './pages/surgery/surgery.module#SurgeryPageModule'},
   { path: 'patient/:patientId/biopsy', loadChildren: './pages/biopsy/biopsy.module#BiopsyPageModule' },
   { path: 'patient/:patientId/radiation-therapy', loadChildren: './pages/radiation-therapy/radiation-therapy.module#RadiationTherapyPageModule' },

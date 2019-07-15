@@ -1,9 +1,8 @@
-<ion-card-header class="card-header">
-  <ion-icon name="body"></ion-icon>
-  Radiation Therapy
-</ion-card-header>
+<div class="tab-heading">
+  <ion-icon name="body"></ion-icon>Radiation Therapy
+</div>
 
-<ion-list #therapyList>
+<ion-list #therapyList *ngIf="patient.radiationTherapies != null; else elseBlock">
   <ion-item-sliding *ngFor="let therapy of patient.radiationTherapies">
     <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/radiation-therapy/' + therapy.id]">
       Radiation started on {{this.dateUtils.toLocaleDateString(therapy.startDate)}}, projected end on {{this.dateUtils.toLocaleDateString(therapy.projectedEndDate)}}
@@ -17,11 +16,12 @@
   </ion-item-sliding>
 </ion-list>
 
-<ion-toolbar>
-  <ion-buttons slot="end">
-    <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/radiation-therapy/']" class="add-button">
-        <ion-icon name="add"></ion-icon>
-        Record Radiation Therapy
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
+<ng-template #elseBlock>
+  <div class="no-information">No information found.</div>
+</ng-template>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [routerLink]="['/patient/' + patient._id + '/radiation-therapy']">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button> 
+</ion-fab>

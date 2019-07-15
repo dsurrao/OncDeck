@@ -28,71 +28,69 @@
   </div>
 
   <!-- Patient information -->
-  <div>
-    <!-- Summary -->
-    <ng-container *ngIf="tabClicked=='summary'">
-      <ion-card class="card-container">
-        <ion-card-header class="card-header">
-          <ion-icon name="clipboard"></ion-icon>
-          Summary
-        </ion-card-header>
-        <ion-card-content>
-          <patient-summary [patient]="patient"></patient-summary>
-        </ion-card-content>
-      </ion-card>
-      <ion-card *ngIf="patient.biopsy != null">
-        <ion-card-content>
-          <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
-        </ion-card-content>
-      </ion-card>
-      <ion-card *ngIf="patient.radiationTherapies != null">
-        <ion-card-content>
-          <app-radiation-therapy-summary 
-            [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
-          </app-radiation-therapy-summary>
-        </ion-card-content>
-      </ion-card>
-      <ion-card *ngIf="patient.surgery != null">
-        <ion-card-content>        
-          <app-surgery-summary [patient]="patient"></app-surgery-summary>
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
+  <!-- Summary -->
+  <ng-container *ngIf="tabClicked=='summary'">
+    <div class="tab-heading">
+      <ion-icon name="clipboard"></ion-icon>Summary
+    </div>
+    <ion-card class="card-container">
+      <ion-card-content>
+        <patient-summary [patient]="patient"></patient-summary>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="patient.biopsy != null">
+      <ion-card-content>
+        <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="patient.radiationTherapies != null">
+      <ion-card-content>
+        <app-radiation-therapy-summary 
+          [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
+        </app-radiation-therapy-summary>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="patient.surgery != null">
+      <ion-card-content>        
+        <app-surgery-summary [patient]="patient"></app-surgery-summary>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
-    <!-- Completed Biopsy -->
-    <ng-container *ngIf="tabClicked=='biopsy'">
-      <completed-biopsy-items [patient]="patient"></completed-biopsy-items>
-    </ng-container>
+  <!-- Completed Biopsy -->
+  <ng-container *ngIf="tabClicked=='biopsy'">
+    <completed-biopsy-items [patient]="patient"></completed-biopsy-items>
+  </ng-container>
 
-    <!-- Clinical Breast Staging -->
-    <ng-container *ngIf="tabClicked=='staging'">
-      <ion-card-header class="card-header">
-        <ion-icon name="body"></ion-icon>
-        Clinical Breast Staging
-      </ion-card-header>
-      <div class="patient-divider"></div>
-      <ion-toolbar>
-        <ion-buttons slot="end">
-          <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/clinical-breast-staging/' + patient._id]" class="add-button">
-              <ion-icon name="add"></ion-icon>
-              Add Clinical Breast Staging
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>       
-    </ng-container>
-    
-    <!-- Radiation Therapy -->
-    <ng-container *ngIf="tabClicked=='radiation'">
-      <radiation-therapy-items [patient]="patient"></radiation-therapy-items>
-    </ng-container>
+  <!-- Clinical Breast Staging -->
+  <ng-container *ngIf="tabClicked=='staging'">
+    <ion-card-header class="card-header">
+      <ion-icon name="body"></ion-icon>
+      Clinical Breast Staging
+    </ion-card-header>
+    <div class="patient-divider"></div>
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" 
+          [routerLink]="['/patient/' + patient._id + '/clinical-breast-staging']" class="add-button">
+          <ion-icon name="add"></ion-icon>
+          Add Clinical Breast Staging
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>       
+  </ng-container>
+  
+  <!-- Radiation Therapy -->
+  <ng-container *ngIf="tabClicked=='radiation'">
+    <radiation-therapy-items [patient]="patient"></radiation-therapy-items>
+  </ng-container>
 
-    <ng-container *ngIf="tabClicked=='surgery'">
-      <app-surgery-home [patient]="patient" *ngIf="tabClicked=='surgery'"></app-surgery-home>
-    </ng-container>
+  <ng-container *ngIf="tabClicked=='surgery'">
+    <app-surgery-home [patient]="patient" *ngIf="tabClicked=='surgery'"></app-surgery-home>
+  </ng-container>
 
-    <ng-container *ngIf="tabClicked=='timeline'">
-      <app-timeline [patient]="patient"></app-timeline>
-    </ng-container>
+  <ng-container *ngIf="tabClicked=='timeline'">
+    <app-timeline [patient]="patient"></app-timeline>
+  </ng-container>
 
-  </div>
 </ion-content>

@@ -1,8 +1,9 @@
+<div class="tab-heading">
+    <ion-icon name="calendar"></ion-icon>Timeline
+</div>
 <ng-container *ngIf="events.length > 0; else elseBlock">
     <ngx-timeline [events]="events"></ngx-timeline>
 </ng-container>
 <ng-template #elseBlock>
-    <p>
-        No events found in patient timeline.
-    </p>
+    <div class="no-information">No information found.</div>
 </ng-template>

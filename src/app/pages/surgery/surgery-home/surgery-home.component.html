@@ -1,10 +1,16 @@
+<div class="tab-heading">
+  <ion-icon name="medical"></ion-icon>Surgeries
+</div>
+
 <ng-container *ngIf="patient != null">
-  <ion-card>
+  <ion-card *ngIf="patient.surgery.surgeryStatus != null; else elseBlock">
     <ion-card-content>
       <app-surgery-summary [patient]="patient"></app-surgery-summary>
-      <ion-icon name="create" (click)="updateSurgeryStatus()"></ion-icon>
     </ion-card-content>
   </ion-card>
+  <ng-template #elseBlock>
+    <div class="no-information" *ngIf="updateSurgeryStatusFlag==false">No information found.</div>
+  </ng-template>
 
   <ion-item-group *ngIf="updateSurgeryStatusFlag==true">
     <ion-item-divider>
@@ -92,7 +98,7 @@
     </form>
   </ion-item-group>
   
-  <ion-item-group>
+  <ion-item-group *ngIf="patient.surgery.completedSurgeries.length > 0">
     <ion-item-divider>
       <ion-label>Completed Surgeries</ion-label>
     </ion-item-divider>
@@ -104,16 +110,17 @@
     </ion-list>
     <ng-template #noSurgeriesBlock>
       <ion-item>None</ion-item>
-    </ng-template>
-
-    <ion-toolbar>
-      <ion-buttons slot="end">
-        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['surgery/completed-surgery']" class="add-button">
-            <ion-icon name="add"></ion-icon>
-            Record Completed Surgery
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
+    </ng-template>    
   </ion-item-group>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" 
+    *ngIf="updateSurgeryStatusFlag==false">
+    <ion-fab-button (click)="updateSurgeryStatus()">
+      <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button [routerLink]="['/patient/' + patient._id + '/surgery/completed-surgery']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ng-container>

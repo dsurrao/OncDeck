@@ -1,9 +1,8 @@
-<ng-container *ngIf="patient.biopsy != null && patient.biopsy.completedBiopsies != null">
-  <div class="patient-divider"></div>
-  <ion-card-header class="card-header">
-    <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Completed Biopsies
-  </ion-card-header>
+<div class="tab-heading">
+  <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Completed Biopsies
+</div>
 
+<ng-container *ngIf="patient.biopsy != null && patient.biopsy.completedBiopsies != null; else elseBlock">
   <ion-list #biopsyList>
     <ion-item-sliding *ngFor="let biopsy of patient.biopsy.completedBiopsies">
       <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy/' + biopsy.id]">
@@ -17,14 +16,14 @@
       </ion-item-options> 
     </ion-item-sliding>
   </ion-list>
-
 </ng-container>
 
-<ion-toolbar>
-  <ion-buttons slot="end">
-      <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy']" class="add-button">
-        <ion-icon name="add"></ion-icon>
-        Record Completed Biopsy
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
+<ng-template #elseBlock>
+  <div class="no-information">No information found.</div>
+</ng-template>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy']">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button> 
+</ion-fab>
