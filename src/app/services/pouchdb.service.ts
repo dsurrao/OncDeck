@@ -224,7 +224,7 @@ export class PouchdbService {
       console.log('sync paused');
     }).on('active', function (info) {
       // replication was resumed
-      //this.events.publish('syncActive');
+      this.events.publish('syncActive');
       console.log('sync active');
     }.bind(this))
     .on('denied', function (info) {

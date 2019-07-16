@@ -91,3 +91,9 @@
   color: gray;
   padding: 10px;
 }
+
+.offline-warning {
+  background-color: var(--ion-color-warning);
+  display: flex;
+  justify-content: center;
+}

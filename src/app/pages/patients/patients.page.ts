@@ -1,6 +1,6 @@
 import { DateUtils } from '../../common/dateutils';
 //import { GraphPage } from './../graph/graph';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AlertController, 
   Events, 
   LoadingController,
@@ -8,7 +8,6 @@ import { AlertController,
   NavController, 
   Platform,
   IonList
-//  Loading
 } from '@ionic/angular';
 import { LoginModalPage } from '../login-modal/login-modal.page';
 import { LogoutModalPage } from '../logout-modal/logout-modal.page';
@@ -30,22 +29,23 @@ import { PatientListFilterEnum } from 'src/app/enums/patient-list-filter-enum';
   templateUrl: './patients.page.html',
   styleUrls: ['./patients.page.scss'],
 })
-export class PatientsPage implements OnInit {
+export class PatientsPage implements OnInit, OnDestroy {
 
   @ViewChild('patientList', {read: IonList}) patientList: IonList;
 
-  patients: Patient[];
-  originalPatientList: Patient[];
-  isAuthenticated: boolean;
-  currentAuthenticatedUsername: string;
-  showOnlyMyPatients: boolean;
-  showOnlyPatientsWithoutSurgeries: boolean;
-  sortOrder: string;
-  isLoading: boolean;
+  patients: Patient[] = [];
+  originalPatientList: Patient[] = [];
+  isAuthenticated: boolean = false;
+  currentAuthenticatedUsername: string = '';
+  showOnlyMyPatients: boolean = false;
+  showOnlyPatientsWithoutSurgeries: boolean = false;
+  sortOrder: string = 'lastEditedDate';
+  isLoading: boolean = false;
   lastActiveSync: string;
   isSearchbarOpened: boolean = false;
   ptFilter: PatientListFilterEnum = PatientListFilterEnum.All;
   loading: HTMLIonLoadingElement;
+  isOnline: boolean = false;
 
   // for pagination
   pageSize: number;
@@ -68,15 +68,8 @@ export class PatientsPage implements OnInit {
     public device: Device,
 //    private printer: Printer,
     public platform: Platform) {
-    this.patients = [];
-    this.originalPatientList = [];
-    this.isAuthenticated = false;
-    this.currentAuthenticatedUsername = '';
-    this.showOnlyMyPatients = false;
-    this.showOnlyPatientsWithoutSurgeries = false;
-    this.sortOrder = 'lastEditedDate';
-    this.isLoading = false;
-    this.lastActiveSync = null;
+
+    // initialize
     this.resetPaginationOptions();
 
     // subscribe to events
@@ -103,12 +96,28 @@ export class PatientsPage implements OnInit {
     });
 
     this.events.subscribe('syncActive', () => {
-      this.getPatients();
       this.lastActiveSync = new Date().toLocaleString();
+      this.getPatients();
     });
   }
 
   ngOnInit() {
+    this.isOnline = navigator.onLine;
+
+    window.addEventListener('offline', () => {
+      this.isOnline = false;
+    });
+
+    window.addEventListener('online', () => {
+      this.isOnline = true;
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('userLoggedIn');
+    this.events.unsubscribe('userLoggedOut');
+    this.events.unsubscribe('patientSaved');
+    this.events.unsubscribe('syncActive');
   }
 
   ionViewDidEnter() {
@@ -121,9 +130,17 @@ export class PatientsPage implements OnInit {
       }
       else {
         this.isAuthenticated = false;
-        this.presentLoginModal();
+        if (navigator.onLine) {
+          this.presentLoginModal();
+        }
+        else {
+          // get local copy of patients even if not authenticated
+          this.getPatients();
+        }
       }
     }).catch((error) => {
+      // get local copy of patients even if no connectivity
+      this.getPatients();
       console.log(error);
     });
   }
@@ -184,6 +201,8 @@ export class PatientsPage implements OnInit {
     if (this.showOnlyMyPatients) {
       args['watchingProvider'] = this.currentAuthenticatedUsername;
     }
+
+    // TODO: add sorting info
     this.patientListSvc.getPatientsByFilter(this.ptFilter, args).then((data) => {
       this.isLoading = false;
       if (this.loading != null) {

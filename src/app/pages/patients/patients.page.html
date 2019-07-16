@@ -76,7 +76,10 @@
 
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="isAuthenticated">Hello, {{currentAuthenticatedUsername}}!</ion-title>
+    <ion-title *ngIf="isAuthenticated">
+      Hello, {{currentAuthenticatedUsername}}!
+      <span style="font-size: 0.5em" *ngIf="lastActiveSync != null"><br/>Last sync {{lastActiveSync}}</span>
+    </ion-title>
     <ion-title *ngIf="!isAuthenticated">Please log in</ion-title>
 
     <ion-buttons slot="start">
@@ -88,7 +91,6 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ng-container *ngIf="lastActiveSync != null">Last data sync at {{lastActiveSync}}</ng-container>
       <ion-button *ngIf="!isAuthenticated" (click)="login()">
         <ion-icon name="log-in"></ion-icon>
       </ion-button>
@@ -109,63 +111,67 @@
 </ion-header>
 
 <ion-content>
-    <ion-searchbar class="search-toolbar" (ionInput)="filterPatientList($event)" showCancelButton="true" 
-      placeholder="Search patients" *ngIf="isAuthenticated==true&&isSearchbarOpened" 
-      (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
-    <ion-list #patientList>
-      <ion-item-sliding *ngFor="let patient of patients">        
-        <ion-item [routerLink]="['/patient/' + patient._id]" text-wrap>
-          <ion-avatar item-start>
-            <ion-icon name="contact" class="icon-contact"></ion-icon>
-          </ion-avatar>
-          <div class='patient-container'>
-            {{patient.lastName}}, {{patient.firstName}}
-            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
-              <span class='patient-status'>
-                <ion-icon name="warning" style='color:red'></ion-icon>
-                <span style='color:red'>{{getSurgerySummary(patient)}}</span>
-              </span>
-            </div>
-            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.ScheduledToday">
-                <span class='patient-status'>
-                  <span style='color:green'>{{getSurgerySummary(patient)}}</span>
-                </span>
-            </div>
-            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.Scheduled || getSurgeryStatus(patient) == surgeryStatusEnum.Completed">
-                <span class='patient-status'>
-                  <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
-                </span>
-            </div>
+  <ion-searchbar class="search-toolbar" (ionInput)="filterPatientList($event)" showCancelButton="true" 
+    placeholder="Search patients" *ngIf="isSearchbarOpened" 
+    (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+  <ion-list #patientList>
+    <ion-item-sliding *ngFor="let patient of patients">        
+      <ion-item [routerLink]="['/patient/' + patient._id]" text-wrap>
+        <ion-avatar item-start>
+          <ion-icon name="contact" class="icon-contact"></ion-icon>
+        </ion-avatar>
+        <div class='patient-container'>
+          {{patient.lastName}}, {{patient.firstName}}
+          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
+            <span class='patient-status'>
+              <ion-icon name="warning" style='color:red'></ion-icon>
+              <span style='color:red'>{{getSurgerySummary(patient)}}</span>
+            </span>
           </div>
-          <ion-note slot="end">
-              <ion-icon name="arrow-dropright" class="icon-right-arrow"></ion-icon>
-          </ion-note>
-        </ion-item>
+          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.ScheduledToday">
+              <span class='patient-status'>
+                <span style='color:green'>{{getSurgerySummary(patient)}}</span>
+              </span>
+          </div>
+          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.Scheduled || getSurgeryStatus(patient) == surgeryStatusEnum.Completed">
+              <span class='patient-status'>
+                <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
+              </span>
+          </div>
+        </div>
+        <ion-note slot="end">
+            <ion-icon name="arrow-dropright" class="icon-right-arrow"></ion-icon>
+        </ion-note>
+      </ion-item>
 
-        <ion-item-options side="end">
-          <ion-item-option *ngIf="!isWatchingPatient(patient)" (click)="watchPatient(patient)">
-            Watch
-          </ion-item-option>
-          <ion-item-option *ngIf="isWatchingPatient(patient)" color="secondary" (click)="unWatchPatient(patient)">
-            Un-watch
-          </ion-item-option>
-          <ion-item-option color="danger" (click)="removePatientConfirm(patient)">
-            Remove
-          </ion-item-option>
-        </ion-item-options> 
-        
-      </ion-item-sliding>
-    </ion-list>
-    
-    <ion-infinite-scroll (ionInfinite)="getPatients($event)">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more data...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+      <ion-item-options side="end">
+        <ion-item-option *ngIf="!isWatchingPatient(patient)" (click)="watchPatient(patient)">
+          Watch
+        </ion-item-option>
+        <ion-item-option *ngIf="isWatchingPatient(patient)" color="secondary" (click)="unWatchPatient(patient)">
+          Un-watch
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="removePatientConfirm(patient)">
+          Remove
+        </ion-item-option>
+      </ion-item-options> 
+      
+    </ion-item-sliding>
+  </ion-list>
+  
+  <ion-infinite-scroll (ionInfinite)="getPatients($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button [routerLink]="['/patient-form']"><ion-icon name="add"></ion-icon></ion-fab-button> 
-    </ion-fab>
-
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/patient-form']"><ion-icon name="add"></ion-icon></ion-fab-button> 
+  </ion-fab>
 </ion-content>
+
+<!-- use Angular's navigator object to check for connectivity -->
+<ion-footer *ngIf="!isOnline">
+  <ion-text class="offline-warning">You are currently offline</ion-text>
+</ion-footer>
