@@ -69,6 +69,13 @@
       Clinical Breast Staging
     </ion-card-header>
     <div class="patient-divider"></div>
+
+    <ion-item-sliding *ngFor="let staging of stagings">
+        <ion-item>
+          Tumor Stage: {{staging.tumorStage}},  Nodal Stage: {{staging.nodalStage}}, Metastatic Stage: {{staging.metastaticStage}}
+        </ion-item>
+    </ion-item-sliding>
+
     <ion-toolbar>
       <ion-buttons slot="end">
         <ion-button color="primary" shape="round" fill="solid" 

@@ -5,6 +5,7 @@ import { Patient } from 'src/app/models/patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { SurgeryService } from 'src/app/services/surgery.service';
+import { Staging } from 'src/app/models/staging';
 
 @Component({
   selector: 'app-patient',
@@ -13,6 +14,7 @@ import { SurgeryService } from 'src/app/services/surgery.service';
 })
 export class PatientPage implements OnInit {
   patient: Patient;
+  stagings: Staging[];
 
   summaryButtonColor: string;
   stagingButtonColor: string;
@@ -49,6 +51,11 @@ export class PatientPage implements OnInit {
   refreshPatient() {
     let id = this.route.snapshot.paramMap.get('id');
     this.patientSvc.getPatient(id).then((patient) => {
+      
+      if (patient.stagings != null) {
+        this.stagings = patient.stagings;
+      }
+
       this.patient = patient;
       this.patient['genderInitial'] = this.getGenderInitial(this.patient['Gender']);
     });

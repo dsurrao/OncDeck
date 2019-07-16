@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { Events, NavController } from '@ionic/angular';
+import { Staging } from 'src/app/models/staging';
+import { StagingService } from 'src/app/services/staging.service';
+import { Patient } from 'src/app/models/patient';
+import { PatientService } from 'src/app/services/patient.service';
+
 
 @Component({
   selector: 'app-clinical-breast-staging',
@@ -17,12 +22,19 @@ export class ClinicalBreastStagingPage implements OnInit {
   isHideDescription: boolean;
   clinicalOptionText: string;
   isFormValid: boolean;
+  staging: Staging;
+  patient: Patient;
+  patientId: string;
+  stagingId: string;
 
-  constructor(public route: ActivatedRoute) {
-  }
+  constructor(public route: ActivatedRoute,
+    public patientSvc: PatientService,
+    public stagingSvc: StagingService,
+    public events: Events,
+    public navCtrl: NavController) {}
 
   ngOnInit() {
-    let patientId = this.route.snapshot.paramMap.get('patientId');
+    this.patientId = this.route.snapshot.paramMap.get('patientId');
     this.isHideT1SubRadioButtons = true;
     this.isHideT4SubRadioButtons = true;
     this.isHidecN1SubRadioButtons = true;
@@ -30,6 +42,25 @@ export class ClinicalBreastStagingPage implements OnInit {
     this.isHidecN3SubRadioButtons = true;
     this.isHideDescription = true;
     this.isFormValid = false;
+
+    this.stagingId = this.route.snapshot.paramMap.get('stagingId');
+    this.staging = new Staging();
+    this.patientSvc.getPatient(this.patientId).then(patient => {
+      this.patient = patient;
+
+      if (this.stagingId != null) {
+        this.staging = this.patient.stagings.find(r => {
+          return r.id === this.stagingId
+        });
+      }
+      else {
+        this.staging = new Staging();
+        this.staging.tumorStage = "";
+        this.staging.nodalStage = "";
+        this.staging.metastaticStage = "";
+      }
+    });
+
   }
 
   clickClinicalTumorStage(event) {
@@ -164,5 +195,14 @@ export class ClinicalBreastStagingPage implements OnInit {
     }
 
   }
+
+
+  save() {
+      // now save to db
+      this.stagingSvc.saveStaging(this.staging, this.patient).then(id => {
+        this.events.publish('patientSaved');
+        this.navCtrl.navigateBack('patient/' + this.patientId);
+      })
+    }
 
 }

@@ -16,7 +16,7 @@
 
   <ion-list>      
     <ion-list-header>Clinical Tumor Stage</ion-list-header>
-    <ion-radio-group radio-group name="clinicaltumorstage" (ionChange)="clickClinicalTumorStage($event)" required>
+    <ion-radio-group [(ngModel)]="staging.tumorStage" radio-group name="clinicaltumorstage" (ionChange)="clickClinicalTumorStage($event)" required>
         <ion-item>
           <ion-label>TX</ion-label>
           <ion-radio slot="start" value="TX"></ion-radio>
@@ -99,7 +99,7 @@
 
   <ion-list>      
     <ion-list-header>Clinical Nodal Stage</ion-list-header>
-    <ion-radio-group radio-group name="clinicalnodalstage" (ionChange)="clickClinicalNodalStage($event)" required>
+    <ion-radio-group [(ngModel)]="staging.nodalStage" radio-group name="clinicalnodalstage" (ionChange)="clickClinicalNodalStage($event)" required>
         <ion-item>
           <ion-label>cNX</ion-label>
           <ion-radio slot="start" value="cNX"></ion-radio>
@@ -149,7 +149,7 @@
   
   <ion-list>      
     <ion-list-header>Metastatic Stage</ion-list-header>
-    <ion-radio-group radio-group name="clinicalmetatstaticstage" required>
+    <ion-radio-group [(ngModel)]="staging.metastaticStage" radio-group name="clinicalmetatstaticstage" required>
         <ion-item>
           <ion-label>M0</ion-label>
           <ion-radio slot="start" value="m0"></ion-radio>
@@ -161,6 +161,6 @@
     </ion-radio-group>
   </ion-list>
 
-  <ion-button color="primary" type="submit" [disabled]="!isFormValid" (click)="save()">Next</ion-button>
+  <ion-button color="primary" type="submit" [disabled]="!isFormValid" (click)="save()">Save</ion-button>
   
 </ion-content>
