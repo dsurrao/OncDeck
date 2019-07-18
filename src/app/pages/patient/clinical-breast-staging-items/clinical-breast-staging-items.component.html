@@ -1,0 +1,19 @@
+<div class="tab-heading">
+    <ion-icon name="body"></ion-icon>
+    Clinical Breast Staging
+</div>
+
+<ion-item-sliding *ngFor="let staging of patient.stagings">
+    <ion-item>
+        Tumor Stage: {{staging.tumorStage}},  Nodal Stage: {{staging.nodalStage}}, Metastatic Stage: {{staging.metastaticStage}}
+    </ion-item>
+</ion-item-sliding>
+
+<ion-toolbar>
+    <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/clinical-breast-staging']" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Add Clinical Breast Staging
+        </ion-button>
+    </ion-buttons>
+</ion-toolbar>
