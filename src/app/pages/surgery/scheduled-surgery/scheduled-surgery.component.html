@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Scheduled Surgery</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form *ngIf="patient != null && patient.surgery != null && patient.surgery.scheduledSurgery != null" #thisForm="ngForm">
+    <ion-item>
+      <ion-label>Scheduled Date</ion-label>
+      <ion-datetime name="scheduledDate" display-format="MMM DD, YYYY" 
+        [(ngModel)]="patient.surgery.scheduledSurgery.scheduledDate" required></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Facility</ion-label>
+      <ion-input type="text" name="facility" [(ngModel)]="patient.surgery.scheduledSurgery.facility" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Surgeon Name</ion-label>
+      <ion-input type="text" name="surgeonName" [(ngModel)]="patient.surgery.scheduledSurgery.surgeonName" required></ion-input>
+    </ion-item>
+    <ion-toolbar>
+      <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="primary" slot="end" [disabled]="!thisForm.form.valid" 
+        (click)="save()">Save</ion-button>
+    </ion-toolbar>
+  </form>
+</ion-content>

@@ -1,3 +1,4 @@
-<div>
-  {{patientDemographics}}
+<div *ngIf="patient != null">
+  {{patient.firstName}} {{patient.lastName}}
+  ({{patient.gender}}, {{patient.dob}})
 </div>

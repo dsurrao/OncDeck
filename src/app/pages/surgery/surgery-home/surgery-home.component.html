@@ -1,23 +1,22 @@
-<div class="tab-heading">
-  <ion-icon name="medical"></ion-icon>Surgeries
+<div>
+  <span class="tab-heading">
+    <ion-icon name="medical"></ion-icon>Surgeries
+  </span>
+  <ion-icon name="create" (click)="updateStatus()"></ion-icon>
 </div>
 
 <ng-container *ngIf="patient != null">
-  <ion-card *ngIf="patient.surgery.surgeryStatus != null; else elseBlock">
-    <ion-card-content>
-      <app-surgery-summary [patient]="patient"></app-surgery-summary>
-    </ion-card-content>
-  </ion-card>
-  <ng-template #elseBlock>
-    <div class="no-information" *ngIf="updateSurgeryStatusFlag==false">No information found.</div>
-  </ng-template>
-
-  <ion-item-group *ngIf="updateSurgeryStatusFlag==true">
+  <!-- Update Status -->
+  <ion-item-group *ngIf="updateSurgeryStatusFlag">
     <ion-item-divider>
       <ion-label>Update Surgery Status</ion-label>
     </ion-item-divider>
     <form #surgeryStatusForm="ngForm">
-      <ion-radio-group name="surgeryStatus" [(ngModel)]="patient.surgery.surgeryStatus" required>
+      <ion-radio-group name="surgeryStatus" [(ngModel)]="surgeryStatus" required>
+        <ion-item>
+          <ion-label>Completed</ion-label>
+          <ion-radio value="{{surgeryStatusEnum.Completed}}"></ion-radio>
+        </ion-item>
         <ion-item>
           <ion-label>Scheduled</ion-label>
           <ion-radio value="{{surgeryStatusEnum.Scheduled}}"></ion-radio>
@@ -31,74 +30,26 @@
           <ion-radio value="{{surgeryStatusEnum.NotIndicated}}"></ion-radio>
         </ion-item>
       </ion-radio-group>
-
-      <ion-item-group *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.Scheduled">
-        <ion-item>
-          <ion-label>Scheduled Date</ion-label>
-          <ion-datetime name="scheduledDate" display-format="MMM DD, YYYY" 
-            [(ngModel)]="patient.surgery.scheduledSurgery.scheduledDate" required></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label>Facility</ion-label>
-          <ion-input type="text" name="facility" [(ngModel)]="patient.surgery.scheduledSurgery.facility" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Surgeon Name</ion-label>
-          <ion-input type="text" name="surgeonName" [(ngModel)]="patient.surgery.scheduledSurgery.surgeonName" required></ion-input>
-        </ion-item>
-      </ion-item-group>
-
-      <ion-item-group *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotScheduled">
-        <ion-item>
-          <ion-label>Not Scheduled Reason</ion-label>
-          <ion-input type="text" name="notScheduledReason" 
-            [(ngModel)]="patient.surgery.surgeryNotScheduled.reason" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Set a Reminder Date</ion-label>
-          <ion-datetime name="reminderDate" display-format="MMM DD, YYYY" 
-            [(ngModel)]="patient.surgery.surgeryNotScheduled.dateReminder"></ion-datetime>
-        </ion-item>
-        <ion-item *ngIf="patient.surgery.surgeryNotScheduled.dateRecorded != null">
-          <ion-label>Date Recorded</ion-label>
-          <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}}</div>
-        </ion-item>
-      </ion-item-group>
-
-      <ion-item-group *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.NotIndicated">
-        <ion-radio-group name="notIndicatedReason" [(ngModel)]="patient.surgery.surgeryNotIndicated.reason" required>
-          <ion-list-header>Not Indicated Reason</ion-list-header>
-          <ion-item>
-            <ion-label>{{surgeryNotIndicatedReasonEnum.StageIV}}</ion-label>
-            <ion-radio value="{{surgeryNotIndicatedReasonEnum.StageIV}}"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>{{surgeryNotIndicatedReasonEnum.Risk}}</ion-label>
-            <ion-radio value="{{surgeryNotIndicatedReasonEnum.Risk}}"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>{{surgeryNotIndicatedReasonEnum.Other}}</ion-label>
-            <ion-radio value="{{surgeryNotIndicatedReasonEnum.Other}}"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-        <ion-item *ngIf="patient.surgery.surgeryNotIndicated.reason == surgeryNotIndicatedReasonEnum.Other">
-          <ion-label>Not Indicated Reason (Other)</ion-label>
-          <ion-input type="text" name="notIndicatedReasonOther" 
-            [(ngModel)]="patient.surgery.surgeryNotIndicated.reasonOther" required></ion-input>
-        </ion-item>
-        <ion-item *ngIf="patient.surgery.surgeryNotIndicated.dateRecorded != null">
-          <ion-label>Date Recorded</ion-label>
-          <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotIndicated.dateRecorded)}}</div>
-        </ion-item>
-      </ion-item-group>
-
       <ion-toolbar>
-        <ion-button color="primary" slot="end" [disabled]="!surgeryStatusForm.form.valid" (click)="update()">Update</ion-button>
+        <ion-button color="primary" slot="end" (click)="updateStatus()">Cancel</ion-button>
+        <ion-button color="primary" slot="end" [disabled]="!surgeryStatusForm.form.valid" 
+          (click)="next()">Next</ion-button>
       </ion-toolbar>
     </form>
   </ion-item-group>
+
+  <!-- Summary -->
+  <ion-card *ngIf="patient.surgery != null && patient.surgery.surgeryStatus != null; else elseBlock">
+    <ion-card-content>
+      <app-surgery-summary [patient]="patient"></app-surgery-summary>
+    </ion-card-content>
+  </ion-card>
+  <ng-template #elseBlock>
+    <div class="no-information" *ngIf="!updateSurgeryStatusFlag">No information found.</div>
+  </ng-template>
   
-  <ion-item-group *ngIf="patient.surgery.completedSurgeries.length > 0">
+  <!-- Completed Surgeries -->
+  <ion-item-group *ngIf="patient.surgery != null && patient.surgery.completedSurgeries.length > 0">
     <ion-item-divider>
       <ion-label>Completed Surgeries</ion-label>
     </ion-item-divider>
@@ -113,14 +64,11 @@
     </ng-template>    
   </ion-item-group>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" 
-    *ngIf="updateSurgeryStatusFlag==false">
-    <ion-fab-button (click)="updateSurgeryStatus()">
-      <ion-icon name="create"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button [routerLink]="['/patient/' + patient._id + '/surgery/completed-surgery']">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <ion-toolbar>
+    <ion-button slot="end" color="primary" shape="round" fill="solid" 
+      [routerLink]="['/patient/' + patient._id + '/surgery/completed-surgery']">
+        <ion-icon name="add"></ion-icon>Completed Surgery
+    </ion-button>
+  </ion-toolbar>
 
 </ng-container>

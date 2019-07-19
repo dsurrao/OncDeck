@@ -1,29 +1,8 @@
-<p *ngIf="therapy != null">
-  <b>Radiation Therapy</b>
-  <br/>
-  Start Date: {{this.dateUtils.toLocaleDateString(therapy.startDate)}}
-  <br/>
-  Total Dose: {{therapy.totalDose}}
-  <br/>
-  Number of Treatments: {{therapy.numTreatments}}
-  <br/>
-  Projected End Date: {{this.dateUtils.toLocaleDateString(therapy.projectedEndDate)}}
-  <br/>
-  Fields Treated:
-  <ng-container *ngFor="let f of therapy.fieldsTreated">
-    <span *ngIf="f.field == radiationFieldEnum.Other">
-      {{f.other}}
-    </span>
-    <span *ngIf="f.field != radiationFieldEnum.Other">
-      {{f.field}}
-    </span>
-    ,
-  </ng-container>
-  <br/>
-  <ng-container *ngIf="therapy.actualEndDate != null">
-    Actual End Date: {{this.dateUtils.toLocaleDateString(therapy.actualEndDate)}}
-  </ng-container>
-  <ng-container *ngIf="therapy.comments != null && therapy.comments != ''">
-    Comments: {{therapy.comments}}
-  </ng-container>
-</p>
+<h3>Radiations</h3>
+<ng-container *ngIf="patient.radiationTherapies != null; else elseBlock">
+  <app-completed-radiation-summary 
+    [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
+  </app-completed-radiation-summary>
+</ng-container>
+
+<ng-template #elseBlock>No information found.</ng-template>

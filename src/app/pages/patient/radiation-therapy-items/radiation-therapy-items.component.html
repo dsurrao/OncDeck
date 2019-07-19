@@ -2,19 +2,28 @@
   <ion-icon name="body"></ion-icon>Radiation Therapy
 </div>
 
-<ion-list #therapyList *ngIf="patient.radiationTherapies != null; else elseBlock">
-  <ion-item-sliding *ngFor="let therapy of patient.radiationTherapies">
-    <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/radiation-therapy/' + therapy.id]">
-      Radiation started on {{this.dateUtils.toLocaleDateString(therapy.startDate)}}, projected end on {{this.dateUtils.toLocaleDateString(therapy.projectedEndDate)}}
-    </ion-item>
-    <!-- delete option -->
-    <ion-item-options side="end">
-      <ion-item-option color="danger" (click)="removeRadiationTherapyConfirm(therapy)">
-        Remove
-      </ion-item-option>
-    </ion-item-options> 
-  </ion-item-sliding>
-</ion-list>
+<ng-container *ngIf="patient.radiationTherapies != null; else elseBlock">
+    <ion-card>
+      <ion-card-content>
+        <app-completed-radiation-summary 
+          [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
+        </app-completed-radiation-summary>
+      </ion-card-content>
+    </ion-card>
+    <ion-list #therapyList>
+      <ion-item-sliding *ngFor="let therapy of patient.radiationTherapies">
+        <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/radiation-therapy/' + therapy.id]">
+          Radiation started on {{this.dateUtils.toLocaleDateString(therapy.startDate)}}, projected end on {{this.dateUtils.toLocaleDateString(therapy.projectedEndDate)}}
+        </ion-item>
+        <!-- delete option -->
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="removeRadiationTherapyConfirm(therapy)">
+            Remove
+          </ion-item-option>
+        </ion-item-options> 
+      </ion-item-sliding>
+    </ion-list>
+</ng-container>
 
 <ng-template #elseBlock>
   <div class="no-information">No information found.</div>

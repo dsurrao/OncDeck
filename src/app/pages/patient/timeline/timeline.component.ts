@@ -16,9 +16,7 @@ export class TimelineComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
-
-  ngAfterViewInit() {
+  ngOnInit() {
     let event: TimelineEvent;
 
     // TODO: fill in with more data

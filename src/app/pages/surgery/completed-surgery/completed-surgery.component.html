@@ -234,6 +234,10 @@
         </ng-container>
         <!-- end *ngIf="surgery.pathologyStatus == surgicalPathologyStatusEnum.Completed" -->
 
-        <ion-button color="primary" type="submit" [disabled]="!completedSurgeryForm.form.valid" (click)="save()">Save</ion-button>
+        <ion-toolbar>
+            <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>
+            <ion-button color="primary" slot="end" type="submit" [disabled]="!completedSurgeryForm.form.valid" 
+                (click)="save()">Save</ion-button>
+        </ion-toolbar>
     </form>
 </ion-content>

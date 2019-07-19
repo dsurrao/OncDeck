@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Surgery Not Indicated</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #thisForm="ngForm" *ngIf="patient != null && patient.surgery != null && patient.surgery.surgeryNotIndicated != null">
+    <ion-radio-group name="notIndicatedReason" [(ngModel)]="patient.surgery.surgeryNotIndicated.reason" required>
+      <ion-list-header>Not Indicated Reason</ion-list-header>
+      <ion-item>
+        <ion-label>{{surgeryNotIndicatedReasonEnum.StageIV}}</ion-label>
+        <ion-radio value="{{surgeryNotIndicatedReasonEnum.StageIV}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{surgeryNotIndicatedReasonEnum.Risk}}</ion-label>
+        <ion-radio value="{{surgeryNotIndicatedReasonEnum.Risk}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{surgeryNotIndicatedReasonEnum.Other}}</ion-label>
+        <ion-radio value="{{surgeryNotIndicatedReasonEnum.Other}}"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item *ngIf="patient.surgery.surgeryNotIndicated.reason == surgeryNotIndicatedReasonEnum.Other">
+      <ion-label>Not Indicated Reason (Other)</ion-label>
+      <ion-input type="text" name="notIndicatedReasonOther" 
+        [(ngModel)]="patient.surgery.surgeryNotIndicated.reasonOther" required></ion-input>
+    </ion-item>
+    <ion-item *ngIf="patient.surgery.surgeryNotIndicated.dateRecorded != null">
+      <ion-label>Date Recorded</ion-label>
+      <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotIndicated.dateRecorded)}}</div>
+    </ion-item>
+    <ion-toolbar>
+      <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="primary" slot="end" [disabled]="!thisForm.form.valid" 
+        (click)="save()">Save</ion-button>
+    </ion-toolbar>
+  </form>
+</ion-content>

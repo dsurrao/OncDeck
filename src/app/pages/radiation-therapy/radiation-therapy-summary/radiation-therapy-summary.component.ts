@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RadiationTherapy } from 'src/app/models/radiation-therapy';
-import { DateUtils } from 'src/app/common/dateutils';
-import { RadiationFieldEnum } from 'src/app/enums/radiation-field-enum';
+import { Patient } from 'src/app/models/patient';
 
 @Component({
   selector: 'app-radiation-therapy-summary',
@@ -9,12 +7,9 @@ import { RadiationFieldEnum } from 'src/app/enums/radiation-field-enum';
   styleUrls: ['./radiation-therapy-summary.component.scss'],
 })
 export class RadiationTherapySummaryComponent implements OnInit {
-  @Input('radiationTherapy') therapy: RadiationTherapy;
+  @Input('patient') patient: Patient;
 
-  // for use in template
-  radiationFieldEnum = RadiationFieldEnum;
-
-  constructor(public dateUtils: DateUtils) { }
+  constructor() { }
 
   ngOnInit() {}
 

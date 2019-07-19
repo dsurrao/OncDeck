@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Surgery Not Scheduled</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #thisForm="ngForm" *ngIf="patient != null && patient.surgery != null && patient.surgery.surgeryNotScheduled != null">
+    <ion-item>
+      <ion-label>Not Scheduled Reason</ion-label>
+      <ion-input type="text" name="notScheduledReason" 
+        [(ngModel)]="patient.surgery.surgeryNotScheduled.reason" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Set a Reminder Date</ion-label>
+      <ion-datetime name="reminderDate" display-format="MMM DD, YYYY" 
+        [(ngModel)]="patient.surgery.surgeryNotScheduled.dateReminder"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="patient.surgery.surgeryNotScheduled.dateRecorded != null">
+      <ion-label>Date Recorded</ion-label>
+      <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}}</div>
+    </ion-item>
+    <ion-toolbar>
+      <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="primary" slot="end" [disabled]="!thisForm.form.valid" 
+        (click)="save()">Save</ion-button>
+    </ion-toolbar>
+  </form>
+</ion-content>
