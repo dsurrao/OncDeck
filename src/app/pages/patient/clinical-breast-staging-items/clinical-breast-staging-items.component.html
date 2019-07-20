@@ -4,7 +4,7 @@
 </div>
 
 <ion-item-sliding *ngFor="let staging of patient.stagings">
-    <ion-item>
+    <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/clinical-breast-staging/' + staging.id]">
         Tumor Stage: {{staging.tumorStage}},  Nodal Stage: {{staging.nodalStage}}, Metastatic Stage: {{staging.metastaticStage}}
     </ion-item>
 </ion-item-sliding>

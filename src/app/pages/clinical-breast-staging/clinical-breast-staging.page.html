@@ -8,9 +8,9 @@
 </ion-header>
 
 <ion-content>
-  <ion-card [hidden]=isHideDescription>
+  <ion-card [hidden]=isHideTumorDescription>
     <ion-card-content>
-      Description: {{clinicalOptionText}} 
+      Description: {{tumorDescriptionText}} 
     </ion-card-content>
   </ion-card>
 
@@ -96,6 +96,13 @@
             </div>
     </ion-radio-group>
   </ion-list>
+  <br/><br/>
+
+  <ion-card [hidden]=isHideNodalDescription>
+      <ion-card-content>
+        Description: {{nodalDescriptionText}} 
+      </ion-card-content>
+  </ion-card>
 
   <ion-list>      
     <ion-list-header>Clinical Nodal Stage</ion-list-header>
@@ -130,6 +137,11 @@
                 <ion-label>cN2a</ion-label>
                 <ion-radio slot="start" value="cN2a"></ion-radio>
             </ion-item>
+
+            <ion-item >
+                <ion-label>cN2b</ion-label>
+                <ion-radio slot="start" value="cN2b"></ion-radio>
+            </ion-item>
           </div>
 
         <ion-item>
@@ -142,14 +154,26 @@
                 <ion-label>cN3a</ion-label>
                 <ion-radio slot="start" value="cN3a"></ion-radio>
             </ion-item>
+
+            <ion-item >
+                <ion-label>cN3b</ion-label>
+                <ion-radio slot="start" value="cN3b"></ion-radio>
+            </ion-item>
           </div>
 
     </ion-radio-group>
   </ion-list>
+  <br/><br/>
   
+  <ion-card [hidden]=isHideMetastaticDescription>
+      <ion-card-content>
+        Description: {{metastaticDescriptionText}} 
+      </ion-card-content>
+  </ion-card>
+
   <ion-list>      
     <ion-list-header>Metastatic Stage</ion-list-header>
-    <ion-radio-group [(ngModel)]="staging.metastaticStage" radio-group name="clinicalmetatstaticstage" required>
+    <ion-radio-group [(ngModel)]="staging.metastaticStage" radio-group name="clinicalmetatstaticstage" (ionChange)="clickClinicalMetastaticStage($event)" required>
         <ion-item>
           <ion-label>M0</ion-label>
           <ion-radio slot="start" value="m0"></ion-radio>
