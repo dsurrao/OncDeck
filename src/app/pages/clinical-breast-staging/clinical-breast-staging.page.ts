@@ -19,8 +19,12 @@ export class ClinicalBreastStagingPage implements OnInit {
   isHidecN1SubRadioButtons: boolean;
   isHidecN2SubRadioButtons: boolean;
   isHidecN3SubRadioButtons: boolean;
-  isHideDescription: boolean;
-  clinicalOptionText: string;
+  isHideTumorDescription: boolean;
+  isHideNodalDescription: boolean
+  isHideMetastaticDescription: boolean
+  tumorDescriptionText: string;
+  nodalDescriptionText: string;
+  metastaticDescriptionText: string;
   isFormValid: boolean;
   staging: Staging;
   patient: Patient;
@@ -40,21 +44,27 @@ export class ClinicalBreastStagingPage implements OnInit {
     this.isHidecN1SubRadioButtons = true;
     this.isHidecN2SubRadioButtons = true;
     this.isHidecN3SubRadioButtons = true;
-    this.isHideDescription = true;
+    this.isHideTumorDescription = true;
+    this.isHideNodalDescription = true;
+    this.isHideMetastaticDescription = true;
     this.isFormValid = false;
 
     this.stagingId = this.route.snapshot.paramMap.get('stagingId');
     this.staging = new Staging();
+    
+    // get patient's staging information
     this.patientSvc.getPatient(this.patientId).then(patient => {
       this.patient = patient;
 
+      // staging has already been created
       if (this.stagingId != null) {
         this.staging = this.patient.stagings.find(r => {
           return r.id === this.stagingId
         });
       }
+
+      // staging has not been created - initialize
       else {
-        this.staging = new Staging();
         this.staging.tumorStage = "";
         this.staging.nodalStage = "";
         this.staging.metastaticStage = "";
@@ -64,7 +74,7 @@ export class ClinicalBreastStagingPage implements OnInit {
   }
 
   clickClinicalTumorStage(event) {
-    this.isHideDescription = false;
+    this.isHideTumorDescription = false;
     this.isFormValid = true;
     
     /* check value to determine if subradio buttons to be shown for T1 */
@@ -96,72 +106,72 @@ export class ClinicalBreastStagingPage implements OnInit {
 
     /* check radio button value and display description */
     if (event.detail.value == 'TX') {
-      this.clinicalOptionText = "TX - Primary tumor cannot be assessed";
+      this.tumorDescriptionText = "TX - Primary tumor cannot be assessed";
     }
 
     if (event.detail.value == 'T0') {
-      this.clinicalOptionText = "T0 - No evidence of primary tumor";
+      this.tumorDescriptionText = "T0 - No evidence of primary tumor";
     }
 
     if (event.detail.value == 'Tis(DCIS)') {
-      this.clinicalOptionText = "Tis(DCIS) - Ductal carcinoma in situ";
+      this.tumorDescriptionText = "Tis(DCIS) - Ductal carcinoma in situ";
     }
 
     if (event.detail.value == 'Tis(Paget)') {
-      this.clinicalOptionText = "Tis (Paget) - Paget's disease of the nipple NOT associated with invasive carcinoma and/or carcinoma in situ (DCIS) in the underlying breast parenchyma.";
+      this.tumorDescriptionText = "Tis (Paget) - Paget's disease of the nipple NOT associated with invasive carcinoma and/or carcinoma in situ (DCIS) in the underlying breast parenchyma.";
     }
 
     if (event.detail.value == 'T1') {
-      this.clinicalOptionText = "T1 - Tumor < or = 20 mm in greatest dimension";
+      this.tumorDescriptionText = "T1 - Tumor < or = 20 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T1mi') {
-      this.clinicalOptionText = "T1mi - Tumor < or = 1 mm in greatest dimension";
+      this.tumorDescriptionText = "T1mi - Tumor < or = 1 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T1a') {
-      this.clinicalOptionText = "T1a - Tumor > 1 mm but < or = 5 mm in greatest dimension (round any measurement > 1.0-1.9 mm to 2 mm)";
+      this.tumorDescriptionText = "T1a - Tumor > 1 mm but < or = 5 mm in greatest dimension (round any measurement > 1.0-1.9 mm to 2 mm)";
     }
 
     if (event.detail.value == 'T1b') {
-      this.clinicalOptionText = "T1b - Tumor > 5 mm but < or = 10 mm in greatest dimension";
+      this.tumorDescriptionText = "T1b - Tumor > 5 mm but < or = 10 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T1c') {
-      this.clinicalOptionText = "T1c - Tumor > 10 mm but < or = 20 mm in greatest dimension";
+      this.tumorDescriptionText = "T1c - Tumor > 10 mm but < or = 20 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T2') {
-      this.clinicalOptionText = "T2 - Tumor > 20 mm but < or = 50 mm in greatest dimension";
+      this.tumorDescriptionText = "T2 - Tumor > 20 mm but < or = 50 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T3') {
-      this.clinicalOptionText = "T3 - Tumor > 50 mm in greatest dimension";
+      this.tumorDescriptionText = "T3 - Tumor > 50 mm in greatest dimension";
     }
 
     if (event.detail.value == 'T4') {
-      this.clinicalOptionText = "T4 - Tumor of any size with direct extension to the chest wall and/or to the skin (ulceration or skin nodules); invasion of the dermis alone does not qualify as T4";
+      this.tumorDescriptionText = "T4 - Tumor of any size with direct extension to the chest wall and/or to the skin (ulceration or skin nodules); invasion of the dermis alone does not qualify as T4";
     }
 
     if (event.detail.value == 'T4a') {
-      this.clinicalOptionText = "T4a - Extension to the chest wall; invasion or adherence to pectoralis muscle in the absecnece of invasion of the chest wall structures does not qualify as T4";
+      this.tumorDescriptionText = "T4a - Extension to the chest wall; invasion or adherence to pectoralis muscle in the absecnece of invasion of the chest wall structures does not qualify as T4";
     }
 
     if (event.detail.value == 'T4b') {
-      this.clinicalOptionText = "T4b - Ulceration and/or ipsilateral macroscopic satellite nodules and/or edema (including peau d'orange) of the skin that does not meet the criteria for inflammatory carcinoma";
+      this.tumorDescriptionText = "T4b - Ulceration and/or ipsilateral macroscopic satellite nodules and/or edema (including peau d'orange) of the skin that does not meet the criteria for inflammatory carcinoma";
     }
 
     if (event.detail.value == 'T4c') {
-      this.clinicalOptionText = "T4c - Both T4a and T4b are present";
+      this.tumorDescriptionText = "T4c - Both T4a and T4b are present";
     }
 
     if (event.detail.value == 'T4d') {
-      this.clinicalOptionText = "T4d - Inflammatory carcinoma";
+      this.tumorDescriptionText = "T4d - Inflammatory carcinoma";
     }
   }
 
   clickClinicalNodalStage(event) {
-    this.isHideDescription = false;
+    this.isHideNodalDescription = false;
     this.isFormValid = true;
     
     /* check value to determine if subradio buttons to be shown for cN1 */
@@ -177,6 +187,7 @@ export class ClinicalBreastStagingPage implements OnInit {
     /* check value to determine if subradio buttons to be shown for cN2 */
     if ((event.detail.value == 'cN2')
       || (event.detail.value == 'cN2a')
+      || (event.detail.value == 'cN2b')
     ){
       this.isHidecN2SubRadioButtons = false;  
     }
@@ -187,6 +198,7 @@ export class ClinicalBreastStagingPage implements OnInit {
     /* check value to determine if subradio buttons to be shown for cN3 */
     if ((event.detail.value == 'cN3')
       || (event.detail.value == 'cN3a')
+      || (event.detail.value == 'cN3b')
     ){
       this.isHidecN3SubRadioButtons = false;  
     }
@@ -194,7 +206,66 @@ export class ClinicalBreastStagingPage implements OnInit {
       this.isHidecN3SubRadioButtons = true;
     }
 
+
+    /* check radio button value and display description */
+    if (event.detail.value == 'cNX') {
+      this.nodalDescriptionText = "cNX - Regional lymph nodes cannot be assessed (example: previously removed)";
+    }
+
+    if (event.detail.value == 'cN0') {
+      this.nodalDescriptionText = "cN0 - No regional lymph node metastasis (by imaging or clinical examination)";
+    }
+
+    if (event.detail.value == 'cN1') {
+      this.nodalDescriptionText = "cN1 - Metastases to movable ipsilateral level I, II axillary lymph node(s)";
+    }
+
+    if (event.detail.value == 'cN2') {
+      this.nodalDescriptionText = "cN2 - Metastases in ipsilateral level I, II axillary lymph nodes that are clinically fixed or matted; or in ipsilateral internal mammary nodes in the absence of clinically evident axillary lymph node metastases.";
+    }
+
+    if (event.detail.value == 'cN3') {
+      this.nodalDescriptionText = "cN3 - Metastases in ipsilarteral intraclavicular (level III axillary) lymph node(s) with or without level I, II axillary lymph node involvement; or in ipsilateral internal mammary lymph node(s) with level I, II axillary lymph node metastases; or metastases in inspilateral supraclavicular lymph node(s) with or without axillary or internal mammary lymph node involvement.";
+    }
+
+    if (event.detail.value == 'cN1mi') {
+      this.nodalDescriptionText = "cN1mi - Micrometastases (approximately 200 cells, larger than 0.2 mm, but none larger than 2.0 mm) - only if documented from lymph node biopsy BEFORE surgery";
+    }
+
+    if (event.detail.value == 'cN2a') {
+      this.nodalDescriptionText = "cN2a - Metastases in ipsilateral level I, II axillary lymph nodes fixed to one another (matted) or to other structures";
+    }
+
+    if (event.detail.value == 'cN2b') {
+      this.nodalDescriptionText = "cN2b - Metastases only in ipsilateral internal mammary nodes in the absence of axillary lymph node metastases";
+    }
+
+    if (event.detail.value == 'cN3a') {
+      this.nodalDescriptionText = "cN3a - Metastases in ipsilateral infraclavicular lymph node(s)";
+    }
+
+    if (event.detail.value == 'cN3b') {
+      this.nodalDescriptionText = "cN3b - Metastases in ipsilateral internal mammary lymph node(s) and axillary lymph node(s)";
+    }
+
   }
+
+
+  clickClinicalMetastaticStage(event) {
+    this.isHideMetastaticDescription = false;
+    this.isFormValid = true;
+
+    /* check radio button value and display description */
+    if (event.detail.value == 'm0') {
+      this.metastaticDescriptionText = "M0 - No clinical or radiographic evidence of distant metastases";
+    }
+
+    if (event.detail.value == 'm1') {
+      this.metastaticDescriptionText = "M1 - Clinical or radiographic evidence of metastatic staging";
+    }
+
+  }
+
 
 
   save() {
