@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, Events, NavController, NavParams } from '@ionic/angular';
-import UUID from 'uuid';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/patient';
 import { FormGroup, Form } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { DateUtils } from 'src/app/common/dateutils';
 
 @Component({
   selector: 'app-patient-form',
@@ -21,7 +21,8 @@ export class PatientFormPage implements OnInit {
     public patientSvc: PatientService,
     public events: Events,
     public alertController: AlertController,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute,
+    public dateUtils: DateUtils) {
   }
 
   ngOnInit() {
@@ -41,7 +42,7 @@ export class PatientFormPage implements OnInit {
   submit() {
     // new patient
     if (this.patient._id == null) {
-      this.patient._id = UUID.v4();
+      this.patient._id = this.dateUtils.generateUniqueId();
     }
     this.patientSvc.savePatient(this.patient).then(updatedPatient => {
       console.log("patient saved");

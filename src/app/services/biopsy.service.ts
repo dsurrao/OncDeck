@@ -3,15 +3,15 @@ import { PouchdbService } from './pouchdb.service';
 import { Patient } from '../models/patient';
 import { CompletedBiopsy } from '../models/completed-biopsy';
 import { Biopsy } from '../models/biopsy';
-import UUID from 'uuid';
 import { BiopsyStatusEnum } from '../enums/biopsy-status-enum';
+import { DateUtils } from '../common/dateutils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BiopsyService {
 
-  constructor(public db: PouchdbService) {}
+  constructor(public db: PouchdbService, public dateUtils: DateUtils) {}
 
   saveCompletedBiopsy(completedBiopsy: CompletedBiopsy, patient: Patient): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ export class BiopsyService {
         if (patient.biopsy.completedBiopsies == null) {
           patient.biopsy.completedBiopsies = [];
         }
-        completedBiopsy.id = UUID.v4();
+        completedBiopsy.id = this.dateUtils.generateUniqueId();
         patient.biopsy.completedBiopsies.push(completedBiopsy);
       }
       else {

@@ -38,7 +38,6 @@ export class PatientsPage implements OnInit, OnDestroy {
   isAuthenticated: boolean = false;
   currentAuthenticatedUsername: string = '';
   showOnlyMyPatients: boolean = false;
-  showOnlyPatientsWithoutSurgeries: boolean = false;
   sortOrder: string = 'lastEditedDate';
   isLoading: boolean = false;
   lastActiveSync: string;
@@ -46,6 +45,7 @@ export class PatientsPage implements OnInit, OnDestroy {
   ptFilter: PatientListFilterEnum = PatientListFilterEnum.All;
   loading: HTMLIonLoadingElement;
   isOnline: boolean = false;
+  infiniteScrollFlag: boolean = false;
 
   // for pagination
   pageSize: number;
@@ -172,34 +172,39 @@ export class PatientsPage implements OnInit, OnDestroy {
     this.patients = [];
   }
 
-  async getPatients(infiniteScrollEvent: any = null) {
-    console.log("getPatients");
-
-    // if this is not triggered by the infinite scroll widget, treat this as a refresh
-    if (infiniteScrollEvent == null) {
-      this.resetPaginationOptions();
-    }
-    
-    // only fetch if there are more patients to fetch
-    if (!this.isLoading && this.totalRows == -1) {
+  async getPatients() {
+    if (!this.isLoading) {
       this.isLoading = true;
       this.loading = await this.loadingCtrl.create({
         message: 'Loading patients...'
       });
 
       this.loading.present().then(() => {
-        this.loadPatients(infiniteScrollEvent);
+        if (!this.infiniteScrollFlag) {
+          this.patientListSvc.getPatients().then(patientList => {
+            this.patients = patientList.patients;
+            // make a copy of patients for filtering purposes
+            this.originalPatientList = patientList.patients; 
+            this.displayPatientsBySortOrder();
+            this.isLoading = false;
+            this.loading.dismiss();
+          });
+        }
+        else {
+          this.loadMorePatients();
+        }
       });
-    }
-    else if (this.patients.length < this.totalRows) {
-      this.loadPatients(infiniteScrollEvent);
     }
   }
 
-  loadPatients(infiniteScrollEvent: any) {
+  loadMorePatients(infiniteScrollEvent: any = null) {
     let args: object = {limit: this.pageSize, startkey: this.startKey, skip: this.skip};
     if (this.showOnlyMyPatients) {
       args['watchingProvider'] = this.currentAuthenticatedUsername;
+    }
+
+    if (infiniteScrollEvent == null) {
+      this.resetPaginationOptions();
     }
 
     // TODO: add sorting info
@@ -223,7 +228,6 @@ export class PatientsPage implements OnInit, OnDestroy {
           }
         });
         this.originalPatientList = data.patients; // make a copy of patients for filtering purposes
-        this.displayPatientsBySortOrder();
       }
       
     })
@@ -367,7 +371,8 @@ export class PatientsPage implements OnInit, OnDestroy {
     if (patient.surgery != null) {
       status = patient.surgery.surgeryStatus;
       if (status == SurgeryStatusEnum.Scheduled && patient.surgery.scheduledSurgery != null) {
-        let daysFromToday: number = this.dateUtils.daysFromToday(patient.surgery.scheduledSurgery.scheduledDate);
+        let daysFromToday: number = this.dateUtils.daysFromToday(
+          patient.surgery.scheduledSurgery.scheduledDate);
         if (daysFromToday == 0) {
           status = SurgeryStatusEnum.ScheduledToday;
         }
@@ -380,7 +385,7 @@ export class PatientsPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Filter patient list by lastname, firstname
+   * For the search bar: Filter patient list by lastname, firstname
    * @param ev 
    */
   filterPatientList(ev: any) {
@@ -400,6 +405,7 @@ export class PatientsPage implements OnInit, OnDestroy {
     switch(this.sortOrder) {
       case "lastEditedDate":
         this.sortPatientListByLastEditedDate();
+        break;
       case "ascName":
         this.sortPatientListByName('ascend');
         break;
@@ -411,6 +417,9 @@ export class PatientsPage implements OnInit, OnDestroy {
         break;
       case "descSurgDate":
         this.sortPatientListBySurgDate('descend');
+        break;
+      case "mostRecentlyCreated":
+        break;
     }
   }
 
@@ -418,7 +427,7 @@ export class PatientsPage implements OnInit, OnDestroy {
     this.patients = this.patients.sort((a, b) => {
       let cmp = 0;
       if (a.editedDate > b.editedDate) cmp = -1
-      else if (a.editedDate < b.editedDate) cmp = 0;
+      else if (a.editedDate < b.editedDate) cmp = 1;
       return cmp;
     })
   }

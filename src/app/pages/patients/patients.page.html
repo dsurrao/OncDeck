@@ -115,54 +115,55 @@
     placeholder="Search patients" *ngIf="isSearchbarOpened" 
     (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
   <ion-list #patientList>
-    <ion-item-sliding *ngFor="let patient of patients">        
-      <ion-item [routerLink]="['/patient/' + patient._id]" text-wrap>
-        <ion-avatar item-start>
-          <ion-icon name="contact" class="icon-contact"></ion-icon>
-        </ion-avatar>
-        <div class='patient-container'>
-          {{patient.lastName}}, {{patient.firstName}}
-          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
-            <span class='patient-status'>
-              <ion-icon name="warning" style='color:red'></ion-icon>
-              <span style='color:red'>{{getSurgerySummary(patient)}}</span>
-            </span>
-          </div>
-          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.ScheduledToday">
+    <ion-item-sliding *ngFor="let patient of patients">
+      <ng-container *ngIf="!patient.isArchived">
+        <ion-item [routerLink]="['/patient/' + patient._id]" text-wrap>
+          <ion-avatar item-start>
+            <ion-icon name="contact" class="icon-contact"></ion-icon>
+          </ion-avatar>
+          <div class='patient-container'>
+            {{patient.lastName}}, {{patient.firstName}}
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.NotScheduled || getSurgeryStatus(patient) == surgeryStatusEnum.NotIndicated || getSurgeryStatus(patient) == surgeryStatusEnum.Missed">
               <span class='patient-status'>
-                <span style='color:green'>{{getSurgerySummary(patient)}}</span>
+                <ion-icon name="warning" style='color:red'></ion-icon>
+                <span style='color:red'>{{getSurgerySummary(patient)}}</span>
               </span>
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.ScheduledToday">
+                <span class='patient-status'>
+                  <span style='color:green'>{{getSurgerySummary(patient)}}</span>
+                </span>
+            </div>
+            <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.Scheduled || getSurgeryStatus(patient) == surgeryStatusEnum.Completed">
+                <span class='patient-status'>
+                  <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
+                </span>
+            </div>
           </div>
-          <div *ngIf="getSurgeryStatus(patient) == surgeryStatusEnum.Scheduled || getSurgeryStatus(patient) == surgeryStatusEnum.Completed">
-              <span class='patient-status'>
-                <span style='color:blue'>{{getSurgerySummary(patient)}}</span>
-              </span>
-          </div>
-        </div>
-        <ion-note slot="end">
+          <ion-note slot="end">
             <ion-icon name="arrow-dropright" class="icon-right-arrow"></ion-icon>
-        </ion-note>
-      </ion-item>
+          </ion-note>
+        </ion-item>
 
-      <ion-item-options side="end">
-        <ion-item-option *ngIf="!isWatchingPatient(patient)" (click)="watchPatient(patient)">
-          Watch
-        </ion-item-option>
-        <ion-item-option *ngIf="isWatchingPatient(patient)" color="secondary" (click)="unWatchPatient(patient)">
-          Un-watch
-        </ion-item-option>
-        <ion-item-option color="danger" (click)="removePatientConfirm(patient)">
-          Remove
-        </ion-item-option>
-      </ion-item-options> 
-      
+        <ion-item-options side="end">
+          <ion-item-option *ngIf="!isWatchingPatient(patient)" (click)="watchPatient(patient)">
+            Watch
+          </ion-item-option>
+          <ion-item-option *ngIf="isWatchingPatient(patient)" color="secondary" (click)="unWatchPatient(patient)">
+            Un-watch
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="removePatientConfirm(patient)">
+            Remove
+          </ion-item-option>
+        </ion-item-options>
+      </ng-container> 
     </ion-item-sliding>
   </ion-list>
   
-  <ion-infinite-scroll (ionInfinite)="getPatients($event)">
+  <ion-infinite-scroll (ionInfinite)="loadMorePatients($event)" *ngIf="infiniteScrollFlag">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Loading more patients...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

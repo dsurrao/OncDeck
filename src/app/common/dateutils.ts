@@ -85,4 +85,8 @@ export class DateUtils {
     public toLocaleDateString(isoString: string): string {
         return new Date(isoString).toLocaleDateString();
     }
+
+    public generateUniqueId(): string {
+        return (new Date().toJSON() + Math.random());
+    }
 }

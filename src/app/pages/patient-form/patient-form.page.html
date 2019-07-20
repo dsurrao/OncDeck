@@ -19,9 +19,8 @@
     </ion-item>
     <ion-item>
       <ion-label>DOB</ion-label>
-      <ion-input type="date" name="dob" [(ngModel)]="patient.dob" required></ion-input>
+      <ion-datetime name="dob" [(ngModel)]="patient.dob" required></ion-datetime>
     </ion-item>
-
 
     <ion-list>      
       <ion-list-header>Gender</ion-list-header>
@@ -53,8 +52,9 @@
       <ion-label floating>Contact Phone Number</ion-label>
       <ion-input type="text" name="contactPhoneNumber" [(ngModel)]="patient.contactPhoneNumber"></ion-input>
     </ion-item>
-    <div padding>
-      <ion-button color="primary" block type="submit" [disabled]="!patientForm.form.valid">Next</ion-button>
-    </div>
+    <ion-toolbar>
+      <ion-button slot="end" color="primary" type="submit" shape="round" 
+        [disabled]="!patientForm.form.valid">Next</ion-button>
+    </ion-toolbar>
   </form>
 </ion-content>

@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Patient } from '../models/patient';
 import { RadiationTherapy } from '../models/radiation-therapy';
 import { PouchdbService } from './pouchdb.service';
-import UUID from 'uuid';
+import { DateUtils } from '../common/dateutils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RadiationService {
 
-  constructor(public db: PouchdbService) { }
+  constructor(public db: PouchdbService, public dateUtils: DateUtils) { }
 
   saveRadiationTherapy(radiationTherapy: RadiationTherapy, patient: Patient): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ export class RadiationService {
         if (patient.radiationTherapies == null) {
           patient.radiationTherapies = [];
         }
-        radiationTherapy.id = UUID.v4();
+        radiationTherapy.id = this.dateUtils.generateUniqueId();
         patient.radiationTherapies.push(radiationTherapy);
       }
       else {

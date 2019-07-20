@@ -50,6 +50,9 @@
           <div>{{dateUtils.toLocaleDateString(patient.biopsy.notIndicated.dateRecorded)}}</div>
         </ion-item>
       </ng-container>
-      <ion-button color="primary" [disabled]="biopsyStatusForm.invalid" (click)="save()">Next</ion-button>
+      <ion-toolbar>
+        <ion-button slot="end" color="primary" shape="round" 
+          [disabled]="biopsyStatusForm.invalid" (click)="save()">Save</ion-button>
+      </ion-toolbar>
     </form>
   </ion-content>

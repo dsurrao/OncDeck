@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Patient } from '../models/patient';
-import * as UUID from 'uuid';
 import { Device } from '@ionic-native/device/ngx';
 import { Events, Platform } from '@ionic/angular';
 import PouchDB from 'pouchdb';
 import PouchDBAuth from 'pouchdb-authentication';
 import PouchDBFind from 'pouchdb-find';
 import { PatientList } from '../models/patient-list';
+import { DateUtils } from '../common/dateutils';
 
 PouchDB.plugin(PouchDBAuth);
 PouchDB.plugin(PouchDBFind);
@@ -24,7 +24,8 @@ export class PouchdbService {
   constructor(public http: HttpClient, 
     public device: Device,
     public platform: Platform,
-    public events: Events) {
+    public events: Events,
+    public dateUtils: DateUtils) {
     this.db = new PouchDB('oncdeck', {auto_compaction: true});
 
     // Local CouchDB instance
@@ -146,7 +147,7 @@ export class PouchdbService {
     return new Promise((resolve, reject) => {
       // create a unique id for patient
       if (patient._id == null) {
-        patient._id = UUID.v4();
+        patient._id = this.dateUtils.generateUniqueId();
       }
       // execute only if this is a mobile device
       if (this.platform.is('ios') || this.platform.is('android')) {
@@ -192,6 +193,9 @@ export class PouchdbService {
   getPatientsLocal(args): Promise<PatientList> {
     return new Promise((resolve, reject) => {
       args.include_docs = true;
+      // return more recent documents first, doc ids are sorted
+      // lexicographically: https://pouchdb.com/2014/04/14/pagination-strategies-with-pouchdb.html
+      args.descending = true; 
       this.db.allDocs(args).then(result => {
         let list: PatientList = new PatientList();
         list.patients = [];

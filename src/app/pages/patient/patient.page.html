@@ -3,7 +3,7 @@
       <!--TODO: display age -->
     <ion-title *ngIf="patient != null">
       {{patient.lastName}}, {{patient.firstName}} 
-      ({{patient.gender}}, {{patient.dob}})
+      ({{patient.gender}}, {{this.dateUtils.toLocaleDateString(patient.dob)}})
     </ion-title>
     <ion-buttons slot="start">
         <ion-back-button defaultHref=""></ion-back-button>

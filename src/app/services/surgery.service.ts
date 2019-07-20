@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Patient } from '../models/patient';
 import { Surgery } from '../models/surgery';
 import { PouchdbService } from './pouchdb.service';
-import UUID from 'uuid';
 import { DateUtils } from '../common/dateutils';
 import { CompletedSurgery } from '../models/completed-surgery';
 import { SurgeryStatusEnum } from '../enums/surgery-status-enum';
@@ -26,7 +25,7 @@ export class SurgeryService {
       if (patient.surgery.completedSurgeries == null) {
         patient.surgery.completedSurgeries = [];
       } 
-      surgery.id = UUID.v4();
+      surgery.id = this.dateUtils.generateUniqueId();
       patient.surgery.completedSurgeries.push(surgery);
     }
     else {
