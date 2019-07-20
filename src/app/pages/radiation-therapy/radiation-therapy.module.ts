@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { RadiationTherapyPage } from './radiation-therapy.page';
 import { RadiationTherapySummaryComponent } from './radiation-therapy-summary/radiation-therapy-summary.component';
+import { CompletedRadiationSummaryComponent } from './completed-radiation-summary/completed-radiation-summary.component';
 
 const routes: Routes = [
   {
@@ -23,10 +24,12 @@ const routes: Routes = [
   ],
   declarations: [
     RadiationTherapyPage,
-    RadiationTherapySummaryComponent
+    RadiationTherapySummaryComponent,
+    CompletedRadiationSummaryComponent
   ],
   exports: [
-    RadiationTherapySummaryComponent
+    RadiationTherapySummaryComponent,
+    CompletedRadiationSummaryComponent
   ]
 })
 export class RadiationTherapyPageModule {}

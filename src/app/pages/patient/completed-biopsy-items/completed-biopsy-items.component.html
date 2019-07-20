@@ -1,9 +1,19 @@
 <div class="tab-heading">
-  <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Completed Biopsies
+  <ion-icon name="pulse"></ion-icon>&nbsp;&nbsp;Biopsy
+  <ion-icon name="create" (click)="updateStatus()"></ion-icon>
 </div>
 
-<ng-container *ngIf="patient.biopsy != null && patient.biopsy.completedBiopsies != null; else elseBlock">
-  <ion-list #biopsyList>
+<ng-container *ngIf="patient.biopsy != null; else elseBlock">
+  <ion-card>
+    <ion-card-content>
+      <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list #biopsyList *ngIf="patient.biopsy.completedBiopsies != null">
+    <ion-list-header>
+      <ion-label>Completed Biopsies</ion-label>
+    </ion-list-header>
     <ion-item-sliding *ngFor="let biopsy of patient.biopsy.completedBiopsies">
       <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/biopsy/completed-biopsy/' + biopsy.id]">
         Biopsy completed on {{this.dateUtils.toLocaleDateString(biopsy.procedureDate)}} at {{biopsy.facility}} with {{biopsy.pathologistName}}

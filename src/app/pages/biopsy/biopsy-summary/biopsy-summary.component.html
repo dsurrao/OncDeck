@@ -1,6 +1,5 @@
-<ng-container *ngIf="biopsy != null">
-  <b>Biopsies</b>
-  <br/>
+<h3>Biopsies</h3>
+<ng-container *ngIf="biopsy != null; else noInfoBlock">
   <ng-container *ngIf="biopsy.status == biopsyStatusEnum.Scheduled; then scheduledBlock"></ng-container>
   <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotScheduled && biopsy.notScheduled != null; then notScheduledBlock"></ng-container>
   <ng-container *ngIf="biopsy.status == biopsyStatusEnum.NotIndicated && biopsy.notIndicated != null; then notIndicatedBlock"></ng-container>
@@ -24,3 +23,5 @@
 <ng-template #completedBlock>
   <app-completed-biopsy-summary [biopsy]="mostRecentCompletedBiopsy"></app-completed-biopsy-summary>
 </ng-template>
+
+<ng-template #noInfoBlock>No information found.</ng-template>

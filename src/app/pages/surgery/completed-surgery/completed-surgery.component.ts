@@ -82,4 +82,8 @@ export class CompletedSurgeryComponent implements OnInit {
     });
   }
 
+  cancel() {
+    this.navCtrl.navigateBack('/patient/' + this.patientId + '?tab=surgery');
+  }
+
 }

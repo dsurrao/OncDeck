@@ -18,6 +18,7 @@
 
 <ion-content *ngIf="patient != null">
 
+  <!-- Navigation Tabs -->
   <div class="scrollmenu">
     <ion-button color="{{summaryButtonColor}}" (click)="resetTabButtons('summary')">Summary</ion-button>
     <ion-button color="{{stagingButtonColor}}" (click)="resetTabButtons('staging')">Staging</ion-button>
@@ -38,24 +39,23 @@
         <patient-summary [patient]="patient"></patient-summary>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="patient.biopsy != null">
+    <ion-card>
       <ion-card-content>
         <app-biopsy-summary [biopsy]="patient.biopsy"></app-biopsy-summary>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="patient.radiationTherapies != null">
+    <ion-card>
       <ion-card-content>
-        <app-radiation-therapy-summary 
-          [radiationTherapy]="patient.radiationTherapies[patient.radiationTherapies.length-1]">
-        </app-radiation-therapy-summary>
+        <app-radiation-therapy-summary [patient]="patient"></app-radiation-therapy-summary>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="patient.surgery != null">
+    <ion-card>
       <ion-card-content>        
         <app-surgery-summary [patient]="patient"></app-surgery-summary>
       </ion-card-content>
     </ion-card>
   </ng-container>
+  <!-- end Summary -->
 
   <!-- Completed Biopsy -->
   <ng-container *ngIf="tabClicked=='biopsy'">
@@ -72,10 +72,12 @@
     <radiation-therapy-items [patient]="patient"></radiation-therapy-items>
   </ng-container>
 
+  <!-- Surgery -->
   <ng-container *ngIf="tabClicked=='surgery'">
     <app-surgery-home [patient]="patient" *ngIf="tabClicked=='surgery'"></app-surgery-home>
   </ng-container>
 
+  <!-- Timeline -->
   <ng-container *ngIf="tabClicked=='timeline'">
     <app-timeline [patient]="patient"></app-timeline>
   </ng-container>
