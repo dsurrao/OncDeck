@@ -3,14 +3,13 @@ import { PouchdbService } from './pouchdb.service';
 import { SurgeryStatusEnum } from '../enums/surgery-status-enum';
 import { PatientListFilterEnum } from '../enums/patient-list-filter-enum';
 import { PatientList } from '../models/patient-list';
-import { PatientListServiceInterface } from './interfaces/patient-list-service.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PatientListService implements PatientListServiceInterface {
+export class PatientListService {
 
-  constructor(public dvSvc: PouchdbService) { }
+  constructor(public dbSvc: PouchdbService) { }
 
   getPatientsByFilter(filter: PatientListFilterEnum = PatientListFilterEnum.All, 
     args: object = {}): Promise<PatientList> {
@@ -20,7 +19,7 @@ export class PatientListService implements PatientListServiceInterface {
         case PatientListFilterEnum.All:
           patientListPromise = this.getPatients(args);
           break;
-        case PatientListFilterEnum.NoSurgery:
+        case PatientListFilterEnum.NotScheduled:
           patientListPromise =  this.getPatientsWithNoScheduledSurgery();
           break;
         case PatientListFilterEnum.ScheduledBiopsy:
@@ -61,7 +60,7 @@ export class PatientListService implements PatientListServiceInterface {
   }
 
   getPatients(args: object = {}): Promise<PatientList> {
-    return this.dvSvc.getPatients(args);
+    return this.dbSvc.getPatients(args);
   }
 
   getPatientsWithNoScheduledSurgery(): Promise<PatientList> {
@@ -94,7 +93,7 @@ export class PatientListService implements PatientListServiceInterface {
 
   private getPatientsBySelector(iSelector: any): Promise<PatientList> {
     return new Promise((resolve, reject) => {
-      let db: any = this.dvSvc.getDb();
+      let db: any = this.dbSvc.getDb();
         db.find({
           selector: iSelector
         }).then(result => {
@@ -110,7 +109,7 @@ export class PatientListService implements PatientListServiceInterface {
 
   private getPatientsByIndex(indexFields: string[], indexName: string, iSelector: any): Promise<PatientList> {
     return new Promise((resolve, reject) => {
-      let db: any = this.dvSvc.getDb();
+      let db: any = this.dbSvc.getDb();
       db.createIndex({
         index: {
           fields: indexFields,

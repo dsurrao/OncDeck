@@ -41,4 +41,32 @@ export class PatientService {
     }
     return this.savePatient(patient);
   }
+
+  public notScheduled(pt: Patient): boolean {
+    return !this.scheduledForBiopsy(pt) && !this.scheduledForSurgery(pt);
+  }
+  
+  public scheduledForBiopsy(pt: Patient): boolean {
+    let flag: boolean = false;
+    if (pt.biopsy != null) {
+      if (pt.biopsy.scheduledBiopsy != null) {
+        if (pt.biopsy.scheduledBiopsy.scheduledDate >= new Date().toISOString()) {
+          flag = true;
+        }
+      }
+    }
+    return flag;
+  }
+
+  public scheduledForSurgery(pt: Patient): boolean {
+    let flag: boolean = false;
+    if (pt.surgery != null) {
+      if (pt.surgery.scheduledSurgery != null) {
+        if (pt.surgery.scheduledSurgery.scheduledDate >= new Date().toISOString()) {
+          flag = true;
+        }
+      }
+    }
+    return flag;
+  }
 }

@@ -1,10 +1,10 @@
 import { PatientList } from '../../models/patient-list';
 import { PatientListFilterEnum } from '../../enums/patient-list-filter-enum';
+import { PatientListSortEnum } from '../../enums/patient-list-sort-enum';
 
 export interface PatientListServiceInterface {
-    getPatients(args: object): Promise<PatientList>;
-    getPatientsByFilter(filter: PatientListFilterEnum, args: object): Promise<PatientList>;
-    getPatientsWithNoScheduledSurgery(): Promise<PatientList>;
-    getPatientsScheduledForSurgery(): Promise<PatientList>;
-    getPatientsScheduledForBiopsy(): Promise<PatientList>;
+    getPatientList(filter: PatientListFilterEnum, 
+        watcherUsername: string, 
+        sort: PatientListSortEnum): Promise<PatientList>;
+    getPatientListAll();
 }
