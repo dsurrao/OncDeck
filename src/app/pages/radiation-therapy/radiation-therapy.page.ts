@@ -99,7 +99,7 @@ export class RadiationTherapyPage implements OnInit {
     if (this.radiationTherapy != null) {
       // calculate projected end date
       // TODO: factor in weekends and holidays, and fix RangeError: Invalid time value
-      this.radiationTherapy.projectedEndDate = this.dateUtils.addDays(
+      this.radiationTherapy.projectedEndDate = this.dateUtils.addDaysWithWeekendsAndHolidays(
         this.radiationTherapy.startDate, this.radiationTherapy.numTreatments - 1);
     }
   }

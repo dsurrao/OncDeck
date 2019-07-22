@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class DateUtils {
@@ -55,14 +56,29 @@ export class DateUtils {
     }
 
     public addDays(isoDate: string, days: number): string {
-        let inputDate:Date = new Date(isoDate);
-        inputDate.setHours(0);
-        inputDate.setMinutes(0);
-        inputDate.setSeconds(0);
-        inputDate.setMilliseconds(0);
-        let outputDate: Date = new Date();
-        outputDate.setTime(inputDate.getTime() + (1000 * 60 * 60 * 24 * days));
+        let outputDate: Date = this.addDaysToDateObj(new Date(isoDate), days);
         return outputDate.toISOString();
+    }
+
+    public addDaysToDateObj(date: Date, days: number): Date {
+        let outputDate: Date = new Date();
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        outputDate.setTime(date.getTime() + (1000 * 60 * 60 * 24 * days));
+        return outputDate;
+    }
+
+    public addDaysWithWeekendsAndHolidays(isoDate: string, days: number): string {
+        let endDate: Date = new Date(isoDate);
+        while(days > 0) {
+            endDate = this.addDaysToDateObj(endDate, 1);
+            if (!this.isHoliday(endDate) && !this.isWeekend(endDate)) {
+                days--;
+            }            
+        }
+        return endDate.toISOString();
     }
 
     public getAge(isoDob: string): number {
@@ -88,5 +104,28 @@ export class DateUtils {
 
     public generateUniqueId(): string {
         return (new Date().toJSON() + Math.random());
+    }
+
+    public isWeekend(date: Date): boolean {
+        let ret: boolean = false;
+        if (date.getDay() == 0 || date.getDay() == 6) {
+            ret = true;
+        }
+        return ret;
+    }
+
+    public isHoliday(date: Date): boolean {
+        let ret: boolean = false;
+        if (environment.holidays !== undefined) {
+            for (let i = 0; i < environment.holidays.length; i++) {
+                let holidayFullDate = new Date(environment.holidays[i] + ' ' + date.getFullYear());
+                if (holidayFullDate.getDate() == date.getDate() 
+                    && holidayFullDate.getMonth() == date.getMonth()) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+        return ret;
     }
 }
