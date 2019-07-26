@@ -25,6 +25,9 @@ const routes: Routes = [
   declarations: [
     ClinicalBreastStagingPage,
     StagingSummaryComponent
+  ],
+  exports: [
+    StagingSummaryComponent
   ]
 })
 export class ClinicalBreastStagingPageModule {}
