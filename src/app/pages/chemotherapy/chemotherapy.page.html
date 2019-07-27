@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Chemotherapy</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>      
+    <ion-list-header>Chemotherapy Regimen</ion-list-header>
+    <ion-radio-group [(ngModel)]="chemotherapy.regimen" radio-group name="regimen" required>
+      <ion-item>
+        <ion-label>CAF: Adriamycin (Doxorubicin)</ion-label>
+        <ion-radio slot="start" value="CAF: Adriamycin (Doxorubicin)"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cyclophosphamide (Cytoxan)</ion-label>
+        <ion-radio slot="start" value="Cyclophosphamide (Cytoxan)"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>5-FU</ion-label>
+        <ion-radio slot="start" value="5-FU"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>AC-T: Adriamycin (Doxorubicin)</ion-label>
+        <ion-radio slot="start" value="AC-T: Adriamycin (Doxorubicin)"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cyclophosphamide (Cytoxan)</ion-label>
+        <ion-radio slot="start" value="Cyclophosphamide (Cytoxan)"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Pacilatexl (Taxol)</ion-label>
+        <ion-radio slot="start" value="Pacilatexl (Taxol)"></ion-radio>
+      </ion-item>
+      <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio slot="start" value="Other"></ion-radio>
+        </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-item>     
+    <ion-label>Chemotherapy Start Date</ion-label>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="chemotherapy.startDate" name="startDate" required></ion-datetime>
+  </ion-item>
+ 
+  <ion-item>
+    <ion-label>Planned Cycles (#)</ion-label>
+    <ion-input type="text" name="cycles" required [(ngModel)]="chemotherapy.cycles"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Calculated End Date</ion-label>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="chemotherapy.caclulatedEndDate" name="caclulatedEndDate" required></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Actual End Date</ion-label>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="chemotherapy.actualEndDate" name="actualEndDate" required></ion-datetime>
+  </ion-item>
+
+  <ion-toolbar>
+      <ion-button color="primary" slot="end" 
+        (click)="save()">Save</ion-button>
+  </ion-toolbar>
+
+</ion-content>
+
+
