@@ -1,1 +1,8 @@
-<h3>Staging Summaries</h3>
+<h3>Staging</h3>
+<ng-container *ngIf="patient.stagings != null; else elseBlock">
+  <app-completed-staging-summary 
+    [staging]="patient.stagings[patient.stagings.length-1]">
+  </app-completed-staging-summary>
+</ng-container>
+
+<ng-template #elseBlock>No information found.</ng-template>

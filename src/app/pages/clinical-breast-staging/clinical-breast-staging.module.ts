@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ClinicalBreastStagingPage } from './clinical-breast-staging.page';
 import { StagingSummaryComponent } from './staging-summary/staging-summary.component';
+import { CompletedStagingSummaryComponent } from './completed-staging-summary/completed-staging-summary.component';
 
 const routes: Routes = [
   {
@@ -24,10 +25,12 @@ const routes: Routes = [
   ],
   declarations: [
     ClinicalBreastStagingPage,
-    StagingSummaryComponent
+    StagingSummaryComponent,
+    CompletedStagingSummaryComponent
   ],
   exports: [
-    StagingSummaryComponent
+    StagingSummaryComponent,
+    CompletedStagingSummaryComponent
   ]
 })
 export class ClinicalBreastStagingPageModule {}
