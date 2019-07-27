@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ClinicalBreastStagingPage } from './clinical-breast-staging.page';
+import { StagingSummaryComponent } from './staging-summary/staging-summary.component';
+import { CompletedStagingSummaryComponent } from './completed-staging-summary/completed-staging-summary.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ClinicalBreastStagingPage]
+  declarations: [
+    ClinicalBreastStagingPage,
+    StagingSummaryComponent,
+    CompletedStagingSummaryComponent
+  ],
+  exports: [
+    StagingSummaryComponent,
+    CompletedStagingSummaryComponent
+  ]
 })
 export class ClinicalBreastStagingPageModule {}
