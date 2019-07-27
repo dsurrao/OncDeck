@@ -21,8 +21,11 @@ const routes: Routes = [
   { path: 'patient/:patientId/clinical-breast-staging', 
     loadChildren: './pages/clinical-breast-staging/clinical-breast-staging.module#ClinicalBreastStagingPageModule' },
   { path: 'patient/:patientId/clinical-breast-staging/:stagingId', 
-    loadChildren: './pages/clinical-breast-staging/clinical-breast-staging.module#ClinicalBreastStagingPageModule' }
-];
+    loadChildren: './pages/clinical-breast-staging/clinical-breast-staging.module#ClinicalBreastStagingPageModule' },
+    { path: 'patient/:patientId/chemotherapy', 
+    loadChildren: './pages/chemotherapy/chemotherapy.module#ChemotherapyPageModule' },
+
+]; 
 
 @NgModule({
   imports: [
