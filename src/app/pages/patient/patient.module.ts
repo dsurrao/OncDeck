@@ -10,10 +10,12 @@ import { PatientSummaryComponent } from 'src/app/components/patient-summary/pati
 import { RadiationTherapyItemsComponent } from './radiation-therapy-items/radiation-therapy-items.component';
 import { CompletedBiopsyItemsComponent } from './completed-biopsy-items/completed-biopsy-items.component';
 import { ClinicalBreastStagingItemsComponent } from './clinical-breast-staging-items/clinical-breast-staging-items.component';
+import { ChemotherapyItemsComponent } from './chemotherapy-items/chemotherapy-items.component';
 
 
 import { ClinicalBreastStagingPageModule } from '../clinical-breast-staging/clinical-breast-staging.module';
 import { BiopsyPageModule } from '../biopsy/biopsy.module';
+import { ChemotherapyPageModule } from '../chemotherapy/chemotherapy.module';
 import { RadiationTherapyPageModule } from '../radiation-therapy/radiation-therapy.module';
 import { SurgeryPageModule } from '../surgery/surgery.module';
 
@@ -28,6 +30,7 @@ import { TimelineComponent } from './timeline/timeline.component';
     routing,
     ClinicalBreastStagingPageModule,
     BiopsyPageModule,
+    ChemotherapyPageModule,
     RadiationTherapyPageModule,
     SurgeryPageModule,
     NgxTimelineModule
@@ -38,6 +41,7 @@ import { TimelineComponent } from './timeline/timeline.component';
     RadiationTherapyItemsComponent,
     CompletedBiopsyItemsComponent,
     ClinicalBreastStagingItemsComponent,
+    ChemotherapyItemsComponent,
     TimelineComponent
   ]
 })

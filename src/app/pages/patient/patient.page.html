@@ -23,6 +23,7 @@
     <ion-button color="{{summaryButtonColor}}" (click)="resetTabButtons('summary')">Summary</ion-button>
     <ion-button color="{{stagingButtonColor}}" (click)="resetTabButtons('staging')">Staging</ion-button>
     <ion-button color="{{biopsyButtonColor}}" (click)="resetTabButtons('biopsy')">Biopsy</ion-button>
+    <ion-button color="{{chemotherapyButtonColor}}" (click)="resetTabButtons('chemotherapy')">Chemotherapy</ion-button>
     <ion-button color="{{radiationButtonColor}}" (click)="resetTabButtons('radiation')">Radiation</ion-button>
     <ion-button color="{{surgeryButtonColor}}" (click)="resetTabButtons('surgery')">Surgery</ion-button>
     <ion-button color="{{timelineButtonColor}}" (click)="resetTabButtons('timeline')">Timeline</ion-button>
@@ -71,7 +72,12 @@
   <ng-container *ngIf="tabClicked=='staging'">
     <clinical-breast-staging-items [patient]="patient"></clinical-breast-staging-items>
   </ng-container>
-  
+
+  <!-- Chemotherapy -->
+  <ng-container *ngIf="tabClicked=='chemotherapy'">
+    <chemotherapy-items [patient]="patient"></chemotherapy-items>
+  </ng-container>
+
   <!-- Radiation Therapy -->
   <ng-container *ngIf="tabClicked=='radiation'">
     <radiation-therapy-items [patient]="patient"></radiation-therapy-items>

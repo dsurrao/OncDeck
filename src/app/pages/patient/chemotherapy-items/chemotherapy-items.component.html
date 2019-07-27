@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>chemotherapy-items</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/chemotherapy']" class="add-button">
+            <ion-icon name="add"></ion-icon>
+            Add Chemotherapy
+        </ion-button>
+    </ion-buttons>
+</ion-toolbar>
+</ion-content>

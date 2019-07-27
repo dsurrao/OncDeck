@@ -20,6 +20,7 @@ export class PatientPage implements OnInit {
   stagingButtonColor: string;
   biopsyButtonColor: string;
   surgeryButtonColor: string;
+  chemotherapyButtonColor: string;
   radiationButtonColor: string;
   timelineButtonColor: string;
   tabClicked: string;
@@ -87,6 +88,7 @@ export class PatientPage implements OnInit {
     this.summaryButtonColor = tabClicked == 'summary' ? 'primary' : 'secondary';
     this.stagingButtonColor = tabClicked == 'staging' ? 'primary' : 'secondary';
     this.biopsyButtonColor = tabClicked == 'biopsy' ? 'primary' : 'secondary';
+    this.chemotherapyButtonColor = tabClicked == 'chemotherapy' ? 'primary' : 'secondary';
     this.radiationButtonColor = tabClicked == 'radiation' ? 'primary' : 'secondary';
     this.surgeryButtonColor = tabClicked == 'surgery' ? 'primary' : 'secondary';
     this.timelineButtonColor = tabClicked == 'timeline' ? 'primary' : 'secondary';
