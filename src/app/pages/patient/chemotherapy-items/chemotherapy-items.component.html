@@ -1,16 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>chemotherapy-items</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="tab-heading">
+  <ion-icon name="body"></ion-icon>Chemotherapy
+</div>
+
+<ng-container *ngIf="patient.chemotherapies != null; else elseBlock">
+<ion-item-sliding *ngFor="let chemotherapy of patient.chemotherapies">
+  <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/chemotherapy/' + chemotherapy.id]">
+      Regimen: {{chemotherapy.regimen}}<br/>
+      Start Date: {{this.dateUtils.toLocaleDateString(chemotherapy.startDate)}}<br/>
+      Planned Cycles: {{chemotherapy.plannedCycles}}<br/>
+      Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
+      Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+  </ion-item>
+</ion-item-sliding>
+</ng-container>
+
+<ng-template #elseBlock>
+  <div class="no-information">No information found.</div>
+</ng-template>
 
 <ion-content>
   <ion-toolbar>
     <ion-buttons slot="end">
-        <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/chemotherapy']" class="add-button">
-            <ion-icon name="add"></ion-icon>
-            Add Chemotherapy
-        </ion-button>
+      <ion-button color="primary" shape="round" fill="solid" [routerLink]="['/patient/' + patient._id + '/chemotherapy']" class="add-button">
+        <ion-icon name="add"></ion-icon>
+        Add Chemotherapy
+      </ion-button>
     </ion-buttons>
 </ion-toolbar>
 </ion-content>

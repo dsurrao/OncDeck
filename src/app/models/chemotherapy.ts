@@ -3,6 +3,6 @@ export class Chemotherapy {
     regimen: string;
     startDate: string;
     plannedCycles: string;
-    caclulatedEndDate: string;
-    actualEndDate: string
+    calculatedEndDate: string;
+    actualEndDate: string;
 }

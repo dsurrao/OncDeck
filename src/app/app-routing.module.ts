@@ -24,6 +24,8 @@ const routes: Routes = [
     loadChildren: './pages/clinical-breast-staging/clinical-breast-staging.module#ClinicalBreastStagingPageModule' },
     { path: 'patient/:patientId/chemotherapy', 
     loadChildren: './pages/chemotherapy/chemotherapy.module#ChemotherapyPageModule' },
+    { path: 'patient/:patientId/chemotherapy/:chemotherapyId', 
+    loadChildren: './pages/chemotherapy/chemotherapy.module#ChemotherapyPageModule' }
 
 ]; 
 

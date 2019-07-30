@@ -49,11 +49,11 @@
  
   <ion-item>
     <ion-label>Planned Cycles (#)</ion-label>
-    <ion-input type="text" name="cycles" required [(ngModel)]="chemotherapy.cycles"></ion-input>
+    <ion-input type="text" name="cycles" required [(ngModel)]="chemotherapy.plannedCycles"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Calculated End Date</ion-label>
-    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="chemotherapy.caclulatedEndDate" name="caclulatedEndDate" required></ion-datetime>
+    <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="chemotherapy.calculatedEndDate" name="calculatedEndDate" required></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Actual End Date</ion-label>
@@ -66,5 +66,3 @@
   </ion-toolbar>
 
 </ion-content>
-
-
