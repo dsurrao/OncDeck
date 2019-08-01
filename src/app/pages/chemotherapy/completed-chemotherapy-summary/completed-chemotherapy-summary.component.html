@@ -1,0 +1,9 @@
+
+<p *ngIf="chemotherapy != null">
+    Regimen: {{chemotherapy.regimen}}<br/>
+    Start Date: {{this.dateUtils.toLocaleDateString(chemotherapy.startDate)}}<br/>
+    Planned Cycles: {{chemotherapy.plannedCycles}}<br/>
+    Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
+    Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+</p>
+      

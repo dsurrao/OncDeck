@@ -1,0 +1,8 @@
+<h3>Chemotherapy</h3>
+<ng-container *ngIf="patient.chemotherapies != null; else elseBlock">
+  <app-completed-chemotherapy-summary 
+    [chemotherapy]="patient.chemotherapies[patient.chemotherapies.length-1]">
+  </app-completed-chemotherapy-summary>
+</ng-container>
+
+<ng-template #elseBlock>No information found.</ng-template>
