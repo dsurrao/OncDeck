@@ -30,7 +30,7 @@
     </ion-item>
     <ion-item *ngIf="patient.surgery.surgeryNotIndicated.dateRecorded != null">
       <ion-label>Date Recorded</ion-label>
-      <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotIndicated.dateRecorded)}}</div>
+      <div>{{dateUtils.toLocaleDateString(patient.surgery.surgeryNotIndicated.dateRecorded)}}</div>
     </ion-item>
     <ion-toolbar>
       <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>

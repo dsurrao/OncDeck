@@ -7,7 +7,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form #thisForm="ngForm" *ngIf="patient != null && patient.surgery != null && patient.surgery.surgeryNotScheduled != null">
+  <form #thisForm="ngForm" *ngIf="patient != null && patient.surgery != null 
+    && patient.surgery.surgeryNotScheduled != null">
     <ion-item>
       <ion-label>Not Scheduled Reason</ion-label>
       <ion-input type="text" name="notScheduledReason" 
@@ -20,7 +21,7 @@
     </ion-item>
     <ion-item *ngIf="patient.surgery.surgeryNotScheduled.dateRecorded != null">
       <ion-label>Date Recorded</ion-label>
-      <div>{{this.dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}}</div>
+      <div>{{dateUtils.toLocaleDateString(patient.surgery.surgeryNotScheduled.dateRecorded)}}</div>
     </ion-item>
     <ion-toolbar>
       <ion-button color="primary" slot="end" (click)="cancel()">Cancel</ion-button>

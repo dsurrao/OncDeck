@@ -5,6 +5,9 @@ import { PouchdbService } from './pouchdb.service';
 import { DateUtils } from '../common/dateutils';
 import { CompletedSurgery } from '../models/completed-surgery';
 import { SurgeryStatusEnum } from '../enums/surgery-status-enum';
+import { ScheduledSurgery } from '../models/scheduled-surgery';
+import { SurgeryNotIndicated } from '../models/surgery-not-indicated';
+import { SurgeryNotScheduled } from '../models/surgery-not-scheduled';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +41,7 @@ export class SurgeryService {
       }
     }
 
-    patient.surgery.surgeryStatus = this.inferSurgeryStatus(patient);
+    patient.surgery.surgeryStatus = SurgeryStatusEnum.Completed;
     
     return this.saveSurgeryStatus(patient);
   }
@@ -55,16 +58,49 @@ export class SurgeryService {
       patient.surgery.completedSurgeries.splice(removeIndex, 1);
     }
 
-    patient.surgery.surgeryStatus = this.inferSurgeryStatus(patient);
-
     return this.saveSurgeryStatus(patient);
   }
 
+  public saveScheduledSurgery(surgery: ScheduledSurgery, patient: Patient) {
+    if (surgery.id == null) {
+      // new surgery
+      if (patient.surgery == null) {
+        patient.surgery = new Surgery();
+      }
+      surgery.id = this.dateUtils.generateUniqueId();
+    }
+    patient.surgery.scheduledSurgery = surgery;
+    patient.surgery.surgeryStatus = SurgeryStatusEnum.Scheduled;
+    
+    return this.saveSurgeryStatus(patient);
+  }
+
+  public saveSurgeryNotIndicated(surgery: SurgeryNotIndicated, patient: Patient) {
+    // new surgery
+    if (patient.surgery == null) {
+      patient.surgery = new Surgery();
+    }
+    patient.surgery.surgeryNotIndicated = surgery;
+    patient.surgery.surgeryStatus = SurgeryStatusEnum.NotIndicated;
+    
+    return this.saveSurgeryStatus(patient);
+  }
+
+  public saveSurgeryNotScheduled(surgery: SurgeryNotScheduled, patient: Patient) {
+    // new surgery
+    if (patient.surgery == null) {
+      patient.surgery = new Surgery();
+    }
+    patient.surgery.surgeryNotScheduled = surgery;
+    patient.surgery.surgeryStatus = SurgeryStatusEnum.NotScheduled;
+    
+    return this.saveSurgeryStatus(patient);
+  }
+
+  /* this method validates the status before saving it */
   public saveSurgeryStatus(patient: Patient): Promise<Patient> {
     let status: SurgeryStatusEnum = patient.surgery.surgeryStatus;
     let inferredStatus: SurgeryStatusEnum = this.inferSurgeryStatus(patient);
-
-    patient.surgery.surgeryStatus = status;
 
     switch (status) {
       case SurgeryStatusEnum.NotIndicated:
@@ -106,12 +142,14 @@ export class SurgeryService {
   public getMostRecentCompletedSurgery(patient: Patient): CompletedSurgery {
     let mostRecentCompletedSurgery: CompletedSurgery = null;
     if (patient.surgery != null) {
-      for (let s of patient.surgery.completedSurgeries) {
-        if (mostRecentCompletedSurgery == null) {
-          mostRecentCompletedSurgery = s;
-        }
-        else if (s.surgeryDate > mostRecentCompletedSurgery.surgeryDate) {
-          mostRecentCompletedSurgery = s;
+      if (patient.surgery.completedSurgeries != null) {
+        for (let s of patient.surgery.completedSurgeries) {
+          if (mostRecentCompletedSurgery == null) {
+            mostRecentCompletedSurgery = s;
+          }
+          else if (s.surgeryDate > mostRecentCompletedSurgery.surgeryDate) {
+            mostRecentCompletedSurgery = s;
+          }
         }
       }
     }

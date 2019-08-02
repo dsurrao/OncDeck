@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Surgery } from 'src/app/models/surgery';
 import { ScheduledSurgery } from 'src/app/models/scheduled-surgery';
 import { NavController } from '@ionic/angular';
+import { SurgeryService } from 'src/app/services/surgery.service';
 
 @Component({
   selector: 'app-scheduled-surgery',
@@ -15,6 +16,7 @@ export class ScheduledSurgeryComponent implements OnInit {
   patient: Patient;
 
   constructor(public patientSvc: PatientService,
+    public surgerySvc: SurgeryService,
     public route: ActivatedRoute,
     public navCtrl: NavController) { }
 
@@ -32,7 +34,8 @@ export class ScheduledSurgeryComponent implements OnInit {
   }
 
   save() {
-    this.patientSvc.savePatient(this.patient).then(patient => {
+    this.surgerySvc.saveScheduledSurgery(this.patient.surgery.scheduledSurgery, 
+      this.patient).then(patient => {
       this.navCtrl.navigateBack('/patient/' + this.patient._id + '?tab=surgery');
     });
   }

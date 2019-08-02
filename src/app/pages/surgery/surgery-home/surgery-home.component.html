@@ -49,7 +49,8 @@
   </ng-template>
   
   <!-- Completed Surgeries -->
-  <ion-item-group *ngIf="patient.surgery != null && patient.surgery.completedSurgeries.length > 0">
+  <ion-item-group *ngIf="patient.surgery != null && patient.surgery.completedSurgeries != null
+    && patient.surgery.completedSurgeries.length > 0">
     <ion-item-divider>
       <ion-label>Completed Surgeries</ion-label>
     </ion-item-divider>

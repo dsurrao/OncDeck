@@ -22,6 +22,8 @@ export class SurgeryHomeComponent implements OnInit {
   }
 
   next() {
+    // switch off editing mode
+    this.updateSurgeryStatusFlag = !this.updateSurgeryStatusFlag;
     switch (this.surgeryStatus) {
       case SurgeryStatusEnum.Completed:
         this.navCtrl.navigateForward('/patient/' + this.patient._id + '/surgery/completed-surgery');
@@ -39,6 +41,7 @@ export class SurgeryHomeComponent implements OnInit {
   }
 
   updateStatus() {
+    // switch off editing mode
     this.updateSurgeryStatusFlag = !this.updateSurgeryStatusFlag;
     if (!this.updateSurgeryStatusFlag) {
       this.surgeryStatus = null;

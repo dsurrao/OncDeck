@@ -6,6 +6,8 @@ import { Surgery } from 'src/app/models/surgery';
 import { SurgeryNotIndicated } from 'src/app/models/surgery-not-indicated';
 import { SurgeryNotIndicatedReasonEnum } from 'src/app/enums/surgery-not-indicated-reason-enum';
 import { NavController } from '@ionic/angular';
+import { SurgeryService } from 'src/app/services/surgery.service';
+import { DateUtils } from 'src/app/common/dateutils';
 
 @Component({
   selector: 'app-not-indicated-surgery',
@@ -18,8 +20,10 @@ export class NotIndicatedSurgeryComponent implements OnInit {
   surgeryNotIndicatedReasonEnum = SurgeryNotIndicatedReasonEnum;
 
   constructor(public patientSvc: PatientService,
+    public surgerySvc: SurgeryService,
     public route: ActivatedRoute,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController,
+    public dateUtils: DateUtils) { }
 
   ngOnInit() {
     this.patientSvc.getPatient(this.route.snapshot.paramMap.get('patientId')).then(patient => {
@@ -35,7 +39,8 @@ export class NotIndicatedSurgeryComponent implements OnInit {
   }
 
   save() {
-    this.patientSvc.savePatient(this.patient).then(patient => {
+    this.surgerySvc.saveSurgeryNotIndicated(this.patient.surgery.surgeryNotIndicated,
+      this.patient).then(patient => {
       this.navCtrl.navigateBack('/patient/' + this.patient._id + '?tab=surgery');
     });
   }

@@ -3,6 +3,7 @@ import { PouchdbService } from './pouchdb.service';
 import { SurgeryStatusEnum } from '../enums/surgery-status-enum';
 import { PatientListFilterEnum } from '../enums/patient-list-filter-enum';
 import { PatientList } from '../models/patient-list';
+import { BiopsyStatusEnum } from '../enums/biopsy-status-enum';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class PatientListService {
           patientListPromise = this.getPatients(args);
           break;
         case PatientListFilterEnum.NotScheduled:
-          patientListPromise =  this.getPatientsWithNoScheduledSurgery();
+          patientListPromise =  this.getPatientsWithNothingScheduled();
           break;
         case PatientListFilterEnum.ScheduledBiopsy:
           patientListPromise =  this.getPatientsScheduledForBiopsy();
@@ -63,17 +64,38 @@ export class PatientListService {
     return this.dbSvc.getPatients(args);
   }
 
-  getPatientsWithNoScheduledSurgery(): Promise<PatientList> {
-    let selectorArray = [
-      {'surgery': null},
-      {'surgery.surgeryStatus': SurgeryStatusEnum.Missed},
-      {'surgery.surgeryStatus': SurgeryStatusEnum.NotIndicated},
-      {'surgery.surgeryStatus': SurgeryStatusEnum.NotScheduled},
-      {'surgery.scheduledSurgery.scheduledDate': {$gt: new Date().toISOString()}}
-    ];
-    let selector = { 
-      '$or': selectorArray
+  getPatientsWithNothingScheduled(): Promise<PatientList> {
+    let selector = {
+      '$and': [
+        { '$not': { 
+            '$or': [
+              { 'surgery.surgeryStatus': SurgeryStatusEnum.Completed },
+              { 'surgery.surgeryStatus': SurgeryStatusEnum.Scheduled },
+              { 'biopsy.status': BiopsyStatusEnum.Completed },
+              { 'biopsy.status': BiopsyStatusEnum.Scheduled }
+            ]
+          }
+        },
+        { '$or': [
+            {'surgery': undefined},
+            {'surgery.scheduledSurgery': undefined},
+            {'surgery.scheduledSurgery.scheduledDate': {$lt: new Date().toISOString()}},
+            {'surgery.surgeryStatus': SurgeryStatusEnum.Missed},
+            {'surgery.surgeryStatus': SurgeryStatusEnum.NotIndicated},
+            {'surgery.surgeryStatus': SurgeryStatusEnum.NotScheduled},
+          ]
+        },
+        { '$or': [
+            {'biopsy': undefined},
+            {'biopsy.status': undefined},
+            {'biopsy.status': BiopsyStatusEnum.NotIndicated},
+            {'biopsy.status': BiopsyStatusEnum.NotScheduled},
+            {'biopsy.scheduledBiopsy.scheduledDate': {$lt: new Date().toISOString()}}
+          ]
+        }
+      ]
     };
+
     return this.getPatientsBySelector(selector);
   }
 

@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Surgery } from 'src/app/models/surgery';
 import { SurgeryNotScheduled } from 'src/app/models/surgery-not-scheduled';
 import { NavController } from '@ionic/angular';
+import { SurgeryService } from 'src/app/services/surgery.service';
+import { DateUtils } from 'src/app/common/dateutils';
 
 @Component({
   selector: 'app-not-scheduled-surgery',
@@ -15,8 +17,10 @@ export class NotScheduledSurgeryComponent implements OnInit {
   patient: Patient;
 
   constructor(public patientSvc: PatientService,
+    public surgerySvc: SurgeryService,
     public route: ActivatedRoute,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController,
+    public dateUtils: DateUtils) { }
 
   ngOnInit() {
     this.patientSvc.getPatient(this.route.snapshot.paramMap.get('patientId')).then(patient => {
@@ -32,7 +36,8 @@ export class NotScheduledSurgeryComponent implements OnInit {
   }
 
   save() {
-    this.patientSvc.savePatient(this.patient).then(patient => {
+    this.surgerySvc.saveSurgeryNotScheduled(this.patient.surgery.surgeryNotScheduled,
+      this.patient).then(patient => {
       this.navCtrl.navigateBack('/patient/' + this.patient._id + '?tab=surgery');
     });
   }

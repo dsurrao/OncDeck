@@ -180,25 +180,17 @@ export class PatientsPage implements OnInit, OnDestroy {
       });
 
       this.loading.present().then(() => {
-        if (!this.infiniteScrollFlag) {
-          this.patientListSvc.getPatients().then(patientList => {
-            this.patients = patientList.patients;
-            // make a copy of patients for filtering purposes
-            this.originalPatientList = patientList.patients; 
-            this.displayPatientsBySortOrder();
-            this.isLoading = false;
-            this.loading.dismiss();
-          });
-        }
-        else {
-          this.loadMorePatients();
-        }
+        this.loadMorePatients(null, this.infiniteScrollFlag);
       });
     }
   }
 
-  loadMorePatients(infiniteScrollEvent: any = null) {
-    let args: object = {limit: this.pageSize, startkey: this.startKey, skip: this.skip};
+  loadMorePatients(infiniteScrollEvent: any = null, infiniteScrollFlag: boolean = false) {
+    let args: object = {};
+    if (infiniteScrollFlag) {
+      args = {limit: this.pageSize, startkey: this.startKey, skip: this.skip};
+    }
+
     if (this.showOnlyMyPatients) {
       args['watchingProvider'] = this.currentAuthenticatedUsername;
     }
@@ -228,6 +220,7 @@ export class PatientsPage implements OnInit, OnDestroy {
           }
         });
         this.originalPatientList = data.patients; // make a copy of patients for filtering purposes
+        this.displayPatientsBySortOrder();
       }
       
     })

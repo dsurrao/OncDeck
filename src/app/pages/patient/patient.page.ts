@@ -48,6 +48,10 @@ export class PatientPage implements OnInit {
       this.refreshPatient();
     });
   }
+
+  ionViewDidEnter() {
+    this.refreshPatient();
+  }
   
   refreshPatient() {
     let id = this.route.snapshot.paramMap.get('id');
