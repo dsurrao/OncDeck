@@ -6,6 +6,7 @@ import { Surgery } from 'src/app/models/surgery';
 import { ScheduledSurgery } from 'src/app/models/scheduled-surgery';
 import { NavController } from '@ionic/angular';
 import { SurgeryService } from 'src/app/services/surgery.service';
+import { SurgeryTypeEnum } from 'src/app/enums/surgery-type-enum';
 
 @Component({
   selector: 'app-scheduled-surgery',
@@ -14,6 +15,8 @@ import { SurgeryService } from 'src/app/services/surgery.service';
 })
 export class ScheduledSurgeryComponent implements OnInit {
   patient: Patient;
+
+  surgeryTypeEnum = SurgeryTypeEnum;
 
   constructor(public patientSvc: PatientService,
     public surgerySvc: SurgeryService,

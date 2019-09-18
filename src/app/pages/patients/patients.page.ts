@@ -332,7 +332,8 @@ export class PatientsPage implements OnInit, OnDestroy {
         case SurgeryStatusEnum.Scheduled:
           scheduledSurgery = patient.surgery.scheduledSurgery;
           if (scheduledSurgery != null) {
-            summary += ": " + new Date(scheduledSurgery.scheduledDate).toLocaleDateString() 
+            summary += ": " + scheduledSurgery.type + " on "
+              + new Date(scheduledSurgery.scheduledDate).toLocaleDateString() 
               + " at " + scheduledSurgery.facility + " with " + scheduledSurgery.surgeonName;
           }
           break;

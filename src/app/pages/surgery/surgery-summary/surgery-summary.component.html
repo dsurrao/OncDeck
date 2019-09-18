@@ -4,7 +4,8 @@
   Status: {{patient.surgery.surgeryStatus}}
   <br/>
   <ng-container *ngIf="patient.surgery.surgeryStatus == surgeryStatusEnum.Scheduled">
-    Scheduled on {{dateUtils.toLocaleDateString(patient.surgery.scheduledSurgery.scheduledDate)}} with 
+    {{patient.surgery.scheduledSurgery.type}} scheduled 
+    on {{dateUtils.toLocaleDateString(patient.surgery.scheduledSurgery.scheduledDate)}} with 
     {{patient.surgery.scheduledSurgery.surgeonName}} at 
     {{patient.surgery.scheduledSurgery.facility}} 
     <br/>

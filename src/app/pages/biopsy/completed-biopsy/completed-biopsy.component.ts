@@ -94,6 +94,14 @@ export class CompletedBiopsyComponent implements OnInit {
     if (this.completedBiopsy.type.type != BiopsyTypeEnum.Other) {
       this.completedBiopsy.type.other = null;
     }
+
+    // type/site suggestions
+    if (this.completedBiopsy.type.type == BiopsyTypeEnum.FNA) {
+      this.completedBiopsy.site.tissue = BiopsyTissueEnum.LymphNode;
+    }
+    else if (this.completedBiopsy.type.type == BiopsyTypeEnum.CNB) {
+      this.completedBiopsy.site.tissue = BiopsyTissueEnum.Liver;
+    }
   }
 
   tissueChange() {

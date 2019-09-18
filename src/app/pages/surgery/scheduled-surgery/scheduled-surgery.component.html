@@ -17,6 +17,23 @@
       <ion-label>Facility</ion-label>
       <ion-input type="text" name="facility" [(ngModel)]="patient.surgery.scheduledSurgery.facility" required></ion-input>
     </ion-item>
+    <ion-list>
+      <ion-list-header>Surgery Type</ion-list-header>
+      <ion-radio-group name="surgeryType" [(ngModel)]="patient.surgery.scheduledSurgery.type" required>
+          <ion-item>
+              <ion-label>{{surgeryTypeEnum.Lumpectomy}}</ion-label>
+              <ion-radio value="{{surgeryTypeEnum.Lumpectomy}}"></ion-radio>
+              </ion-item>
+          <ion-item>
+              <ion-label>{{surgeryTypeEnum.ModifiedRadicalMastectomy}}</ion-label>
+              <ion-radio value="{{surgeryTypeEnum.ModifiedRadicalMastectomy}}"></ion-radio>
+          </ion-item>
+          <ion-item>
+              <ion-label>{{surgeryTypeEnum.Other}}</ion-label>
+              <ion-radio value="{{surgeryTypeEnum.Other}}"></ion-radio>
+          </ion-item>
+      </ion-radio-group>
+    </ion-list>
     <ion-item>
       <ion-label>Surgeon Name</ion-label>
       <ion-input type="text" name="surgeonName" [(ngModel)]="patient.surgery.scheduledSurgery.surgeonName" required></ion-input>
