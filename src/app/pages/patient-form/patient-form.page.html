@@ -37,6 +37,10 @@
     </ion-list>
 
     <ion-item>
+      <ion-label floating>Town</ion-label>
+      <ion-input type="text" name="town" [(ngModel)]="patient.town"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label floating>Phone Number</ion-label>
       <ion-input type="text" name="phoneNumber" [(ngModel)]="patient.phoneNumber"></ion-input>
     </ion-item>
@@ -54,7 +58,10 @@
     </ion-item>
     <ion-toolbar>
       <ion-button slot="end" color="primary" type="submit" shape="round" 
-        [disabled]="!patientForm.form.valid">Next</ion-button>
+        [disabled]="!patientForm.form.valid">Save</ion-button>
+      <ion-button slot="end" color="primary" shape="round" 
+        [disabled]="!patientForm.form.valid" 
+        (click)="submitAndNext()">Save, biopsy next</ion-button>
     </ion-toolbar>
   </form>
 </ion-content>

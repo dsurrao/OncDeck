@@ -5,6 +5,8 @@ import { Patient } from '../../models/patient';
 import { FormGroup, Form } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DateUtils } from 'src/app/common/dateutils';
+import { resolve } from 'path';
+import { reject } from 'q';
 
 @Component({
   selector: 'app-patient-form',
@@ -47,10 +49,34 @@ export class PatientFormPage implements OnInit {
     this.patientSvc.savePatient(this.patient).then(updatedPatient => {
       console.log("patient saved");
       this.events.publish('patientSaved');
+      this.navCtrl.navigateBack('/patients');
+    })
+    .catch(error => {
+      this.showPatientSaveError(error);
+    });
+  }
+
+  submitAndNext() {
+    this.savePatient().then(updatedPatient => {
+      console.log("patient saved");
+      this.events.publish('patientSaved');
       this.navCtrl.navigateForward('/patient/' + this.patient._id + '/biopsy');
     })
     .catch(error => {
-      let title: string = 'Error saving patient';
+      this.showPatientSaveError(error);
+    });
+  }
+
+  savePatient(): Promise<Patient> {
+      // new patient
+      if (this.patient._id == null) {
+        this.patient._id = this.dateUtils.generateUniqueId();
+      }
+      return (this.patientSvc.savePatient(this.patient));
+  }
+
+  showPatientSaveError(error: any) {
+    let title: string = 'Error saving patient';
       let subTitle: string = '';
       if (error.status == '409') {
         subTitle = "This patient's data was updated by somewhere else; please refresh data via the home page";
@@ -60,7 +86,6 @@ export class PatientFormPage implements OnInit {
       }
       this.patientForm.reset(this.originalFormGroupValue);
       this.showAlert(title, subTitle);
-    });
   }
 
   async showAlert(titleTxt: string, subTitleTxt: string) {

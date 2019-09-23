@@ -9,6 +9,7 @@ export class Patient {
     firstName: string;
     gender: string;
     dob: Date;
+    town: string;
     phoneNumber: string;
     contactFirstName: string;
     contactLastName: string;
