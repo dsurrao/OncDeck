@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chemotherapy } from 'src/app/models/chemotherapy';
 import { ChemotherapyService } from 'src/app/services/chemotherapy.service';
+import { ChemotherapyRegimenEnum } from 'src/app/enums/chemotherapy-regimen-enum';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient.service';
 import { ActivatedRoute } from '@angular/router';
@@ -17,6 +18,7 @@ export class ChemotherapyPage implements OnInit {
   patientId: string;
   chemotherapy: Chemotherapy;
   chemotherapyId: string;
+  chemotherapyRegimenEnum = ChemotherapyRegimenEnum;
 
   constructor(
     public route: ActivatedRoute,
@@ -24,7 +26,8 @@ export class ChemotherapyPage implements OnInit {
     public patientSvc: PatientService,
     public events: Events,
     public navCtrl: NavController
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patientId');
@@ -44,7 +47,7 @@ export class ChemotherapyPage implements OnInit {
 
       // chemotherapy has not been created - initialize
       else {
-        this.chemotherapy.regimen = "";
+        this.chemotherapy.regimenOther = "";
         this.chemotherapy.startDate = "";
         this.chemotherapy.plannedCycles = "";
         this.chemotherapy.actualEndDate = "";
@@ -55,6 +58,10 @@ export class ChemotherapyPage implements OnInit {
   }
 
   save() {
+    if (this.chemotherapy.regimen != this.chemotherapyRegimenEnum.Other) {
+      this.chemotherapy.regimenOther = "";
+    }
+
     // now save to db
     this.chemotherapySvc.saveChemotherapy(this.chemotherapy, this.patient).then(id => {
       this.events.publish('chemotherapy saved');

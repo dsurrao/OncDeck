@@ -12,19 +12,40 @@
     <ion-list-header>Chemotherapy Regimen</ion-list-header>
     <ion-radio-group [(ngModel)]="chemotherapy.regimen" radio-group name="regimen" required>
       <ion-item>
-        <ion-label>CAF: Adriamycin (Doxorubicin), Cyclophosphamide (Cytoxan), 5-FU</ion-label>
-        <ion-radio slot="start" value="CAF"></ion-radio>
+        <ion-label>{{chemotherapyRegimenEnum.ACT}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.ACT}}"></ion-radio>
       </ion-item>
       <ion-item>
-        <ion-label>AC-T: Adriamycin (Doxorubicin), Cyclophosphamide (Cytoxan), Pacilatexl (Taxol)</ion-label>
-        <ion-radio slot="start" value="AC-T"></ion-radio>
-      </ion-item>    
+        <ion-label>{{chemotherapyRegimenEnum.ACD}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.ACD}}"></ion-radio>
+      </ion-item>
       <ion-item>
-          <ion-label>Other</ion-label>
-          <ion-radio slot="start" value="Other"></ion-radio>
-        </ion-item>
+        <ion-label>{{chemotherapyRegimenEnum.ACP}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.ACP}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{chemotherapyRegimenEnum.CAF}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.CAF}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{chemotherapyRegimenEnum.Dox}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.Dox}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{chemotherapyRegimenEnum.Pax}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.Pax}}"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{chemotherapyRegimenEnum.Other}}</ion-label>
+        <ion-radio slot="start" value="{{chemotherapyRegimenEnum.Other}}"></ion-radio>
+      </ion-item>      
     </ion-radio-group>
   </ion-list>
+
+  <ion-item *ngIf="chemotherapy.regimen == chemotherapyRegimenEnum.Other">
+    <ion-label>Other Regimen</ion-label>
+    <ion-input type="text" name="regimenOther" [(ngModel)]="chemotherapy.regimenOther" required></ion-input>
+  </ion-item>
 
   <ion-item>     
     <ion-label>Chemotherapy Start Date</ion-label>

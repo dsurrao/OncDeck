@@ -1,9 +1,19 @@
 
 <p *ngIf="chemotherapy != null">
-    Regimen: {{chemotherapy.regimen}}<br/>
+    <ng-container *ngIf="chemotherapy.regimen != chemotherapyRegimenEnum.Other else elseBlock">
+        Regimen: {{chemotherapy.regimen}}
+    </ng-container>
+    <ng-template #elseBlock>
+        Regimen: {{chemotherapy.regimenOther}}
+    </ng-template>
+    <br/>
     Start Date: {{this.dateUtils.toLocaleDateString(chemotherapy.startDate)}}<br/>
     Planned Cycles: {{chemotherapy.plannedCycles}}<br/>
-    Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
-    Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+    <ng-container *ngIf="chemotherapy.calculatedEndDate != null && chemotherapy.calculatedEndDate != ''">
+        Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
+    </ng-container>
+    <ng-container *ngIf="chemotherapy.actualEndDate != null && chemotherapy.actualEndDate != ''">
+        Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+    </ng-container>
 </p>
       

@@ -5,11 +5,20 @@
 <ng-container *ngIf="patient.chemotherapies != null; else elseBlock">
 <ion-item-sliding *ngFor="let chemotherapy of patient.chemotherapies">
   <ion-item text-wrap [routerLink]="['/patient/' + patient._id + '/chemotherapy/' + chemotherapy.id]">
-      Regimen: {{chemotherapy.regimen}}<br/>
+      <ng-container *ngIf="chemotherapy.regimen != chemotherapyRegimenEnum.Other else elseBlock">
+        Regimen: {{chemotherapy.regimen}}<br/>
+      </ng-container>
+      <ng-template #elseBlock>
+        Regimen: {{chemotherapy.regimenOther}}<br/>
+      </ng-template>
       Start Date: {{this.dateUtils.toLocaleDateString(chemotherapy.startDate)}}<br/>
       Planned Cycles: {{chemotherapy.plannedCycles}}<br/>
-      Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
-      Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+      <ng-container *ngIf="chemotherapy.calculatedEndDate != null && chemotherapy.calculatedEndDate != ''">
+        Calculated End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.calculatedEndDate)}}<br/>
+      </ng-container>
+      <ng-container *ngIf="chemotherapy.actualEndDate != null && chemotherapy.actualEndDate != ''">
+        Actual End Date: {{this.dateUtils.toLocaleDateString(chemotherapy.actualEndDate)}}<br/>
+      </ng-container>
   </ion-item>
 </ion-item-sliding>
 </ng-container>
