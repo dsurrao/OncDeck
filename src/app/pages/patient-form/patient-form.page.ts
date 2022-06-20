@@ -5,8 +5,6 @@ import { Patient } from '../../models/patient';
 import { FormGroup, Form } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DateUtils } from 'src/app/common/dateutils';
-import { resolve } from 'path';
-import { reject } from 'q';
 
 @Component({
   selector: 'app-patient-form',
