@@ -20,12 +20,12 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginModalPage,
-    LogoutModalPage
+    //LoginModalPage,
+    //LogoutModalPage
   ],
   entryComponents: [
-    LoginModalPage,
-    LogoutModalPage
+    //LoginModalPage,
+    //LogoutModalPage
   ],
   imports: [
     BrowserModule, 
